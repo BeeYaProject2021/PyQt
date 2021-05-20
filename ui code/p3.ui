@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>857</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>562</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Agency FB</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="tabletTracking">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: qradialgradient(spread:pad, cx:0.489, cy:0.602273, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(245, 224, 176, 255), stop:0.09 rgba(246, 189, 237, 255), stop:0.14 rgba(194, 207, 246, 255), stop:0.19 rgba(184, 160, 168, 255), stop:0.25 rgba(171, 186, 248, 255), stop:0.32 rgba(243, 248, 224, 255), stop:0.385 rgba(249, 162, 183, 255), stop:0.47 rgba(100, 115, 124, 255), stop:0.58 rgba(251, 205, 202, 255), stop:0.65 rgba(170, 128, 185, 255), stop:0.75 rgba(252, 222, 204, 255), stop:0.805 rgba(206, 122, 218, 255), stop:0.86 rgba(254, 223, 175, 255), stop:0.91 rgba(254, 236, 244, 255), stop:1 rgba(255, 191, 221, 255));</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <property name="tabsClosable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="tab">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+     <widget class="QListWidget" name="listWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>240</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>30</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="toolButton_2">
+      <property name="geometry">
+       <rect>
+        <x>493</x>
+        <y>435</y>
+        <width>52</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>分享</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Tab 2</string>
+     </attribute>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>30</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>240</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="toolButton">
+      <property name="geometry">
+       <rect>
+        <x>493</x>
+        <y>435</y>
+        <width>52</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>分享</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+     <widget class="QListWidget" name="listWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>240</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_6">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>30</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="toolButton_3">
+      <property name="geometry">
+       <rect>
+        <x>493</x>
+        <y>435</y>
+        <width>52</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>分享</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>119</x>
+        <y>90</y>
+        <width>69</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>663</x>
+      <y>-4</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <stylestrategy>PreferDefault</stylestrategy>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>上步</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>697</x>
+      <y>-4</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>下步</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>731</x>
+      <y>-4</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>開始</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>765</x>
+      <y>-4</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>停止</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>799</x>
+      <y>-4</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>暫停</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>561</x>
+      <y>30</y>
+      <width>273</width>
+      <height>466</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Rounded MT Bold</family>
+     </font>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="toolButton_4">
+    <property name="geometry">
+     <rect>
+      <x>561</x>
+      <y>0</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>截圖</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="toolButton_5">
+    <property name="geometry">
+     <rect>
+      <x>595</x>
+      <y>0</y>
+      <width>35</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>儲存</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>857</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menufile">
+    <property name="title">
+     <string>file</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionopen"/>
+    <addaction name="actionsave"/>
+    <addaction name="separator"/>
+    <addaction name="actionsave_2"/>
+    <addaction name="actionsave_as"/>
+    <addaction name="actionsave_all"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionSelect_All"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuRun">
+    <property name="title">
+     <string>Run</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuTool">
+    <property name="title">
+     <string>Tool</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSeeting">
+    <property name="title">
+     <string>Seeting</string>
+    </property>
+   </widget>
+   <addaction name="menufile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuRun"/>
+   <addaction name="menuTool"/>
+   <addaction name="menuSeeting"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionopen">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionsave">
+   <property name="text">
+    <string>Open..</string>
+   </property>
+  </action>
+  <action name="actionsave_2">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionsave_as">
+   <property name="text">
+    <string>Save as..</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="text">
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionsave_all">
+   <property name="text">
+    <string>Save all</string>
+   </property>
+  </action>
+  <action name="actionSave_Image">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
