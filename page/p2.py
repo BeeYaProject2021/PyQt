@@ -10,12 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class initialWidget(QtWidgets.QMainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -127,11 +121,4 @@ class Ui_MainWindow(object):
         self.menuTool.setTitle(_translate("MainWindow", "Tool"))
         self.menuSetting.setTitle(_translate("MainWindow", "Setting"))
 
-if __name__ == '__main__':
-
-    import sys
-
-    app = QtWidgets.QApplication(sys.argv)
-    mw = initialWidget()
-    mw.show()
-    sys.exit(app.exec_())
+    
