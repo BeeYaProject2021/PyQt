@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
-    <height>600</height>
+    <width>961</width>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>562</width>
-      <height>511</height>
+      <height>641</height>
      </rect>
     </property>
     <property name="font">
@@ -51,34 +51,38 @@
      <widget class="QListWidget" name="listWidget_3">
       <property name="geometry">
        <rect>
-        <x>17</x>
-        <y>240</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="listWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>30</y>
-        <width>256</width>
-        <height>192</height>
+        <x>20</x>
+        <y>310</y>
+        <width>371</width>
+        <height>251</height>
        </rect>
       </property>
      </widget>
      <widget class="QToolButton" name="toolButton_2">
       <property name="geometry">
        <rect>
-        <x>493</x>
-        <y>435</y>
-        <width>52</width>
-        <height>31</height>
+        <x>510</x>
+        <y>550</y>
+        <width>45</width>
+        <height>45</height>
        </rect>
       </property>
       <property name="text">
-       <string>分享</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>share.png</normaloff>share.png</iconset>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>371</width>
+        <height>251</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -173,9 +177,9 @@
     <property name="geometry">
      <rect>
       <x>663</x>
-      <y>-4</y>
+      <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="font">
@@ -193,68 +197,88 @@
      <set>Qt::ImhNone</set>
     </property>
     <property name="text">
-     <string>上步</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>rotate-left 4.png</normaloff>rotate-left 4.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>697</x>
-      <y>-4</y>
+      <x>710</x>
+      <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>下步</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>rotate-right 2.png</normaloff>rotate-right 2.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>731</x>
-      <y>-4</y>
+      <x>760</x>
+      <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>開始</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>4_audio_play.png</normaloff>4_audio_play.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>765</x>
-      <y>-4</y>
+      <x>800</x>
+      <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>停止</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>4_audio_stop.ico</normaloff>4_audio_stop.ico</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_5">
     <property name="geometry">
      <rect>
-      <x>799</x>
-      <y>-4</y>
+      <x>840</x>
+      <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>暫停</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>4_audio_pause.png</normaloff>4_audio_pause.png</iconset>
     </property>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
       <x>561</x>
-      <y>30</y>
-      <width>273</width>
-      <height>466</height>
+      <y>40</y>
+      <width>381</width>
+      <height>611</height>
      </rect>
     </property>
     <property name="font">
@@ -269,24 +293,32 @@
       <x>561</x>
       <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>截圖</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>screenshot.png</normaloff>screenshot.png</iconset>
     </property>
    </widget>
    <widget class="QToolButton" name="toolButton_5">
     <property name="geometry">
      <rect>
-      <x>595</x>
+      <x>600</x>
       <y>0</y>
       <width>35</width>
-      <height>31</height>
+      <height>35</height>
      </rect>
     </property>
     <property name="text">
-     <string>儲存</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>save.png</normaloff>save.png</iconset>
     </property>
    </widget>
   </widget>
@@ -295,8 +327,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>857</width>
-     <height>21</height>
+     <width>961</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menufile">
@@ -342,6 +374,10 @@
    <widget class="QMenu" name="menuSeeting">
     <property name="title">
      <string>Seeting</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>gear.png</normaloff>gear.png</iconset>
     </property>
    </widget>
    <addaction name="menufile"/>

@@ -90,7 +90,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>t1</string>
+       <string>CNN</string>
       </property>
       <property name="checkable">
        <bool>false</bool>
@@ -109,7 +109,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>t2</string>
+       <string>DQN</string>
       </property>
      </widget>
      <widget class="QPushButton" name="tool3">
@@ -122,7 +122,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>t3</string>
+       <string>GAN</string>
       </property>
      </widget>
      <widget class="QPushButton" name="tool4">
