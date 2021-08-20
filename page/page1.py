@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QCoreApplication
-from p1 import Ui_MainWindow
+from p1 import Ui_MainWindow1
 
 class initialWidget1(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_MainWindow1()
         self.ui.setupUi(self)
         self.ui.CNN.hide()
         self.ui.DQN.hide()

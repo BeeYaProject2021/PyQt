@@ -11,12 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(960, 780)
-        MainWindow.setMouseTracking(False)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_MainWindow1(object):
+    def setupUi(self, MainWindow1):
+        MainWindow1.setObjectName("MainWindow1")
+        MainWindow1.resize(960, 780)
+        MainWindow1.setMouseTracking(False)
+        self.centralwidget = QtWidgets.QWidget(MainWindow1)
         self.centralwidget.setObjectName("centralwidget")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(0, 10, 961, 51))
@@ -70,30 +70,30 @@ class Ui_MainWindow(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.tabWidget.addTab(self.tab_2, "")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        MainWindow1.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow1)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        MainWindow1.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(MainWindow1)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow1)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow1):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        MainWindow1.setWindowTitle(_translate("MainWindow1", "MainWindow"))
+        self.textBrowser.setHtml(_translate("MainWindow1", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'PMingLiU\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:-2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:36px; background-color:#f8f9fa;\"><a name=\"tw-target-text\"></a><span style=\" font-family:\'inherit\'; font-size:28px; font-weight:600; color:#202124;\">C</span><span style=\" font-family:\'inherit\'; font-size:28px; font-weight:600; color:#202124;\">hoose the mode you want</span></p></body></html>"))
-        self.pushButton.setText(_translate("MainWindow", "submit"))
-        self.tool1.setText(_translate("MainWindow", "CNN"))
-        self.tool2.setText(_translate("MainWindow", "DQN"))
-        self.tool3.setText(_translate("MainWindow", "GAN"))
-        self.tool4.setText(_translate("MainWindow", "t4"))
-        self.tool5.setText(_translate("MainWindow", "t5"))
-        self.CNN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.pushButton.setText(_translate("MainWindow1", "submit"))
+        self.tool1.setText(_translate("MainWindow1", "CNN"))
+        self.tool2.setText(_translate("MainWindow1", "DQN"))
+        self.tool3.setText(_translate("MainWindow1", "GAN"))
+        self.tool4.setText(_translate("MainWindow1", "t4"))
+        self.tool5.setText(_translate("MainWindow1", "t5"))
+        self.CNN.setHtml(_translate("MainWindow1", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
@@ -101,13 +101,13 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">In  deep learning, a convolutional neural network (CNN or ConvNet) is a class of  artificial neural network, most commonly applied to analyze visual imagery. </p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">CNNs are  regularized  versions of  multilayer perceptrons. Multilayer perceptrons usually mean fully connected networks, that is, each neuron in one layer  is connected to all neurons in the next  layer. </p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.GAN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.GAN.setHtml(_translate("MainWindow1", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:48pt;\">GAN</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">GAN addresses the lack of imagination haunting deep neural networks, the popular AI structure that roughly mimics how the human brain works. DNNs rely on large sets of labeled data to perform their functions. This means that a human must explicitly define what each data sample represents for DNNs to be able to use it.It will also be a key component of unsupervised learning, the branch of machine learning in which AI creates its own data and discovers its own rules of application.</p></body></html>"))
-        self.DQN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.DQN.setHtml(_translate("MainWindow1", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
@@ -115,5 +115,5 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The memory and computation required for the Q-value algorithm would be too high. Thus, a deep network Q-Learning function approximator is used instead. This learning algorithm is called Deep Q-Network (DQN). The key idea in this development was thus to use deep neural networks to represent the Q-network and train this network to predict total reward. </p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Previous attempts at bringing deep neural networks into reinforcement learning were primarily unsuccessful due to instabilities. Deep neural networks are prone to overfitting in reinforcement learning models, which disables them from being generalised. According to DeepMind, DQN algorithms address these instabilities by providing diverse and de-correlated training data by storing all of the agent’s experiences and randomly sampling and replaying the experiences.</p></body></html>"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow1", "Tab 1"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow1", "Tab 2"))
