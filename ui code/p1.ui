@@ -151,7 +151,7 @@ p, li { white-space: pre-wrap; }
        <string>t5</string>
       </property>
      </widget>
-     <widget class="QTextBrowser" name="textBrowser_2">
+     <widget class="QTextBrowser" name="CNN">
       <property name="geometry">
        <rect>
         <x>110</x>
@@ -159,6 +159,54 @@ p, li { white-space: pre-wrap; }
         <width>480</width>
         <height>360</height>
        </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Agency FB'; font-size:20pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:48pt;&quot;&gt;CNN&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In  deep learning, a convolutional neural network (CNN or ConvNet) is a class of  artificial neural network, most commonly applied to analyze visual imagery. &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;CNNs are  regularized  versions of  multilayer perceptrons. Multilayer perceptrons usually mean fully connected networks, that is, each neuron in one layer  is connected to all neurons in the next  layer. &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="GAN">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>100</y>
+        <width>480</width>
+        <height>360</height>
+       </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Agency FB'; font-size:20pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:48pt;&quot;&gt;GAN&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;GAN addresses the lack of imagination haunting deep neural networks, the popular AI structure that roughly mimics how the human brain works. DNNs rely on large sets of labeled data to perform their functions. This means that a human must explicitly define what each data sample represents for DNNs to be able to use it.It will also be a key component of unsupervised learning, the branch of machine learning in which AI creates its own data and discovers its own rules of application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="DQN">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>100</y>
+        <width>480</width>
+        <height>360</height>
+       </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Agency FB'; font-size:20pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:48pt;&quot;&gt;DQN&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The memory and computation required for the Q-value algorithm would be too high. Thus, a deep network Q-Learning function approximator is used instead. This learning algorithm is called Deep Q-Network (DQN). The key idea in this development was thus to use deep neural networks to represent the Q-network and train this network to predict total reward. &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Previous attempts at bringing deep neural networks into reinforcement learning were primarily unsuccessful due to instabilities. Deep neural networks are prone to overfitting in reinforcement learning models, which disables them from being generalised. According to DeepMind, DQN algorithms address these instabilities by providing diverse and de-correlated training data by storing all of the agent’s experiences and randomly sampling and replaying the experiences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>

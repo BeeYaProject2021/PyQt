@@ -57,9 +57,15 @@ class Ui_MainWindow(object):
         self.tool5 = QtWidgets.QPushButton(self.tab)
         self.tool5.setGeometry(QtCore.QRect(380, 10, 61, 61))
         self.tool5.setObjectName("tool5")
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab)
-        self.textBrowser_2.setGeometry(QtCore.QRect(110, 100, 480, 360))
-        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.CNN = QtWidgets.QTextBrowser(self.tab)
+        self.CNN.setGeometry(QtCore.QRect(110, 100, 480, 360))
+        self.CNN.setObjectName("CNN")
+        self.GAN = QtWidgets.QTextBrowser(self.tab)
+        self.GAN.setGeometry(QtCore.QRect(110, 100, 480, 360))
+        self.GAN.setObjectName("GAN")
+        self.DQN = QtWidgets.QTextBrowser(self.tab)
+        self.DQN.setGeometry(QtCore.QRect(110, 100, 480, 360))
+        self.DQN.setObjectName("DQN")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -82,10 +88,32 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'PMingLiU\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:-2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:36px; background-color:#f8f9fa;\"><a name=\"tw-target-text\"></a><span style=\" font-family:\'inherit\'; font-size:28px; font-weight:600; color:#202124;\">C</span><span style=\" font-family:\'inherit\'; font-size:28px; font-weight:600; color:#202124;\">hoose the mode you want</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "submit"))
-        self.tool1.setText(_translate("MainWindow", "t1"))
-        self.tool2.setText(_translate("MainWindow", "t2"))
-        self.tool3.setText(_translate("MainWindow", "t3"))
+        self.tool1.setText(_translate("MainWindow", "CNN"))
+        self.tool2.setText(_translate("MainWindow", "DQN"))
+        self.tool3.setText(_translate("MainWindow", "GAN"))
         self.tool4.setText(_translate("MainWindow", "t4"))
         self.tool5.setText(_translate("MainWindow", "t5"))
+        self.CNN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:48pt;\">CNN</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">In  deep learning, a convolutional neural network (CNN or ConvNet) is a class of  artificial neural network, most commonly applied to analyze visual imagery. </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">CNNs are  regularized  versions of  multilayer perceptrons. Multilayer perceptrons usually mean fully connected networks, that is, each neuron in one layer  is connected to all neurons in the next  layer. </p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.GAN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:48pt;\">GAN</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">GAN addresses the lack of imagination haunting deep neural networks, the popular AI structure that roughly mimics how the human brain works. DNNs rely on large sets of labeled data to perform their functions. This means that a human must explicitly define what each data sample represents for DNNs to be able to use it.It will also be a key component of unsupervised learning, the branch of machine learning in which AI creates its own data and discovers its own rules of application.</p></body></html>"))
+        self.DQN.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Agency FB\'; font-size:20pt; font-weight:600; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:48pt;\">DQN</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The memory and computation required for the Q-value algorithm would be too high. Thus, a deep network Q-Learning function approximator is used instead. This learning algorithm is called Deep Q-Network (DQN). The key idea in this development was thus to use deep neural networks to represent the Q-network and train this network to predict total reward. </p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Previous attempts at bringing deep neural networks into reinforcement learning were primarily unsuccessful due to instabilities. Deep neural networks are prone to overfitting in reinforcement learning models, which disables them from being generalised. According to DeepMind, DQN algorithms address these instabilities by providing diverse and de-correlated training data by storing all of the agent’s experiences and randomly sampling and replaying the experiences.</p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
