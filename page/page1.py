@@ -39,5 +39,5 @@ if __name__ == '__main__':
 
     app = QtWidgets.QApplication(sys.argv)
     mw = initialWidget1()
-    mw.show()
+    # mw.show()
     sys.exit(app.exec_())

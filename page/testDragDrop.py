@@ -2,10 +2,10 @@ import sys
 
 from PyQt5.QtCore import QPoint, Qt, QMimeData
 from PyQt5.QtGui import QDrag
-from PyQt5.QtWidgets import QPushButton, QWidget, QApplication
+from PyQt5.QtWidgets import QLabel, QPushButton, QWidget, QApplication
 
 
-class Button(QPushButton):
+class Button(QLabel):
 
     epos = QPoint()
 
