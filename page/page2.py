@@ -22,7 +22,6 @@ class Lablemove(QLabel):
             return
 
         mimeData = QMimeData()
-        mimeData.setText("HI")
 
         drag = QDrag(self)
         drag.setMimeData(mimeData)
@@ -58,68 +57,43 @@ class initialWidget(QtWidgets.QMainWindow):
     
     def initUI(self):
         self.setAcceptDrops(True)    
-        self.moveconv2D = Lablemove('conv2D', self)
-        self.moveconv2D.hide()
-        self.movemaxpooling2D = Lablemove('maxpooling2D', self)
-        self.movemaxpooling2D.hide()
-        self.moveflatten = Lablemove('flatten', self)
-        self.moveflatten.hide()
-        self.movedense = Lablemove('dense', self)
-        self.movedense.hide()
 
     def nextstepClicked(self):
         print("nextstep is clicked.")
 
-    def action_conv2D(self, e):
+    def action_conv2D(self):
         print("conv2D")
-        # self.moveconv2D.move(50, 400)
-        self.moveconv2D.show()
-        self.moveconv2D.move(50, 120)
+        userconv2D = Lablemove('conv2D', self)
+        userconv2D.move(50, 120)
+        userconv2D.show()
 
-    def action_maxpooling2D(self, e):
+
+    def action_maxpooling2D(self):
         print("maxpooling2D")
-        self.movemaxpooling2D.show()
-        self.movemaxpooling2D.move(30, 190)
-    
-    def action_flatten(self, e):
+        usermaxpooling2D = Lablemove('maxpooling2D', self)
+        usermaxpooling2D.move(30, 190)
+        usermaxpooling2D.show()
+    def action_flatten(self):
         print("flatten")
-        self.moveflatten.show()
-        self.moveflatten.move(53, 260)
-    
-    def action_dense(self, e):
+        userflatten = Lablemove('flatten', self)
+        userflatten.move(53, 260)
+        userflatten.show()
+    def action_dense(self):
         print("dense")
-        self.movedense.show()
-        self.movedense.move(55, 330)
-    
+        userdense = Lablemove('dense', self)
+        userdense.move(55, 330)
+        userdense.show()
+
     def dragEnterEvent(self, e):
         e.accept()
     
     def dragMoveEvent(self, e):
-        # self.conv2D.move(e.pos() - self.conv2D.epos)
-        # e.accept()
-        # self.maxpooling2D.move(e.pos() - self.maxpooling2D.epos)
-        # e.accept()
-        # self.flatten.move(e.pos() - self.flatten.epos)
-        # e.accept()
-        # self.dense.move(e.pos() - self.dense.epos)
+ 
         e.source().move(e.pos() - e.source().epos)
 
         e.accept()
 
     def dropEvent(self, e):
-        # self.conv2D.move(e.pos() - self.conv2D.epos)
-        # e.setDropAction(Qt.MoveAction)
-        # e.accept()
-        # self.maxpooling2D.move(e.pos() - self.maxpooling2D.epos)
-        # e.setDropAction(Qt.MoveAction)
-        # e.accept()
-        # self.flatten.move(e.pos() - self.flatten.epos)
-        # e.setDropAction(Qt.MoveAction)
-        # e.accept()
-        # self.dense.move(e.pos() - self.dense.epos)
-
-        e.source().move(e.pos() - e.source().epos)
-        e.setDropAction(Qt.MoveAction)
         e.accept()
     
 
