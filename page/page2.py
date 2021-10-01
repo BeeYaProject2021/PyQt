@@ -66,8 +66,6 @@ class initialWidget(QtWidgets.QMainWindow):
         userconv2D = Lablemove('conv2D', self)
         userconv2D.move(50, 120)
         userconv2D.show()
-
-
     def action_maxpooling2D(self):
         print("maxpooling2D")
         usermaxpooling2D = Lablemove('maxpooling2D', self)
@@ -95,7 +93,7 @@ class initialWidget(QtWidgets.QMainWindow):
 
     def dropEvent(self, e):
         e.accept()
-    
+      
 
 
         
