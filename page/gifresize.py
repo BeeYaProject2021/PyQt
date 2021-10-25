@@ -103,4 +103,4 @@ def extract_and_resize_frames(path, resize_to=None):
     return all_frames
 
 # 於這裡進行輸入輸出的設定
-resize_gif("f.gif", "flatten.gif", (120, 120))
+resize_gif("conv.gif", "conv2D.gif", (120, 120))
