@@ -14,165 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>562</width>
-      <height>641</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Agency FB</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="tabletTracking">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: qradialgradient(spread:pad, cx:0.489, cy:0.602273, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(245, 224, 176, 255), stop:0.09 rgba(246, 189, 237, 255), stop:0.14 rgba(194, 207, 246, 255), stop:0.19 rgba(184, 160, 168, 255), stop:0.25 rgba(171, 186, 248, 255), stop:0.32 rgba(243, 248, 224, 255), stop:0.385 rgba(249, 162, 183, 255), stop:0.47 rgba(100, 115, 124, 255), stop:0.58 rgba(251, 205, 202, 255), stop:0.65 rgba(170, 128, 185, 255), stop:0.75 rgba(252, 222, 204, 255), stop:0.805 rgba(206, 122, 218, 255), stop:0.86 rgba(254, 223, 175, 255), stop:0.91 rgba(254, 236, 244, 255), stop:1 rgba(255, 191, 221, 255));</string>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <property name="tabsClosable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="tab">
-     <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
-     </property>
-     <attribute name="title">
-      <string>Tab 1</string>
-     </attribute>
-     <widget class="QListWidget" name="listWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>310</y>
-        <width>371</width>
-        <height>251</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QToolButton" name="toolButton_2">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>550</y>
-        <width>45</width>
-        <height>45</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>share.png</normaloff>share.png</iconset>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="listWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>371</width>
-        <height>251</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-     <widget class="QListWidget" name="listWidget">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>30</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="listWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>240</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QToolButton" name="toolButton">
-      <property name="geometry">
-       <rect>
-        <x>493</x>
-        <y>435</y>
-        <width>52</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>分享</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_3">
-     <attribute name="title">
-      <string>Page</string>
-     </attribute>
-     <widget class="QListWidget" name="listWidget_5">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>240</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="listWidget_6">
-      <property name="geometry">
-       <rect>
-        <x>17</x>
-        <y>30</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QToolButton" name="toolButton_3">
-      <property name="geometry">
-       <rect>
-        <x>493</x>
-        <y>435</y>
-        <width>52</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>分享</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>119</x>
-        <y>90</y>
-        <width>69</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
@@ -272,21 +113,6 @@
       <normaloff>4_audio_pause.png</normaloff>4_audio_pause.png</iconset>
     </property>
    </widget>
-   <widget class="QWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>561</x>
-      <y>40</y>
-      <width>381</width>
-      <height>611</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Rounded MT Bold</family>
-     </font>
-    </property>
-   </widget>
    <widget class="QToolButton" name="toolButton_4">
     <property name="geometry">
      <rect>
@@ -321,6 +147,43 @@
       <normaloff>save.png</normaloff>save.png</iconset>
     </property>
    </widget>
+   <widget class="QToolButton" name="toolButton_2">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>560</y>
+      <width>45</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>share.png</normaloff>share.png</iconset>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>350</y>
+      <width>371</width>
+      <height>251</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>80</y>
+      <width>371</width>
+      <height>251</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -328,7 +191,7 @@
      <x>0</x>
      <y>0</y>
      <width>961</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menufile">
