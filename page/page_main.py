@@ -88,14 +88,17 @@ class MainWindow(QMainWindow):
         # self.tabs.setTabBar(self.tb)
 
         # self.tabs.setStyleSheet(
-        #     "QTabBar::tab { height: 100px; width: 100px; background: 'red'}")
-        label = "Blank"
+        #     "QTabBar::tab::first { height: 100px; width: 100px; background: 'red'}")
+        label = "Dataset"
         a = InputWidget()
         i = self.tabs.addTab(a, label)
         self.tabs.setCurrentIndex(i)
-        label = "Blank1"
+        label = "Model"
         b = initialWidget()
         i = self.tabs.addTab(b, label)
+        label = "Blank1.5"
+        c = WidgetA(self)
+        i = self.tabs.addTab(c, label)
         label = "Blank2"
         c = WidgetA(self)
         i = self.tabs.addTab(c, label)
