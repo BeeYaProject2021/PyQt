@@ -8,6 +8,96 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+import time
+from PyQt5.QtCore import QThread, pyqtSignal
+
+
+class Thread(QThread):
+    _signal = pyqtSignal(int)
+
+    def __init__(self, aw, imgw):
+        super(Thread, self).__init__()
+        self.aw = aw
+        self.imgw = imgw
+
+    def run(self):
+        path = pathlib.Path(self.imgw.filePathEdit.text())
+        print(path)
+
+        self.aw.progressBar.setVisible(True)
+
+        validate = self.aw.validsplitBox.value()
+        imgH = self.aw.imghBox.value()
+        imgW = self.aw.imgwBox.value()
+        print(validate)
+        print(imgH, imgW)
+
+        train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            path,
+            validation_split=validate,
+            subset="training",
+            seed=123,
+            image_size=(imgH, imgW),
+            batch_size=32)
+
+        for i in range(20):
+            time.sleep(0.01)
+            self._signal.emit(i)
+
+        train_ds = train_ds.unbatch()
+
+        for i in range(20, 40):
+            time.sleep(0.01)
+            self._signal.emit(i)
+
+        img = []
+        lab = []
+
+        for images, labels in train_ds:
+            img.append(images.numpy().astype("uint8"))
+            lab.append(labels.numpy().astype("uint8"))
+
+        img = np.array(img, dtype="uint8")
+        lab = np.array(lab, dtype="uint8")
+        print(img.shape)
+
+        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            path,
+            validation_split=validate,
+            subset="validation",
+            seed=123,
+            image_size=(imgH, imgW),
+            batch_size=32)
+
+        for i in range(40, 60):
+            time.sleep(0.01)
+            self._signal.emit(i)
+
+        val_ds = val_ds.unbatch()
+
+        for i in range(60, 80):
+            time.sleep(0.01)
+            self._signal.emit(i)
+
+        img2 = []
+        lab2 = []
+
+        for images, labels in val_ds:
+            img2.append(images.numpy().astype("uint8"))
+            lab2.append(labels.numpy().astype("uint8"))
+
+        img2 = np.array(img2, dtype="uint8")
+        lab2 = np.array(lab2, dtype="uint8")
+        print(img2.shape)
+
+        for i in range(80, 100):
+            time.sleep(0.01)
+            self._signal.emit(i)
+
+        np.savez_compressed('data.npz', train_img=img,
+                            train_lab=lab, test_img=img2, test_lab=lab2)
+        self._signal.emit(100)
+
 
 class AttributeWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -133,61 +223,19 @@ class InputWidget(QWidget):
     def confirm_Btn(self):
         # Check Path exists
         if os.path.exists(self.imgw.filePathEdit.text()):
+            self.thread = Thread(self.aw, self.imgw)
+            self.thread._signal.connect(self.signal_accept)
+            self.thread.start()
+            self.aw.confirmBtn.setEnabled(False)
 
-            path = pathlib.Path(self.imgw.filePathEdit.text())
-            print(path)
-
-            self.aw.progressBar.setVisible(True)
-
-            validate = self.aw.validsplitBox.value()
-            imgH = self.aw.imghBox.value()
-            imgW = self.aw.imgwBox.value()
-            print(validate)
-            print(imgH, imgW)
-
-            train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-                path,
-                validation_split=validate,
-                subset="training",
-                seed=123,
-                image_size=(imgH, imgW),
-                batch_size=32)
-
-            train_ds = train_ds.unbatch()
-            img = []
-            lab = []
-
-            for images, labels in train_ds:
-                img.append(images.numpy().astype("uint8"))
-                lab.append(labels.numpy().astype("uint8"))
-
-            img = np.array(img, dtype="uint8")
-            lab = np.array(lab, dtype="uint8")
-            print(img.shape)
-
-            val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-            path,
-            validation_split=validate,
-            subset="validation",
-            seed=123,
-            image_size=(imgH, imgW),
-            batch_size=32)
-
-            val_ds = val_ds.unbatch()
-            img2 = []
-            lab2 = []
-
-            for images, labels in val_ds:
-                img2.append(images.numpy().astype("uint8"))
-                lab2.append(labels.numpy().astype("uint8"))
-
-            img2 = np.array(img2, dtype="uint8")
-            lab2 = np.array(lab2, dtype="uint8")
-            print(img2.shape)
-            np.savez_compressed('data.npz', train_img=img, train_lab=lab, test_img=img2, test_lab=lab2)
         else:
             print("BAD NO SUCH Path")
             self.warning.setText("BAD FOR NO SUCH PATH")
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.setWindowTitle("YOU R BAD")
             self.warning.show()
+
+    def signal_accept(self, msg):
+        self.aw.progressBar.setValue(int(msg))
+        if self.aw.progressBar.value() == 100:
+            self.aw.confirmBtn.setEnabled(True)
