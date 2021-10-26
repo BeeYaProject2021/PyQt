@@ -100,9 +100,8 @@ class MainWindow(QMainWindow):
         c = WidgetA(self)
         i = self.tabs.addTab(c, label)
         label = "Blank2"
-        c = WidgetA(self)
-        i = self.tabs.addTab(c, label)
-
+        d = WidgetA(self)
+        i = self.tabs.addTab(d, label)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
 
