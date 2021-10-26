@@ -14,6 +14,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
+    _signal2 = pyqtSignal(int)
 
     def __init__(self, aw, imgw):
         super(Thread, self).__init__()
@@ -24,79 +25,82 @@ class Thread(QThread):
         path = pathlib.Path(self.imgw.filePathEdit.text())
         print(path)
 
-        self.aw.progressBar.setVisible(True)
-
+        img_cnt = len(list(path.glob('*/*.*')))
         validate = self.aw.validsplitBox.value()
         imgH = self.aw.imghBox.value()
         imgW = self.aw.imgwBox.value()
         print(validate)
         print(imgH, imgW)
 
-        train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-            path,
-            validation_split=validate,
-            subset="training",
-            seed=123,
-            image_size=(imgH, imgW),
-            batch_size=32)
+        if img_cnt*validate < 1:
+            self._signal2.emit(-1)
+        else:
+            self.aw.progressBar.setVisible(True)
+            train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                path,
+                validation_split=validate,
+                subset="training",
+                seed=123,
+                image_size=(imgH, imgW),
+                batch_size=32)
 
-        for i in range(20):
-            time.sleep(0.01)
-            self._signal.emit(i)
+            for i in range(20):
+                time.sleep(0.01)
+                self._signal.emit(i)
 
-        train_ds = train_ds.unbatch()
+            train_ds = train_ds.unbatch()
 
-        for i in range(20, 40):
-            time.sleep(0.01)
-            self._signal.emit(i)
+            for i in range(20, 40):
+                time.sleep(0.01)
+                self._signal.emit(i)
 
-        img = []
-        lab = []
+            img = []
+            lab = []
 
-        for images, labels in train_ds:
-            img.append(images.numpy().astype("uint8"))
-            lab.append(labels.numpy().astype("uint8"))
+            for images, labels in train_ds:
+                img.append(images.numpy().astype("uint8"))
+                lab.append(labels.numpy().astype("uint8"))
 
-        img = np.array(img, dtype="uint8")
-        lab = np.array(lab, dtype="uint8")
-        print(img.shape)
+            img = np.array(img, dtype="uint8")
+            lab = np.array(lab, dtype="uint8")
+            print(img.shape)
 
-        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-            path,
-            validation_split=validate,
-            subset="validation",
-            seed=123,
-            image_size=(imgH, imgW),
-            batch_size=32)
+            val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                path,
+                validation_split=validate,
+                subset="validation",
+                seed=123,
+                image_size=(imgH, imgW),
+                batch_size=32)
 
-        for i in range(40, 60):
-            time.sleep(0.01)
-            self._signal.emit(i)
+            for i in range(40, 60):
+                time.sleep(0.01)
+                self._signal.emit(i)
 
-        val_ds = val_ds.unbatch()
+            val_ds = val_ds.unbatch()
 
-        for i in range(60, 80):
-            time.sleep(0.01)
-            self._signal.emit(i)
+            for i in range(60, 80):
+                time.sleep(0.01)
+                self._signal.emit(i)
 
-        img2 = []
-        lab2 = []
+            img2 = []
+            lab2 = []
 
-        for images, labels in val_ds:
-            img2.append(images.numpy().astype("uint8"))
-            lab2.append(labels.numpy().astype("uint8"))
+            for images, labels in val_ds:
+                img2.append(images.numpy().astype("uint8"))
+                lab2.append(labels.numpy().astype("uint8"))
 
-        img2 = np.array(img2, dtype="uint8")
-        lab2 = np.array(lab2, dtype="uint8")
-        print(img2.shape)
+            img2 = np.array(img2, dtype="uint8")
+            lab2 = np.array(lab2, dtype="uint8")
+            print(img2.shape)
 
-        for i in range(80, 100):
-            time.sleep(0.01)
-            self._signal.emit(i)
+            for i in range(80, 100):
+                time.sleep(0.01)
+                self._signal.emit(i)
 
-        np.savez_compressed('data.npz', train_img=img,
-                            train_lab=lab, test_img=img2, test_lab=lab2)
-        self._signal.emit(100)
+            np.savez_compressed('data.npz', train_img=img,
+                                train_lab=lab, test_img=img2, test_lab=lab2)
+            self._signal.emit(100)
 
 
 class AttributeWidget(QWidget):
@@ -225,6 +229,7 @@ class InputWidget(QWidget):
         if os.path.exists(self.imgw.filePathEdit.text()):
             self.thread = Thread(self.aw, self.imgw)
             self.thread._signal.connect(self.signal_accept)
+            self.thread._signal2.connect(self.signal_warning_get)
             self.thread.start()
             self.aw.confirmBtn.setEnabled(False)
 
@@ -238,4 +243,11 @@ class InputWidget(QWidget):
     def signal_accept(self, msg):
         self.aw.progressBar.setValue(int(msg))
         if self.aw.progressBar.value() == 100:
+            self.aw.confirmBtn.setEnabled(True)
+
+    def signal_warning_get(self, msg):
+        if msg == -1:
+            self.warning.setText("Number of validation must be higher than zero img")
+            self.warning.setIcon(QMessageBox.Icon.Warning)
+            self.warning.show()
             self.aw.confirmBtn.setEnabled(True)
