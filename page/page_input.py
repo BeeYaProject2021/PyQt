@@ -8,9 +8,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-# test
-
-
 class AttributeWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(AttributeWidget, self).__init__(*args, **kwargs)
@@ -23,7 +20,7 @@ class AttributeWidget(QWidget):
         self.vlayout.addWidget(self.validsplitLabel)
 
         self.validsplitBox = QDoubleSpinBox()
-        self.validsplitBox.setRange(0.0, 1.0)
+        self.validsplitBox.setRange(0.01, 1.0)
         self.validsplitBox.setSingleStep(0.01)
         self.vlayout.addWidget(self.validsplitBox)
 
@@ -39,7 +36,7 @@ class AttributeWidget(QWidget):
         self.imghvLayout.addWidget(self.imghLabel)
 
         self.imghBox = QSpinBox()
-        self.imghBox.setRange(0, 1000)
+        self.imghBox.setRange(10, 1000)
         self.imghBox.setSingleStep(10)
         self.imghvLayout.addWidget(self.imghBox)
 
@@ -51,7 +48,7 @@ class AttributeWidget(QWidget):
         self.imgwvLayout.addWidget(self.imgwLabel)
 
         self.imgwBox = QSpinBox()
-        self.imgwBox.setRange(0, 1000)
+        self.imgwBox.setRange(10, 1000)
         self.imgwBox.setSingleStep(10)
         self.imgwvLayout.addWidget(self.imgwBox)
 
@@ -141,4 +138,35 @@ class InputWidget(QWidget):
             image_size=(imgH, imgW),
             batch_size=32)
 
-        print(type(train_ds))
+        train_ds = train_ds.unbatch()
+        img = []
+        lab = []
+
+        for images, labels in train_ds:
+            img.append(images.numpy().astype("uint8"))
+            lab.append(labels.numpy().astype("uint8"))
+
+        img = np.array(img, dtype="uint8")
+        lab = np.array(lab, dtype="uint8")
+        print(img.shape)
+
+        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+        path,
+        validation_split=validate,
+        subset="validation",
+        seed=123,
+        image_size=(imgH, imgW),
+        batch_size=32)
+
+        val_ds = val_ds.unbatch()
+        img2 = []
+        lab2 = []
+
+        for images, labels in val_ds:
+            img2.append(images.numpy().astype("uint8"))
+            lab2.append(labels.numpy().astype("uint8"))
+
+        img2 = np.array(img2, dtype="uint8")
+        lab2 = np.array(lab2, dtype="uint8")
+        print(img2.shape)
+        np.savez_compressed('data.npz', train_img=img, train_lab=lab, test_img=img2, test_lab=lab2)
