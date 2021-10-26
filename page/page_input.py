@@ -1,4 +1,6 @@
-import pathlib, PIL, PIL.Image
+import pathlib
+import PIL
+import PIL.Image
 import numpy as np
 import tensorflow as tf
 from PyQt5 import QtWidgets
@@ -10,6 +12,7 @@ from PyQt5.QtGui import *
 class AttributeWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(AttributeWidget, self).__init__(*args, **kwargs)
+
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
@@ -56,16 +59,75 @@ class AttributeWidget(QWidget):
 
         self.confirmBtn = QPushButton('Confirm')
         self.vlayout.addWidget(self.confirmBtn)
-        self.confirmBtn.clicked.connect(self.confirm_Btn)
 
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
-    def confirm_Btn(self, path):
-        # Use self and point to get objects in vlayout
-        validate = self.b.validsplitBox.value()
-        imgH = self.b.imghBox.value()
-        imgW = self.b.imgwBox.value()
+
+class ImgWidget(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(ImgWidget, self).__init__(*args, **kwargs)
+
+        self.hlayout = QHBoxLayout()
+
+        self.filePathEdit = QLineEdit()
+        self.filePathEdit.setFixedWidth(200)
+        self.hlayout.addWidget(self.filePathEdit)
+
+        self.selectFileBtn = QPushButton('Select')
+        self.hlayout.addWidget(self.selectFileBtn)
+
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addStretch()
+
+        self.imgLabel = QLabel('Select a folder path for input dataset')
+        self.imgLabel.setFont(QFont("Arial", 15))
+        self.vlayout.addWidget(self.imgLabel)
+
+        self.vlayout.addLayout(self.hlayout)
+
+        self.vlayout.addStretch()
+        self.setLayout(self.vlayout)
+
+
+class InputWidget(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(InputWidget, self).__init__(*args, **kwargs)
+
+        self.hlayout = QHBoxLayout()
+        self.hlayout.addStretch(1)
+
+        self.imgw = ImgWidget()
+        self.hlayout.addWidget(self.imgw)
+
+        self.hlayout.addStretch(1)
+        self.aw = AttributeWidget()
+        self.hlayout.addWidget(self.aw)
+
+        self.setLayout(self.hlayout)
+        self.imgw.selectFileBtn.clicked.connect(self.input_Btn)
+        self.aw.confirmBtn.clicked.connect(self.confirm_Btn)
+
+    def input_Btn(self):
+        print("open folder")
+        folder_path = QFileDialog.getExistingDirectory(
+            self, "Open folder", "./")  # start path
+        print(folder_path)
+        self.imgw.filePathEdit.setText(folder_path)
+        folder_path = pathlib.Path(folder_path)
+        print(folder_path)
+        img_cnt = len(list(folder_path.glob('*/*.jpg')))
+        print(img_cnt)
+        # roses = list(folder_path.glob('roses/*'))
+        # x = PIL.Image.open(str(roses[0]))
+        # x.show()
+
+    def confirm_Btn(self):
+        path = pathlib.Path(self.imgw.filePathEdit.text())
+        validate = self.aw.validsplitBox.value()
+        imgH = self.aw.imghBox.value()
+        imgW = self.aw.imgwBox.value()
+        print(path)
         print(validate)
         print(imgH, imgW)
 
@@ -78,34 +140,3 @@ class AttributeWidget(QWidget):
             batch_size=32)
 
         print(type(train_ds))
-
-class InputWidget(QWidget):
-    def __init__(self, *args, **kwargs):
-        super(InputWidget, self).__init__(*args, **kwargs)
-
-        self.hlayout = QHBoxLayout()
-        self.hlayout.addStretch()
-        self.SelectFileBtn = QPushButton('button')
-        self.hlayout.addWidget(self.SelectFileBtn)
-
-        self.SelectFileBtn.clicked.connect(self.input_Btn)
-
-        self.hlayout.addStretch()
-        self.b = AttributeWidget()
-        self.hlayout.addWidget(self.b)
-        self.setLayout(self.hlayout)
-
-    def input_Btn(self):
-        print("open folder")
-        folder_path = QFileDialog.getExistingDirectory(self,
-                  "Open folder",
-                  "./")                 # start path
-        print(folder_path)
-        folder_path = pathlib.Path(folder_path)
-        print(folder_path)
-        img_cnt = len(list(folder_path.glob('*/*.jpg')))
-        print(img_cnt)
-        roses = list(folder_path.glob('roses/*'))
-        x = PIL.Image.open(str(roses[0]))
-        x.show()
-        
