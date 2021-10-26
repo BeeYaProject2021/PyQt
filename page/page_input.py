@@ -62,6 +62,7 @@ class AttributeWidget(QWidget):
 
         self.progressBar = QProgressBar()
         self.vlayout.addWidget(self.progressBar)
+        self.progressBar.setValue(0)
         self.progressBar.setVisible(False)
 
         self.vlayout.addStretch()
@@ -112,6 +113,8 @@ class InputWidget(QWidget):
         self.imgw.selectFileBtn.clicked.connect(self.input_Btn)
         self.aw.confirmBtn.clicked.connect(self.confirm_Btn)
 
+        self.warning = QMessageBox()
+
     def input_Btn(self):
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
@@ -121,74 +124,70 @@ class InputWidget(QWidget):
         folder_path = pathlib.Path(folder_path)
         print(folder_path)
 
-        img_cnt = len(list(folder_path.glob('*/*.jpg')))
+        img_cnt = len(list(folder_path.glob('*/*.*')))
         print(img_cnt)
         # roses = list(folder_path.glob('roses/*'))
         # x = PIL.Image.open(str(roses[0]))
         # x.show()
 
     def confirm_Btn(self):
-        # Check Path is not empty
-        if not self.imgw.filePathEdit.text() == "":
-            # Check Path exists
-            if os.path.exists(self.imgw.filePathEdit.text()):
+        # Check Path exists
+        if os.path.exists(self.imgw.filePathEdit.text()):
 
-                path = pathlib.Path(self.imgw.filePathEdit.text())
-                img_cnt = len(list(path.glob('*/*.*')))
-                print(path)
-                print("IMG count = ".format(img_cnt))
-                # Check Path has imgs
-                if img_cnt != 0:
-                    validate = self.aw.validsplitBox.value()
-                    imgH = self.aw.imghBox.value()
-                    imgW = self.aw.imgwBox.value()
-                    print(validate)
-                    print(imgH, imgW)
+            path = pathlib.Path(self.imgw.filePathEdit.text())
+            print(path)
 
-                    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-                        path,
-                        validation_split=validate,
-                        subset="training",
-                        seed=123,
-                        image_size=(imgH, imgW),
-                        batch_size=32)
+            self.aw.progressBar.setVisible(True)
 
-                    train_ds = train_ds.unbatch()
-                    img = []
-                    lab = []
+            validate = self.aw.validsplitBox.value()
+            imgH = self.aw.imghBox.value()
+            imgW = self.aw.imgwBox.value()
+            print(validate)
+            print(imgH, imgW)
 
-                    for images, labels in train_ds:
-                        img.append(images.numpy().astype("uint8"))
-                        lab.append(labels.numpy().astype("uint8"))
+            train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+                path,
+                validation_split=validate,
+                subset="training",
+                seed=123,
+                image_size=(imgH, imgW),
+                batch_size=32)
 
-                    img = np.array(img, dtype="uint8")
-                    lab = np.array(lab, dtype="uint8")
-                    print(img.shape)
+            train_ds = train_ds.unbatch()
+            img = []
+            lab = []
 
-                    val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-                    path,
-                    validation_split=validate,
-                    subset="validation",
-                    seed=123,
-                    image_size=(imgH, imgW),
-                    batch_size=32)
+            for images, labels in train_ds:
+                img.append(images.numpy().astype("uint8"))
+                lab.append(labels.numpy().astype("uint8"))
 
-                    val_ds = val_ds.unbatch()
-                    img2 = []
-                    lab2 = []
+            img = np.array(img, dtype="uint8")
+            lab = np.array(lab, dtype="uint8")
+            print(img.shape)
 
-                    for images, labels in val_ds:
-                        img2.append(images.numpy().astype("uint8"))
-                        lab2.append(labels.numpy().astype("uint8"))
+            val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            path,
+            validation_split=validate,
+            subset="validation",
+            seed=123,
+            image_size=(imgH, imgW),
+            batch_size=32)
 
-                    img2 = np.array(img2, dtype="uint8")
-                    lab2 = np.array(lab2, dtype="uint8")
-                    print(img2.shape)
-                    np.savez_compressed('data.npz', train_img=img, train_lab=lab, test_img=img2, test_lab=lab2)
-                
-                else:
-                    print("BAD NO Pic")
-            else:
-                print("BAD NO SUCH Path")
+            val_ds = val_ds.unbatch()
+            img2 = []
+            lab2 = []
+
+            for images, labels in val_ds:
+                img2.append(images.numpy().astype("uint8"))
+                lab2.append(labels.numpy().astype("uint8"))
+
+            img2 = np.array(img2, dtype="uint8")
+            lab2 = np.array(lab2, dtype="uint8")
+            print(img2.shape)
+            np.savez_compressed('data.npz', train_img=img, train_lab=lab, test_img=img2, test_lab=lab2)
         else:
-            print("NO FOLDER PATH!")
+            print("BAD NO SUCH Path")
+            self.warning.setText("BAD FOR NO SUCH PATH")
+            self.warning.setIcon(QMessageBox.Icon.Warning)
+            self.warning.setWindowTitle("YOU R BAD")
+            self.warning.show()
