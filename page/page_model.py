@@ -27,19 +27,29 @@ class Layermodel(QWidget):
         super(Layermodel, self).__init__(*args, **kwargs)
 
         self.vlayout = QVBoxLayout()
-        self.vlayout.addStretch()
-
+        self.vlayout.addStretch(1)
+        
         self.conv2D = QPushButton('conv2D')
         self.vlayout.addWidget(self.conv2D)
+        self.vlayout.addStretch(3)
 
         self.maxpooling2D = QPushButton('maxpooling2D')
         self.vlayout.addWidget(self.maxpooling2D)
+        self.vlayout.addStretch(3)
 
         self.flatten = QPushButton('flatten')
         self.vlayout.addWidget(self.flatten)
+        self.vlayout.addStretch(3)
 
         self.dense = QPushButton('dense')
         self.vlayout.addWidget(self.dense)
+        self.vlayout.addStretch(6)
+        self.garbage_can = QPushButton()
+        self.garbage_can.setStyleSheet(  "background-image: url(./image/garbage.png);" +
+                                            "background-position:center;" +
+                                            "background-repeat:no-repeat;" +
+                                            "border: 2px solid black;")
+
 
 
         
@@ -55,6 +65,8 @@ class ModelWidget(QWidget):
 
         self.layerm = Layermodel()
         self.hlayout.addWidget(self.layerm)
+
+        self.hlayout.addStretch(10)
 
         self.setLayout(self.hlayout)
 
