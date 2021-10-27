@@ -1,7 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from page2 import *
+from page_model import *
 from page_input import *
 
 import os
@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
         i = self.tabs.addTab(a, label)
         self.tabs.setCurrentIndex(i)
         label = "Model"
-        b = initialWidget()
+        b = ModelWidget()
         i = self.tabs.addTab(b, label)
         label = "Blank1.5"
         c = WidgetA(self)

@@ -44,7 +44,7 @@ class initialWidget(QtWidgets.QMainWindow):
         self.ui.maxpooling2D.clicked.connect(self.action_maxpooling2D)
         self.ui.flatten.clicked.connect(self.action_flatten)
         self.ui.dense.clicked.connect(self.action_dense)
-        self.ui.garbage_can.setStyleSheet(  "background-image: url(garbage_icon);" +
+        self.ui.garbage_can.setStyleSheet(  "background-image: url(./image/garbage.png);" +
                                             "background-position:center;" +
                                             "background-repeat:no-repeat;" +
                                             "border: 2px solid black;")
@@ -80,7 +80,7 @@ class initialWidget(QtWidgets.QMainWindow):
         userconv2D = Lablemove('conv2D', self)
         userconv2D.resize(120, 120)
         userconv2D.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("conv2D.gif") # Create a QMovie from our gif
+        movie = QMovie("./image/conv2D.gif") # Create a QMovie from our gif
         userconv2D.setMovie(movie)
         userconv2D.move(50, 120)
         userconv2D.show()
@@ -90,7 +90,7 @@ class initialWidget(QtWidgets.QMainWindow):
         usermaxpooling2D = Lablemove('maxpooling2D', self)
         usermaxpooling2D.resize(120, 120)
         usermaxpooling2D.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("maxpooling2D.gif")
+        movie = QMovie("./image/maxpooling2D.gif")
         usermaxpooling2D.setMovie(movie)
         usermaxpooling2D.move(30, 190)
         usermaxpooling2D.show()
@@ -100,7 +100,7 @@ class initialWidget(QtWidgets.QMainWindow):
         userflatten = Lablemove('flatten', self)
         userflatten.resize(120, 120)
         userflatten.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("flatten.gif")
+        movie = QMovie("./image/flatten.gif")
         userflatten.setMovie(movie)
         userflatten.move(53, 260)
         userflatten.show()
@@ -110,7 +110,7 @@ class initialWidget(QtWidgets.QMainWindow):
         userdense = Lablemove('dense', self)
         userdense.resize(120, 120)
         userdense.setAlignment(QtCore.Qt.AlignCenter)
-        userdense.setStyleSheet("background-image: url(puzzle_yellow_icon);")
+        userdense.setStyleSheet("background-image: url(./image/puzzle_yellow_icon);")
         userdense.move(55, 330)
         userdense.show()
 

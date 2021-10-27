@@ -116,7 +116,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>rotate-left 4.png</normaloff>rotate-left 4.png</iconset>
+      <normaloff>../page/image/rotate-left 4.png</normaloff>../page/image/rotate-left 4.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="nextstep">
@@ -133,7 +133,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>rotate-right 2.png</normaloff>rotate-right 2.png</iconset>
+      <normaloff>../page/image/rotate-right 2.png</normaloff>../page/image/rotate-right 2.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="stop">
@@ -150,7 +150,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>4_audio_pause.png</normaloff>4_audio_pause.png</iconset>
+      <normaloff>../page/image/4_audio_pause.png</normaloff>../page/image/4_audio_pause.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="suspend">
@@ -167,7 +167,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>4_audio_stop.png</normaloff>4_audio_stop.png</iconset>
+      <normaloff>../page/image/4_audio_stop.png</normaloff>../page/image/4_audio_stop.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="start">
@@ -184,7 +184,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>4_audio_play.png</normaloff>4_audio_play.png</iconset>
+      <normaloff>../page/image/4_audio_play.png</normaloff>../page/image/4_audio_play.png</iconset>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
