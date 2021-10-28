@@ -56,6 +56,30 @@ class Layermodel(QWidget):
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
+class ScrollWidget(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(ScrollWidget, self).__init__(*args, **kwargs)
+
+        formLayout = QFormLayout()
+        groupBox = QGroupBox()
+
+        for n in range(100):
+            label1 = QLabel('Slime_%2d' % n)
+            label2 = QLabel()
+            label2.setPixmap(QPixmap('./image/save'))
+            formLayout.addRow(label1, label2)
+
+        groupBox.setLayout(formLayout)
+
+        scroll = QScrollArea()
+        scroll.setWidget(groupBox)
+        scroll.setWidgetResizable(True)
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(scroll)
+
+
+
 class ModelWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(ModelWidget, self).__init__(*args, **kwargs)
@@ -71,8 +95,9 @@ class ModelWidget(QWidget):
         self.setLayout(self.hlayout)
 
         # self.hlayout.addStretch(1)
-        # self.aw = AttributeWidget()
-        # self.hlayout.addWidget(self.aw)
+        self.sw = ScrollWidget()
+        self.hlayout.addWidget(self.sw)
+        self.hlayout.addStretch(1)
 
         self.layerm.conv2D.clicked.connect(self.action_conv2D)
         self.layerm.maxpooling2D.clicked.connect(self.action_maxpooling2D)
