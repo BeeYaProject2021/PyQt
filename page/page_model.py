@@ -27,32 +27,32 @@ class Layermodel(QWidget):
         super(Layermodel, self).__init__(*args, **kwargs)
 
         self.vlayout = QVBoxLayout()
-        self.vlayout.addStretch(1)
+        # self.vlayout.addStretch(1)
         
         self.conv2D = QPushButton('conv2D')
         self.vlayout.addWidget(self.conv2D)
-        self.vlayout.addStretch(3)
+        # self.vlayout.addStretch(3)
 
         self.maxpooling2D = QPushButton('maxpooling2D')
         self.vlayout.addWidget(self.maxpooling2D)
-        self.vlayout.addStretch(3)
+        # self.vlayout.addStretch(3)
 
         self.flatten = QPushButton('flatten')
         self.vlayout.addWidget(self.flatten)
-        self.vlayout.addStretch(3)
+        # self.vlayout.addStretch(3)
 
         self.dense = QPushButton('dense')
         self.vlayout.addWidget(self.dense)
         self.vlayout.addStretch(6)
         self.garbage_can = QPushButton()
-        self.garbage_can.setStyleSheet(  "background-image: url(./image/garbage.png);" +
-                                            "background-position:center;" +
-                                            "background-repeat:no-repeat;" +
-                                            "border: 2px solid black;")
+        self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);"+
+        "background-position:center;"+
+        "background-repeat:no-repeat;"+
+        "border:2px solid black;"+
+        "height:100px")
 
+        self.vlayout.addWidget(self.garbage_can)
 
-
-        
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -61,7 +61,7 @@ class ModelWidget(QWidget):
         super(ModelWidget, self).__init__(*args, **kwargs)
 
         self.hlayout = QHBoxLayout()
-        self.hlayout.addStretch(1)
+        # self.hlayout.addStretch(10)
 
         self.layerm = Layermodel()
         self.hlayout.addWidget(self.layerm)
@@ -88,7 +88,9 @@ class ModelWidget(QWidget):
         userconv2D.setAlignment(QtCore.Qt.AlignCenter)
         movie = QMovie("./image/conv2D.gif") # Create a QMovie from our gif
         userconv2D.setMovie(movie)
-        userconv2D.move(50, 120)
+        print(self.layerm.conv2D.pos())
+        userconv2D.move(self.layerm.conv2D.pos()+self.layerm.pos()+QPoint(130, 0))
+        # userconv2D.move(50, 120)
         userconv2D.show()
         movie.start()
     def action_maxpooling2D(self):
