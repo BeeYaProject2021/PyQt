@@ -64,15 +64,13 @@ class GraphicsView(QGraphicsView):
         e.accept()
 
     def dragMoveEvent(self, e):
-        e.source().move(e.pos() - e.source().epos)
-        # e.source().move(e.pos())
+        e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
         e.accept()
         print("move pos")
         print(e.source().epos)
 
     def dropEvent(self, e):
-        e.source().move(e.pos() - e.source().epos)
-        # e.source().move(e.pos())
+        e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
         print("view pos")
         print(e.pos())
         e.setDropAction(Qt.MoveAction)
