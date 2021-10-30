@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog,QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 import time
 import pyqtgraph as pg
 import sys
@@ -8,8 +8,21 @@ import os
 from random import randint
 from pyqtgraph import PlotWidget, plot
 
+# now_i = 0
 
-now_i = 0
+class Thread(QThread):
+    _signal = pyqtSignal(int)
+
+    def __init__(self, progressBar):
+        super(Thread, self).__init__()
+        # self.progressBar = progressBar
+
+    def run(self):
+        max_value = 100
+        # self.progressBar.setMaximum(max_value)
+        for i in range(max_value+1):
+            time.sleep(0.2)
+            self._signal.emit(i)
 
 class initialWidget(QWidget):
     def __init__(self):
@@ -110,19 +123,21 @@ class initialWidget(QWidget):
 
 
     def start_progress(self):
-        global now_i
-        max_value = 100
-        self.progressBar.setMaximum(max_value)
-        for i in range(max_value-now_i):
-            time.sleep(0.2)
-            now_i += 1
 
-            self.progressBar.setValue(now_i)
-            print(now_i)
+        self.thread = Thread(self.progressBar)
+        self.thread._signal.connect(self.signal_accept)
+        self.thread.start()
 
-    def update_func(self):
-        self.step += 1
-        self.progressBar(str(self.step))
+    # def update_func(self):
+    #     self.step += 1
+    #     self.progressBar(str(self.step))
+
+    def signal_accept(self, msg):
+        self.progressBar.setValue(int(msg))
+        if self.progressBar.value() != 100:
+            self.pushButtongo.setEnabled(False)
+        else:
+            self.pushButtongo.setEnabled(True)
 
 if __name__ == '__main__':
 
