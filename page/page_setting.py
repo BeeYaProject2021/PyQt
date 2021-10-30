@@ -24,6 +24,13 @@ class SettingWidget(QWidget):
         self.optBox.currentIndexChanged.connect(self.display)
         self.vlayout.addWidget(self.optBox)
 
+        self.learning_rateBox = QDoubleSpinBox()
+        self.learning_rateBox.setDecimals(4)
+        self.learning_rateBox.setMinimum(0.001)
+        self.learning_rateBox.setMaximum(0.999)
+        self.learning_rateBox.setSingleStep(0.001)
+        self.vlayout.addWidget(self.learning_rateBox)
+
         self.lossBox = QComboBox()
         lossfunctions = ['Binary Cross-entropy', 'Categorical Cross-entropy', 'Categorical Hinge',
          'Cosine Similarity', 'Hinge', 'Huber', 'KL Divergence', 'LogCosh', 'Mean Absolute Error',
