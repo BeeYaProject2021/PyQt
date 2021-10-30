@@ -119,7 +119,7 @@ class AttributeWidget(QWidget):
         self.validsplitBox.setSingleStep(0.01)
         self.vlayout.addWidget(self.validsplitBox)
 
-        self.imgsizeLabel = QLabel("image size: ")
+        self.imgsizeLabel = QLabel("image setting: ")
         self.imgsizeLabel.setFont(QFont("Arial", 15))
         self.vlayout.addWidget(self.imgsizeLabel)
 
@@ -247,7 +247,8 @@ class InputWidget(QWidget):
 
     def signal_warning_get(self, msg):
         if msg == -1:
-            self.warning.setText("Number of validation must be higher than zero img")
+            self.warning.setText(
+                "Number of validation must be higher than zero img")
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.show()
             self.aw.confirmBtn.setEnabled(True)

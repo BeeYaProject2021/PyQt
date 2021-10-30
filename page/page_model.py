@@ -92,7 +92,7 @@ class ModelWidget(QWidget):
         self.layerm = Layermodel()
         self.hlayout.addWidget(self.layerm)
 
-        self.hlayout.addStretch(10)
+        # self.hlayout.addStretch(10)
 
         self.setLayout(self.hlayout)
 
@@ -106,7 +106,7 @@ class ModelWidget(QWidget):
         self.layerm.flatten.clicked.connect(self.action_flatten)
         self.layerm.dense.clicked.connect(self.action_dense)
         self.setAcceptDrops(True)
-        self.show()
+        # self.show()
 
     def action_conv2D(self):
         print("conv2D")
@@ -164,8 +164,3 @@ class ModelWidget(QWidget):
 
     def dropEvent(self, e):
         e.accept()
-
-
-app = QApplication(sys.argv)
-window = ModelWidget()
-app.exec_()

@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from page_model import *
 from page_input import *
+from page_training import *
 
 import os
 import sys
@@ -100,7 +101,7 @@ class MainWindow(QMainWindow):
         c = WidgetA(self)
         i = self.tabs.addTab(c, label)
         label = "Blank2"
-        d = WidgetA(self)
+        d = trainWidget()
         i = self.tabs.addTab(d, label)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
