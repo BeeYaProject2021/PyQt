@@ -39,13 +39,7 @@ class GraphicsView(QGraphicsView):
             self.photo.setPixmap(QtGui.QPixmap('image.jpg'))
             self.photo.setPos(400*i, 0)
             self.scene().addItem(self.photo)
-        # self.photo = QtWidgets.QGraphicsPixmapItem()
-        # self.photo.setPixmap(QtGui.QPixmap('image.jpg'))
-        # self.photo2 = QtWidgets.QGraphicsPixmapItem()
-        # self.photo2.setPixmap(QtGui.QPixmap('image.jpg'))
-        # self.photo2.setPos(400, 0)
-        # self.scene().addItem(self.photo)
-        # self.scene().addItem(self.photo2)
+
         self.scene().addItem(self.item)
         # self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         # self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -53,27 +47,27 @@ class GraphicsView(QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
-    def wheelEvent(self, event):
-        if event.angleDelta().y() > 0:
+    def wheelEvent(self, e):
+        if e.angleDelta().y() > 0:
             factor = 1.25
         else:
             factor = 0.8
 
         self.scale(factor, factor)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, e):
+        if e.buttons() == Qt.RightButton:
+            self.start = self.mapToScene(e.pos())
+            self.path.moveTo(self.start)
+        super(GraphicsView, self).mousePressEvent(e)
 
-        self.start = self.mapToScene(event.pos())
-        self.path.moveTo(self.start)
-        super(GraphicsView, self).mousePressEvent(event)
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.RightButton:
-            self.end = self.mapToScene(event.pos())
+    def mouseMoveEvent(self, e):
+        if e.buttons() == Qt.RightButton:
+            self.end = self.mapToScene(e.pos())
             self.path.lineTo(self.end)
             self.start = self.end
             self.item.setPath(self.path)
-        super(GraphicsView, self).mouseMoveEvent(event)
+        super(GraphicsView, self).mouseMoveEvent(e)
 
 
 class GraphicsPathItem(QGraphicsPathItem):

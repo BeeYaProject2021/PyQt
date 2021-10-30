@@ -6,9 +6,10 @@ from PyQt5.QtWidgets import *
 import os
 import sys
 
+
 class Lablemove(QLabel):
     epos = QPoint()
-    
+
     def __init__(self, title, parent):
         super().__init__(title, parent)
         self.setAcceptDrops(True)
@@ -22,13 +23,14 @@ class Lablemove(QLabel):
         self.epos = e.pos()
         dropAction = drag.exec_(Qt.MoveAction)
 
+
 class Layermodel(QWidget):
     def __init__(self, *args, **kwargs):
         super(Layermodel, self).__init__(*args, **kwargs)
 
         self.vlayout = QVBoxLayout()
         # self.vlayout.addStretch(1)
-        
+
         self.conv2D = QPushButton('conv2D')
         self.vlayout.addWidget(self.conv2D)
         # self.vlayout.addStretch(3)
@@ -45,16 +47,17 @@ class Layermodel(QWidget):
         self.vlayout.addWidget(self.dense)
         self.vlayout.addStretch(6)
         self.garbage_can = QPushButton()
-        self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);"+
-        "background-position:center;"+
-        "background-repeat:no-repeat;"+
-        "border:2px solid black;"+
-        "height:100px")
+        self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);" +
+                                       "background-position:center;" +
+                                       "background-repeat:no-repeat;" +
+                                       "border:2px solid black;" +
+                                       "height:100px")
 
         self.vlayout.addWidget(self.garbage_can)
 
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
+
 
 class ScrollWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -77,7 +80,6 @@ class ScrollWidget(QWidget):
 
         layout = QVBoxLayout(self)
         layout.addWidget(scroll)
-
 
 
 class ModelWidget(QWidget):
@@ -111,13 +113,15 @@ class ModelWidget(QWidget):
         userconv2D = Lablemove('conv2D', self)
         userconv2D.resize(120, 120)
         userconv2D.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("./image/conv2D.gif") # Create a QMovie from our gif
+        movie = QMovie("./image/conv2D.gif")  # Create a QMovie from our gif
         userconv2D.setMovie(movie)
         print(self.layerm.conv2D.pos())
-        userconv2D.move(self.layerm.conv2D.pos()+self.layerm.pos()+QPoint(130, 0))
+        userconv2D.move(self.layerm.conv2D.pos() +
+                        self.layerm.pos()+QPoint(130, 0))
         # userconv2D.move(50, 120)
         userconv2D.show()
         movie.start()
+
     def action_maxpooling2D(self):
         print("maxpooling2D")
         usermaxpooling2D = Lablemove('maxpooling2D', self)
@@ -128,6 +132,7 @@ class ModelWidget(QWidget):
         usermaxpooling2D.move(30, 190)
         usermaxpooling2D.show()
         movie.start()
+
     def action_flatten(self):
         print("flatten")
         userflatten = Lablemove('flatten', self)
@@ -138,20 +143,22 @@ class ModelWidget(QWidget):
         userflatten.move(53, 260)
         userflatten.show()
         movie.start()
+
     def action_dense(self):
         print("dense")
         userdense = Lablemove('dense', self)
         userdense.resize(120, 120)
         userdense.setAlignment(QtCore.Qt.AlignCenter)
-        userdense.setStyleSheet("background-image: url(./image/puzzle_yellow_icon);")
+        userdense.setStyleSheet(
+            "background-image: url(./image/puzzle_yellow_icon);")
         userdense.move(55, 330)
         userdense.show()
 
     def dragEnterEvent(self, e):
         e.accept()
-    
+
     def dragMoveEvent(self, e):
- 
+
         e.source().move(e.pos() - e.source().epos)
         e.accept()
 
