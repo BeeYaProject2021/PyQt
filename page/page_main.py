@@ -1,6 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from page_setting import *
 from page_model import *
 from page_input import *
 from page_training import *
@@ -98,10 +99,10 @@ class MainWindow(QMainWindow):
         b = ModelWidget()
         i = self.tabs.addTab(b, label)
         label = "Blank1.5"
-        c = WidgetA(self)
+        c = SettingWidget()
         i = self.tabs.addTab(c, label)
         label = "Blank2"
-        d = trainWidget()
+        d = TrainingWidget()
         i = self.tabs.addTab(d, label)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)

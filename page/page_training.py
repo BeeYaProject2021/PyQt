@@ -46,7 +46,7 @@ class Thread(QThread):
 
         ClientSocket.close()
 
-class initialWidget(QWidget):
+class TrainingWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.resize(1000, 650)
@@ -161,12 +161,3 @@ class initialWidget(QWidget):
             self.pushButtongo.setEnabled(False)
         else:
             self.pushButtongo.setEnabled(True)
-
-if __name__ == '__main__':
-
-    import sys
-
-    app = QApplication(sys.argv)
-    mw = initialWidget()
-    mw.show()
-    sys.exit(app.exec_())
