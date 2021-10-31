@@ -11,6 +11,8 @@ class GraphicsView(QGraphicsView):
     end = None
     item = None
     path = None
+    layerWidget = []
+    layerProxyWidget = []
 
     def __init__(self):
         super(GraphicsView, self).__init__()
@@ -18,28 +20,10 @@ class GraphicsView(QGraphicsView):
         self.setMouseTracking(True)
 
         self.setScene(QGraphicsScene())
+
         self.path = QPainterPath()
         self.item = GraphicsPathItem()
-        self.gw = WidgetA()
-        self.vlayout = QVBoxLayout()
-        self.vlayout.addWidget(QPushButton("button"))
-        self.gw.setLayout(self.vlayout)
-        # self.gw.setWidget(QPushButton("button"))
-        self.widget = QWidget()
-        self.gw2 = QGraphicsProxyWidget()
-        # self.gw2.setWidget(self.widget)
-        self.gw2.setWidget(self.gw)
-        # self.btn = Button("BButton", self)
-        # self.gw2.setWidget(self.btn)
 
-        for i in range(10):
-            self.photo = QtWidgets.QGraphicsPixmapItem()
-            self.photo.setPixmap(QtGui.QPixmap('image.jpg'))
-            self.photo.setPos(400*i, 0)
-            self.scene().addItem(self.photo)
-
-        # self.scene().addItem(self.gw)
-        self.scene().addItem(self.gw2)
         self.scene().addItem(self.item)
         # self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         # self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -64,17 +48,93 @@ class GraphicsView(QGraphicsView):
         e.accept()
 
     def dragMoveEvent(self, e):
-        e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
-        e.accept()
-        print("move pos")
-        print(e.source().epos)
+        if e.mimeData().text() == "widget":
+            e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
+            e.accept()
+        # print("move pos")
+        # print(e.source().epos)
 
     def dropEvent(self, e):
-        e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
-        print("view pos")
-        print(e.pos())
-        e.setDropAction(Qt.MoveAction)
-        e.accept()
+        if e.mimeData().text() == "widget":
+            e.source().move((self.mapToScene(e.pos()) - e.source().epos).toPoint())
+            e.setDropAction(Qt.MoveAction)
+            e.accept()
+        elif e.mimeData().text() == "conv2D":
+            e.accept()
+            index = len(self.layerWidget)
+            self.lw = WidgetA(index, 1)
+            self.layerWidget.append(self.lw)
+            self.lvlayout = QVBoxLayout()
+            self.lvlayout.addStretch()
+            self.lvlayout.addWidget(
+                QLabel("index: "+str(self.layerWidget[index].index)))
+            self.lvlayout.addWidget(
+                QLabel("id: "+str(self.layerWidget[index].id)))
+            self.lvlayout.addWidget(QPushButton("button"))
+            self.lvlayout.addStretch()
+            self.layerWidget[index].setLayout(self.lvlayout)
+            self.layerWidget[index].move((self.mapToScene(e.pos())).toPoint())
+            self.lw2 = QGraphicsProxyWidget()
+            self.layerProxyWidget.append(self.lw2)
+            self.layerProxyWidget[index].setWidget(self.layerWidget[index])
+            self.scene().addItem(self.layerProxyWidget[index])
+        elif e.mimeData().text() == "maxpooling2D":
+            e.accept()
+            index = len(self.layerWidget)
+            self.lw = WidgetA(index, 2)
+            self.layerWidget.append(self.lw)
+            self.lvlayout = QVBoxLayout()
+            self.lvlayout.addStretch()
+            self.lvlayout.addWidget(
+                QLabel("index: "+str(self.layerWidget[index].index)))
+            self.lvlayout.addWidget(
+                QLabel("id: "+str(self.layerWidget[index].id)))
+            self.lvlayout.addWidget(QPushButton("button"))
+            self.lvlayout.addStretch()
+            self.layerWidget[index].setLayout(self.lvlayout)
+            self.layerWidget[index].move((self.mapToScene(e.pos())).toPoint())
+            self.lw2 = QGraphicsProxyWidget()
+            self.layerProxyWidget.append(self.lw2)
+            self.layerProxyWidget[index].setWidget(self.layerWidget[index])
+            self.scene().addItem(self.layerProxyWidget[index])
+        elif e.mimeData().text() == "flatten":
+            e.accept()
+            index = len(self.layerWidget)
+            self.lw = WidgetA(index, 3)
+            self.layerWidget.append(self.lw)
+            self.lvlayout = QVBoxLayout()
+            self.lvlayout.addStretch()
+            self.lvlayout.addWidget(
+                QLabel("index: "+str(self.layerWidget[index].index)))
+            self.lvlayout.addWidget(
+                QLabel("id: "+str(self.layerWidget[index].id)))
+            self.lvlayout.addWidget(QPushButton("button"))
+            self.lvlayout.addStretch()
+            self.layerWidget[index].setLayout(self.lvlayout)
+            self.layerWidget[index].move((self.mapToScene(e.pos())).toPoint())
+            self.lw2 = QGraphicsProxyWidget()
+            self.layerProxyWidget.append(self.lw2)
+            self.layerProxyWidget[index].setWidget(self.layerWidget[index])
+            self.scene().addItem(self.layerProxyWidget[index])
+        elif e.mimeData().text() == "dense":
+            e.accept()
+            index = len(self.layerWidget)
+            self.lw = WidgetA(index, 4)
+            self.layerWidget.append(self.lw)
+            self.lvlayout = QVBoxLayout()
+            self.lvlayout.addStretch()
+            self.lvlayout.addWidget(
+                QLabel("index: "+str(self.layerWidget[index].index)))
+            self.lvlayout.addWidget(
+                QLabel("id: "+str(self.layerWidget[index].id)))
+            self.lvlayout.addWidget(QPushButton("button"))
+            self.lvlayout.addStretch()
+            self.layerWidget[index].setLayout(self.lvlayout)
+            self.layerWidget[index].move((self.mapToScene(e.pos())).toPoint())
+            self.lw2 = QGraphicsProxyWidget()
+            self.layerProxyWidget.append(self.lw2)
+            self.layerProxyWidget[index].setWidget(self.layerWidget[index])
+            self.scene().addItem(self.layerProxyWidget[index])
 
 
 class GraphicsPathItem(QGraphicsPathItem):
@@ -90,22 +150,23 @@ class GraphicsPathItem(QGraphicsPathItem):
 class WidgetA(QWidget):
     epos = QPoint()
 
-    def __init__(self):
+    def __init__(self, index, id):
         super(WidgetA, self).__init__()
+        self.index = index
+        self.id = id
         self.setMouseTracking(True)
-        self.resize(400, 400)
+        self.resize(200, 100)
 
     def mouseMoveEvent(self, e):
         if e.buttons() != Qt.LeftButton:
             return
 
         mimeData = QMimeData()
-        mimeData.setText("HI")
+        mimeData.setText("widget")
         print(e.pos())
         drag = QDrag(self)
         drag.setMimeData(mimeData)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
-        # drag.setHotSpot(e.pos()+self.pos())
         self.epos = e.pos()
         dropAction = drag.exec_(Qt.MoveAction)
         print(self.epos)
@@ -141,4 +202,3 @@ class ViewWidget(QWidget):
             self.gv.setDragMode(QtWidgets.QGraphicsView.NoDrag)
         else:
             self.gv.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-

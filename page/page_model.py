@@ -17,7 +17,7 @@ class Lablemove(QLabel):
 
     def mouseMoveEvent(self, e):
         mimeData = QMimeData()
-
+        mimeData.setText(self.text())
         drag = QDrag(self)
         drag.setMimeData(mimeData)
         drag.setHotSpot(e.pos() - self.rect().topLeft())
@@ -32,19 +32,19 @@ class Layermodel(QWidget):
         self.vlayout = QVBoxLayout()
         # self.vlayout.addStretch(1)
 
-        self.conv2D = QPushButton('conv2D')
+        self.conv2D = Lablemove('conv2D', self)
         self.vlayout.addWidget(self.conv2D)
         # self.vlayout.addStretch(3)
 
-        self.maxpooling2D = QPushButton('maxpooling2D')
+        self.maxpooling2D = Lablemove('maxpooling2D', self)
         self.vlayout.addWidget(self.maxpooling2D)
         # self.vlayout.addStretch(3)
 
-        self.flatten = QPushButton('flatten')
+        self.flatten = Lablemove('flatten', self)
         self.vlayout.addWidget(self.flatten)
         # self.vlayout.addStretch(3)
 
-        self.dense = QPushButton('dense')
+        self.dense = Lablemove('dense', self)
         self.vlayout.addWidget(self.dense)
         self.vlayout.addStretch(6)
         self.garbage_can = QPushButton()
@@ -58,29 +58,6 @@ class Layermodel(QWidget):
 
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
-
-
-class ScrollWidget(QWidget):
-    def __init__(self, *args, **kwargs):
-        super(ScrollWidget, self).__init__(*args, **kwargs)
-
-        formLayout = QFormLayout()
-        groupBox = QGroupBox()
-
-        for n in range(100):
-            label1 = QLabel('Slime_%2d' % n)
-            label2 = QLabel()
-            label2.setPixmap(QPixmap('./image/save'))
-            formLayout.addRow(label1, label2)
-
-        groupBox.setLayout(formLayout)
-
-        scroll = QScrollArea()
-        scroll.setWidget(groupBox)
-        scroll.setWidgetResizable(True)
-
-        layout = QVBoxLayout(self)
-        layout.addWidget(scroll)
 
 
 class ModelWidget(QWidget):
@@ -102,11 +79,11 @@ class ModelWidget(QWidget):
         self.hlayout.addWidget(self.vw)
         # self.hlayout.addStretch(1)
 
-        self.layerm.conv2D.clicked.connect(self.action_conv2D)
-        self.layerm.maxpooling2D.clicked.connect(self.action_maxpooling2D)
-        self.layerm.flatten.clicked.connect(self.action_flatten)
-        self.layerm.dense.clicked.connect(self.action_dense)
-        self.setAcceptDrops(True)
+        # self.layerm.conv2D.clicked.connect(self.action_conv2D)
+        # self.layerm.maxpooling2D.clicked.connect(self.action_maxpooling2D)
+        # self.layerm.flatten.clicked.connect(self.action_flatten)
+        # self.layerm.dense.clicked.connect(self.action_dense)
+        # self.setAcceptDrops(True)
         # self.show()
 
     def action_conv2D(self):
@@ -155,13 +132,24 @@ class ModelWidget(QWidget):
         userdense.move(55, 330)
         userdense.show()
 
-    def dragEnterEvent(self, e):
-        e.accept()
+# class ScrollWidget(QWidget):
+#     def __init__(self, *args, **kwargs):
+#         super(ScrollWidget, self).__init__(*args, **kwargs)
 
-    def dragMoveEvent(self, e):
+#         formLayout = QFormLayout()
+#         groupBox = QGroupBox()
 
-        e.source().move(e.pos() - e.source().epos)
-        e.accept()
+#         for n in range(100):
+#             label1 = QLabel('Slime_%2d' % n)
+#             label2 = QLabel()
+#             label2.setPixmap(QPixmap('./image/save'))
+#             formLayout.addRow(label1, label2)
 
-    def dropEvent(self, e):
-        e.accept()
+#         groupBox.setLayout(formLayout)
+
+#         scroll = QScrollArea()
+#         scroll.setWidget(groupBox)
+#         scroll.setWidgetResizable(True)
+
+#         layout = QVBoxLayout(self)
+#         layout.addWidget(scroll)
