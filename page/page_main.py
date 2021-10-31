@@ -92,26 +92,32 @@ class MainWindow(QMainWindow):
         # self.tabs.setStyleSheet(
         #     "QTabBar::tab::first { height: 100px; width: 100px; background: 'red'}")
         label = "Dataset"
-        a = InputWidget()
-        i = self.tabs.addTab(a, label)
+        self.inputW = InputWidget()
+        i = self.tabs.addTab(self.inputW, label)
+        self.inputW.img_total_signal.connect(self.img_signal_acc)
         self.tabs.setCurrentIndex(i)
         label = "Model"
-        b = ModelWidget()
-        i = self.tabs.addTab(b, label)
+        self.modelW = ModelWidget()
+        i = self.tabs.addTab(self.modelW, label)
         label = "Blank1.5"
-        c = SettingWidget()
-        i = self.tabs.addTab(c, label)
+        self.settingW = SettingWidget()
+        self.settingW.batch_epoch_signal.connect(self.batch_epoch_signal_acc)
+        i = self.tabs.addTab(self.settingW, label)
         label = "Blank2"
-        d = TrainingWidget()
-        i = self.tabs.addTab(d, label)
+        self.trainingW = TrainingWidget()
+        i = self.tabs.addTab(self.trainingW, label)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
-
         self.setCentralWidget(self.tabs)
-
         self.resize(1280, 720)
-
         self.show()
+
+    def img_signal_acc(self, msg):
+        self.trainingW.img_total = msg
+
+    def batch_epoch_signal_acc(self, batch, epoch):
+        self.trainingW.batch_size = batch
+        self.trainingW.epoch = epoch
 
 
 app = QApplication(sys.argv)

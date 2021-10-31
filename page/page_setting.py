@@ -11,7 +11,10 @@ from PyQt5.QtGui import *
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
+
 class SettingWidget(QWidget):
+    batch_epoch_signal = pyqtSignal(int, int)
+
     def __init__(self, *args, **kwargs):
         super(SettingWidget, self).__init__(*args, **kwargs)
 
@@ -23,7 +26,8 @@ class SettingWidget(QWidget):
         self.vlayout.addWidget(self.optLabel)
 
         self.optBox = QComboBox()
-        optimizers = ['SGD', 'RMSprop', 'Adam', 'Adadelta', 'Adagrad', 'Adamax', 'Nadam', 'Ftrl']
+        optimizers = ['SGD', 'RMSprop', 'Adam', 'Adadelta',
+                      'Adagrad', 'Adamax', 'Nadam', 'Ftrl']
         self.optBox.addItems(optimizers)
         self.optBox.currentIndexChanged.connect(self.display)
         self.vlayout.addWidget(self.optBox)
@@ -45,15 +49,15 @@ class SettingWidget(QWidget):
 
         self.lossBox = QComboBox()
         lossfunctions = ['mean_squared_error', 'mean_absolute_error', 'mean_absolute_percentage_error',
-         'mean_squared_logarithmic_error', 'squared_hinge', 'hinge', 'categorical_hinge', 'logcosh', 'categorical_crossentropy',
-         'sparse_categorical_crossentropy', 'kullback_leibler_divergence', 'poisson',
-         'cosine_proximity']
+                         'mean_squared_logarithmic_error', 'squared_hinge', 'hinge', 'categorical_hinge', 'logcosh', 'categorical_crossentropy',
+                         'sparse_categorical_crossentropy', 'kullback_leibler_divergence', 'poisson',
+                         'cosine_proximity']
         self.lossBox.addItems(lossfunctions)
         self.vlayout.addWidget(self.lossBox)
 
         self.bsLabel = QLabel()
         self.bsLabel.setText("Batch Size")
-        self.vlayout.addWidget(self.bsLabel)        
+        self.vlayout.addWidget(self.bsLabel)
 
         self.batchBox = QSpinBox()
         self.batchBox.setMinimum(1)
@@ -76,7 +80,7 @@ class SettingWidget(QWidget):
         self.vlayout.addWidget(self.combinedata)
 
         self.setLayout(self.vlayout)
-    
+
     def display(self):
         print(self.optBox.currentIndex())
 
@@ -86,10 +90,13 @@ class SettingWidget(QWidget):
         loss = self.lossBox.currentText()
         batch = str(self.batchBox.value())
         epoch = str(self.epochBox.value())
-        data = "{\"id:\"-1,\"optimizer\":'"+opt+"',\"learning_rate\":'"+lr+"',\"loss_fn\":'"+loss+"',\"batch_size\":'"+batch+"',\"epochs\":'"+epoch+"'}"
+        data = "{\"id:\"-1,\"optimizer\":'"+opt+"',\"learning_rate\":'"+lr + \
+            "',\"loss_fn\":'"+loss+"',\"batch_size\":'"+batch+"',\"epochs\":'"+epoch+"'}"
         print(opt)
         print(lr)
         print(loss)
         print(batch)
         print(epoch)
+        self.batch_epoch_signal.emit(
+            self.batchBox.value(), self.epochBox.value())
         self.combinedata.setText("Data:"+data)

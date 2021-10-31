@@ -35,6 +35,7 @@ class Thread(QThread):
         if img_cnt*validate < 1:
             self._signal2.emit(-1)
         else:
+            self._signal2.emit(img_cnt*(1-validate))
             self.aw.progressBar.setVisible(True)
             train_ds = tf.keras.preprocessing.image_dataset_from_directory(
                 path,
@@ -190,9 +191,10 @@ class ImgWidget(QWidget):
 
 
 class InputWidget(QWidget):
+    img_total_signal = pyqtSignal(int)
+
     def __init__(self, *args, **kwargs):
         super(InputWidget, self).__init__(*args, **kwargs)
-
         self.hlayout = QHBoxLayout()
         self.hlayout.addStretch(1)
 
@@ -252,3 +254,5 @@ class InputWidget(QWidget):
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.show()
             self.aw.confirmBtn.setEnabled(True)
+        else:
+            self.img_total_signal.emit(msg)

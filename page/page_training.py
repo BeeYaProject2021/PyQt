@@ -1,3 +1,4 @@
+from re import S
 import time
 import sys
 import os
@@ -12,7 +13,7 @@ from pyqtgraph import PlotWidget, plot
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
-    accuracy_signal = pyqtSignal(float)
+    accuracy_signal = pyqtSignal(int, float)
 
     def __init__(self):
         super(Thread, self).__init__()
@@ -33,50 +34,59 @@ class Thread(QThread):
             except Exception as e:
                 pass  # Do nothing, just try again
 
-        cnt = 0
+        batch_cnt = 0
+        epoch_cnt = 0
         while True:
             Response = ClientSocket.recv(1024)
             strRes = Response.decode('utf-8')
             print(strRes)
 
-            self._signal.emit(cnt)
+            self._signal.emit(batch_cnt)
             if '@' in strRes:
                 data = strRes.split('@')
                 print(data[1], data[2], data[3])
-                cnt += 1
+                batch_cnt += 1
+                self.accuracy_signal.emit(batch_cnt, float(data[2]))
+            if '#' in strRes:
+                data = strRes.split('#')
+                print(data[1], data[2], data[3])
+                # epoch_cnt += 1
+                # self.accuracy_signal.emit(data[2])
 
             if 'over' in strRes:
                 break
-
-        # max_value = 200
-        # for i in range(max_value+1):
-        #     time.sleep(0.2)
-        #     self._signal.emit(i)
 
         ClientSocket.close()
 
 
 class TrainingWidget(QWidget):
+    img_total = 0
+    batch_size = 0
+    epoch = 0
+
     def __init__(self):
         super().__init__()
         self.resize(1000, 650)
         self.graphWidget = pg.PlotWidget(self)
-        # self.setCentralWidget(self.graphWidget)
         self.graphWidget.resize(600, 350)
         self.graphWidget.move(10, 50)
-        self.x = list(range(100))  # 100 time points
-        self.y = [randint(0, 100) for _ in range(100)]  # 100 data points
+        self.graphWidget.showGrid(x=True, y=True)
+        self.graphWidget.addLegend()
+        self.accuracy_x = []
+        self.accuracy_y = []
+        self.val_accuracy_x = []
+        self.val_accuracy_y = []
 
         # self.step = 0
 
         self.graphWidget.setBackground('w')
 
-        pen = pg.mkPen(color=(255, 0, 0))
-        self.data_line = self.graphWidget.plot(self.x, self.y, pen=pen)
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(50)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
+        training_pen = pg.mkPen(color=(255, 0, 0))
+        validation_pen = pg.mkPen(color=(0, 0, 255))
+        self.training_line = self.graphWidget.plot(
+            self.accuracy_x, self.accuracy_y, pen=training_pen, name='Training')
+        self.training_line = self.graphWidget.plot(
+            self.val_accuracy_x, self.val_accuracy_y, pen=validation_pen, name='Validation')
 
         # _translate = QtCore.QCoreApplication.translate
         self.pushButton_1 = QtWidgets.QPushButton(self)
@@ -145,30 +155,29 @@ class TrainingWidget(QWidget):
 
         # self.timer = time.sleep(0.2)
 
-    def update_plot_data(self):
-
-        self.x = self.x[1:]  # Remove the first y element.
-        # Add a new value 1 higher than the last.
-        self.x.append(self.x[-1] + 1)
-
-        self.y = self.y[1:]  # Remove the first
-        self.y.append(randint(0, 100))  # Add a new random value.
-
-        self.data_line.setData(self.x, self.y)  # Update the data.
-
     def start_progress(self):
-        # Maximum = batch_size x epochs
-        self.progressBar.setMaximum(128)
-        self.thread = Thread()
-        self.thread._signal.connect(self.signal_accept)
-        self.thread.start()
-        self.pushButtongo.setEnabled(False)
-
-    # def update_func(self):
-    #     self.step += 1
-    #     self.progressBar(str(self.step))
+        # Maximum = image/batch_size x epochs
+        print(str(self.img_total)+" "+str(self.batch_size)+" "+str(self.epoch))
+        self.progressBar.setValue(0)
+        self.accuracy_x.clear()
+        self.accuracy_y.clear()
+        self.training_line.setData(self.accuracy_x, self.accuracy_y)
+        if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0:
+            print("GOOOOO")
+            self.progressBar.setMaximum(
+                (self.img_total/self.batch_size)*self.epoch)
+            self.thread = Thread()
+            self.thread._signal.connect(self.signal_accept)
+            self.thread.accuracy_signal.connect(self.update_plot_data)
+            self.thread.start()
+            self.pushButtongo.setEnabled(False)
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
         if self.progressBar.value() == 100:
             self.pushButtongo.setEnabled(True)
+
+    def update_plot_data(self, x, y):
+        self.accuracy_x.append(x)
+        self.accuracy_y.append(y)
+        self.training_line.setData(self.accuracy_x, self.accuracy_y)
