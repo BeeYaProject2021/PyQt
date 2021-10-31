@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from graphics_view import *
 
 import os
 import sys
@@ -97,9 +98,9 @@ class ModelWidget(QWidget):
         self.setLayout(self.hlayout)
 
         # self.hlayout.addStretch(1)
-        self.sw = ScrollWidget()
-        self.hlayout.addWidget(self.sw)
-        self.hlayout.addStretch(1)
+        self.vw = ViewWidget()
+        self.hlayout.addWidget(self.vw)
+        # self.hlayout.addStretch(1)
 
         self.layerm.conv2D.clicked.connect(self.action_conv2D)
         self.layerm.maxpooling2D.clicked.connect(self.action_maxpooling2D)

@@ -118,17 +118,17 @@ class WidgetA(QWidget):
             # print('press')
 
 
-class MainWindow(QMainWindow):
+class ViewWidget(QWidget):
 
     central_widget = None
     layout_container = None
 
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.central_widget = QWidget()
+        super(ViewWidget, self).__init__()
+        # self.central_widget = QWidget()
         self.vlayout = QVBoxLayout()
-        self.central_widget.setLayout(self.vlayout)
-        self.setCentralWidget(self.central_widget)
+        self.setLayout(self.vlayout)
+        # self.setCentralWidget(self.central_widget)
         self.gv = GraphicsView()
         self.vlayout.addWidget(self.gv)
         self.toggle_btn = QPushButton("Toggle Drag Mode")
@@ -142,9 +142,3 @@ class MainWindow(QMainWindow):
         else:
             self.gv.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    mw = MainWindow()
-    mw.show()
-    sys.exit(app.exec_())
