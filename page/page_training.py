@@ -12,6 +12,7 @@ from pyqtgraph import PlotWidget, plot
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
+    accuracy_signal = pyqtSignal(float)
 
     def __init__(self):
         super(Thread, self).__init__()
@@ -40,6 +41,8 @@ class Thread(QThread):
 
             self._signal.emit(cnt)
             if '@' in strRes:
+                data = strRes.split('@')
+                print(data[1], data[2], data[3])
                 cnt += 1
 
             if 'over' in strRes:
@@ -64,7 +67,7 @@ class TrainingWidget(QWidget):
         self.x = list(range(100))  # 100 time points
         self.y = [randint(0, 100) for _ in range(100)]  # 100 data points
 
-        self.step = 0
+        # self.step = 0
 
         self.graphWidget.setBackground('w')
 
