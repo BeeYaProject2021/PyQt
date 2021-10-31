@@ -150,6 +150,7 @@ class TrainingWidget(QWidget):
         self.thread = Thread()
         self.thread._signal.connect(self.signal_accept)
         self.thread.start()
+        self.pushButtongo.setEnabled(False)
 
     # def update_func(self):
     #     self.step += 1
@@ -157,7 +158,5 @@ class TrainingWidget(QWidget):
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
-        if self.progressBar.value() != 100:
-            self.pushButtongo.setEnabled(False)
-        else:
+        if self.progressBar.value() == 100:
             self.pushButtongo.setEnabled(True)
