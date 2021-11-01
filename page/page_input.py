@@ -11,6 +11,23 @@ from PyQt5.QtGui import *
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
+StyleSheet = '''
+QProgressBar {
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+QProgressBar::chunk {
+    background-color: #B15BFF;
+    width: 20px;
+}
+QPushButton {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #B15BFF);
+}
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #BEBEBE);
+}
+'''
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
@@ -156,10 +173,12 @@ class AttributeWidget(QWidget):
         self.vlayout.addWidget(self.confirmBtn)
 
         self.progressBar = QProgressBar()
+        self.progressBar.setObjectName("input_prob")
         self.vlayout.addWidget(self.progressBar)
         self.progressBar.setValue(0)
         self.progressBar.setVisible(False)
 
+        self.setStyleSheet(StyleSheet)
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -186,6 +205,7 @@ class ImgWidget(QWidget):
 
         self.vlayout.addLayout(self.hlayout)
 
+        self.setStyleSheet(StyleSheet)
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
