@@ -37,7 +37,7 @@ class Thread(QThread):
         batch_cnt = 0
         epoch_cnt = 0
         while True:
-            Response = ClientSocket.recv(1024)
+            Response = ClientSocket.recv(67)
             strRes = Response.decode('utf-8')
             print(strRes)
 
