@@ -88,6 +88,14 @@ class TrainingWidget(QWidget):
         self.training_line = self.graphWidget.plot(
             self.val_accuracy_x, self.val_accuracy_y, pen=validation_pen, name='Validation')
 
+        self.lossWidget = pg.PlotWidget(self)
+        self.lossWidget.resize(600, 350)
+        self.lossWidget.move(10, 50)
+        self.lossWidget.showGrid(x=True, y=True)
+        self.lossWidget.addLegend()
+
+
+
         # _translate = QtCore.QCoreApplication.translate
         self.pushButton_1 = QtWidgets.QPushButton(self)
         self.pushButton_1.setGeometry(QtCore.QRect(710, 10, 35, 35))
