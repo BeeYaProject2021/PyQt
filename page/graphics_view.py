@@ -9,9 +9,17 @@ from PyQt5.QtGui import *
 class GraphicsScene(QGraphicsScene):
     nodes = []
     edges = []
+    show_attribute_signal = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+    def sendMsg(self, id):
+        if len(self.selectedItems()) == 1:
+            print("only 1")
+            if isinstance(self.selectedItems()[0], NodeItem or QGraphicsTextItem):
+                print("correct obj")
+                self.show_attribute_signal.emit(id-1)
 
     def addNode(self, id, pos):
         index = len(self.nodes)
@@ -199,7 +207,6 @@ class GraphicsPathItem(QGraphicsPathItem):
 
 
 class NodeItem(QGraphicsRectItem):
-    epos = QPoint()
 
     def __init__(self, index, id, parent=None):
         super().__init__(parent)
@@ -225,6 +232,11 @@ class NodeItem(QGraphicsRectItem):
         self.leftPort.setPos(5, self.height/2.7)
         self.rightPort = PortItem(self.index, 1, self)
         self.rightPort.setPos(self.width-20, self.height/2.7)
+
+    def mousePressEvent(self, e):
+        super().mousePressEvent(e)
+        if self.isSelected():
+            self.scene().sendMsg(self.id)
 
     def mouseMoveEvent(self, e):
         super().mouseMoveEvent(e)

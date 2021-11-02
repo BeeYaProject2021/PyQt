@@ -1,3 +1,4 @@
+from re import S
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -30,23 +31,23 @@ class Layermodel(QWidget):
         super(Layermodel, self).__init__(*args, **kwargs)
 
         self.vlayout = QVBoxLayout()
-        # self.vlayout.addStretch(1)
+        self.vlayout.addSpacing(20)
 
         self.conv2D = Lablemove('conv2D', self)
         self.vlayout.addWidget(self.conv2D)
-        # self.vlayout.addStretch(3)
+        self.vlayout.addSpacing(10)
 
         self.maxpooling2D = Lablemove('maxpooling2D', self)
         self.vlayout.addWidget(self.maxpooling2D)
-        # self.vlayout.addStretch(3)
+        self.vlayout.addSpacing(10)
 
         self.flatten = Lablemove('flatten', self)
         self.vlayout.addWidget(self.flatten)
-        # self.vlayout.addStretch(3)
+        self.vlayout.addSpacing(10)
 
         self.dense = Lablemove('dense', self)
         self.vlayout.addWidget(self.dense)
-        self.vlayout.addStretch(6)
+        self.vlayout.addStretch()
         self.garbage_can = QPushButton()
         self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);" +
                                        "background-position:center;" +
@@ -56,100 +57,72 @@ class Layermodel(QWidget):
 
         self.vlayout.addWidget(self.garbage_can)
 
-        self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
 
+class ConvWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.convLayout = QVBoxLayout()
+        self.btn = QPushButton("convolution")
+        self.convLayout.addWidget(self.btn)
+        self.setLayout(self.convLayout)
+
+
+class MaxpoolWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.maxpoolLayout = QVBoxLayout()
+        self.btn = QPushButton("maxpooling")
+        self.maxpoolLayout.addWidget(self.btn)
+        self.setLayout(self.maxpoolLayout)
+
+
+class FlatWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.flatLayout = QVBoxLayout()
+        self.btn = QPushButton("flatten")
+        self.flatLayout.addWidget(self.btn)
+        self.setLayout(self.flatLayout)
+
+
+class DenseWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.denseLayout = QVBoxLayout()
+        self.btn = QPushButton("dense")
+        self.denseLayout.addWidget(self.btn)
+        self.setLayout(self.denseLayout)
+
+
 class ModelWidget(QWidget):
-    def __init__(self, *args, **kwargs):
-        super(ModelWidget, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
 
         self.hlayout = QHBoxLayout()
-        # self.hlayout.addStretch(10)
 
         self.layerm = Layermodel()
         self.hlayout.addWidget(self.layerm)
 
-        # self.hlayout.addStretch(10)
-
-        self.setLayout(self.hlayout)
-
-        # self.hlayout.addStretch(1)
         self.vw = ViewWidget()
         self.hlayout.addWidget(self.vw)
-        # self.hlayout.addStretch(1)
 
-        # self.layerm.conv2D.clicked.connect(self.action_conv2D)
-        # self.layerm.maxpooling2D.clicked.connect(self.action_maxpooling2D)
-        # self.layerm.flatten.clicked.connect(self.action_flatten)
-        # self.layerm.dense.clicked.connect(self.action_dense)
-        # self.setAcceptDrops(True)
-        # self.show()
+        self.convWidget = ConvWidget()
+        self.maxpoolWidget = MaxpoolWidget()
+        self.flatWidget = FlatWidget()
+        self.denseWidget = DenseWidget()
+        self.stackWidget = QStackedWidget()
+        self.stackWidget.setFixedWidth(200)
+        self.stackWidget.addWidget(self.convWidget)
+        self.stackWidget.addWidget(self.maxpoolWidget)
+        self.stackWidget.addWidget(self.flatWidget)
+        self.stackWidget.addWidget(self.denseWidget)
+        self.hlayout.addWidget(self.stackWidget)
+        self.setLayout(self.hlayout)
+        self.vw.gv.graphics_scene.show_attribute_signal.connect(
+            self.showAttributeSignal)
+        self.stackWidget.setCurrentIndex(0)
 
-    def action_conv2D(self):
-        print("conv2D")
-        userconv2D = Lablemove('conv2D', self)
-        userconv2D.resize(120, 120)
-        userconv2D.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("./image/conv2D.gif")  # Create a QMovie from our gif
-        userconv2D.setMovie(movie)
-        print(self.layerm.conv2D.pos())
-        userconv2D.move(self.layerm.conv2D.pos() +
-                        self.layerm.pos()+QPoint(130, 0))
-        # userconv2D.move(50, 120)
-        userconv2D.show()
-        movie.start()
-
-    def action_maxpooling2D(self):
-        print("maxpooling2D")
-        usermaxpooling2D = Lablemove('maxpooling2D', self)
-        usermaxpooling2D.resize(120, 120)
-        usermaxpooling2D.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("./image/maxpooling2D.gif")
-        usermaxpooling2D.setMovie(movie)
-        usermaxpooling2D.move(30, 190)
-        usermaxpooling2D.show()
-        movie.start()
-
-    def action_flatten(self):
-        print("flatten")
-        userflatten = Lablemove('flatten', self)
-        userflatten.resize(120, 120)
-        userflatten.setAlignment(QtCore.Qt.AlignCenter)
-        movie = QMovie("./image/flatten.gif")
-        userflatten.setMovie(movie)
-        userflatten.move(53, 260)
-        userflatten.show()
-        movie.start()
-
-    def action_dense(self):
-        print("dense")
-        userdense = Lablemove('dense', self)
-        userdense.resize(120, 120)
-        userdense.setAlignment(QtCore.Qt.AlignCenter)
-        userdense.setStyleSheet(
-            "background-image: url(./image/puzzle_yellow_icon);")
-        userdense.move(55, 330)
-        userdense.show()
-
-# class ScrollWidget(QWidget):
-#     def __init__(self, *args, **kwargs):
-#         super(ScrollWidget, self).__init__(*args, **kwargs)
-
-#         formLayout = QFormLayout()
-#         groupBox = QGroupBox()
-
-#         for n in range(100):
-#             label1 = QLabel('Slime_%2d' % n)
-#             label2 = QLabel()
-#             label2.setPixmap(QPixmap('./image/save'))
-#             formLayout.addRow(label1, label2)
-
-#         groupBox.setLayout(formLayout)
-
-#         scroll = QScrollArea()
-#         scroll.setWidget(groupBox)
-#         scroll.setWidgetResizable(True)
-
-#         layout = QVBoxLayout(self)
-#         layout.addWidget(scroll)
+    def showAttributeSignal(self, msg):
+        self.stackWidget.setCurrentIndex(msg)
