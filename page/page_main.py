@@ -131,7 +131,7 @@ class MainWindow(QMainWindow):
         self.inputW = InputWidget()
         i = self.tabs.addTab(self.inputW, label)
         self.inputW.img_total_signal.connect(self.img_signal_acc)
-        self.tabs.setCurrentIndex(i)
+
         label = "Model"
         self.modelW = ModelWidget()
         i = self.tabs.addTab(self.modelW, label)
@@ -142,6 +142,7 @@ class MainWindow(QMainWindow):
         label = "Blank2"
         self.trainingW = TrainingWidget()
         i = self.tabs.addTab(self.trainingW, label)
+        self.tabs.setCurrentIndex(1)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
         self.setStyleSheet(StyleSheet)
