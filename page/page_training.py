@@ -90,9 +90,26 @@ class TrainingWidget(QWidget):
 
         self.lossWidget = pg.PlotWidget(self)
         self.lossWidget.resize(600, 350)
-        self.lossWidget.move(10, 50)
+        self.lossWidget.move(650, 50)
         self.lossWidget.showGrid(x=True, y=True)
         self.lossWidget.addLegend()
+
+        self.loss_x = []
+        self.loss_y = []
+        self.val_loss_x = []
+        self.val_loss_y = []
+
+        # self.step = 0
+
+        self.lossWidget.setBackground('w')
+
+        training_pen = pg.mkPen(color=(255, 0, 0))
+        validation_pen = pg.mkPen(color=(0, 0, 255))
+        self.training_loss_line = self.lossWidget.plot(
+            self.loss_x, self.loss_y, pen=training_pen, name='Training')
+        self.training_loss_line = self.lossWidget.plot(
+            self.val_loss_x, self.val_loss_y, pen=validation_pen, name='Validation')
+
 
 
 
