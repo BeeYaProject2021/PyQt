@@ -12,8 +12,12 @@ from pyqtgraph import PlotWidget, plot
 
 
 class Thread(QThread):
+    # Setup signal for thread
     _signal = pyqtSignal(int)
     accuracy_signal = pyqtSignal(int, float)
+    val_accuracy_signal = pyqtSignal(int, float)
+    loss_signal = pyqtSignal(int, float)
+    val_loss_signal = pyqtSignal(int, float)
 
     def __init__(self):
         super(Thread, self).__init__()
@@ -46,12 +50,19 @@ class Thread(QThread):
                 data = strRes.split('@')
                 print(data[1], data[2], data[3])
                 batch_cnt += 1
+
+                # Use signal to inform the thread run function
+                # Emit the batch_size as x-axis and accuracy, loss as y-axis
                 self.accuracy_signal.emit(batch_cnt, float(data[2]))
+                self.loss_signal.emit(batch_cnt, float(data[3]))
+
             if '#' in strRes:
                 data = strRes.split('#')
-                print(data[1], data[2], data[3])
-                # epoch_cnt += 1
-                # self.accuracy_signal.emit(data[2])
+                print(data[1], data[2], data[3], data[4], data[5])
+                epoch_cnt += 1
+
+                self.val_accuracy_signal.emit(batch_cnt, float(data[3]))
+                self.val_loss_signal.emit(batch_cnt, float(data[5]))
 
             if 'over' in strRes:
                 break
@@ -85,7 +96,7 @@ class TrainingWidget(QWidget):
         validation_pen = pg.mkPen(color=(0, 0, 255))
         self.training_line = self.graphWidget.plot(
             self.accuracy_x, self.accuracy_y, pen=training_pen, name='Training')
-        self.training_line = self.graphWidget.plot(
+        self.validation_line = self.graphWidget.plot(
             self.val_accuracy_x, self.val_accuracy_y, pen=validation_pen, name='Validation')
 
         self.lossWidget = pg.PlotWidget(self)
@@ -106,11 +117,9 @@ class TrainingWidget(QWidget):
         training_pen = pg.mkPen(color=(255, 0, 0))
         validation_pen = pg.mkPen(color=(0, 0, 255))
         self.training_loss_line = self.lossWidget.plot(
-            self.loss_x, self.loss_y, pen=training_pen, name='Training')
-        self.training_loss_line = self.lossWidget.plot(
-            self.val_loss_x, self.val_loss_y, pen=validation_pen, name='Validation')
-
-
+            self.loss_x, self.loss_y, pen=training_pen, name='Loss')
+        self.validation_loss_line = self.lossWidget.plot(
+            self.val_loss_x, self.val_loss_y, pen=validation_pen, name='Validation_Loss')
 
 
         # _translate = QtCore.QCoreApplication.translate
@@ -183,17 +192,36 @@ class TrainingWidget(QWidget):
     def start_progress(self):
         # Maximum = image/batch_size x epochs
         print(str(self.img_total)+" "+str(self.batch_size)+" "+str(self.epoch))
+
         self.progressBar.setValue(0)
         self.accuracy_x.clear()
         self.accuracy_y.clear()
+        self.val_accuracy_x.clear()
+        self.val_accuracy_y.clear()
+        self.loss_x.clear()
+        self.loss_y.clear()
+        self.val_loss_x.clear()
+        self.val_loss_y.clear()
+
+        # Setup list x, y data
         self.training_line.setData(self.accuracy_x, self.accuracy_y)
+        self.validation_line.setData(self.val_accuracy_x, self.val_accuracy_y)
+        self.training_loss_line.setData(self.loss_x, self.loss_y)
+        self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
+
         if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0:
             print("GOOOOO")
             self.progressBar.setMaximum(
                 (self.img_total/self.batch_size)*self.epoch)
+
+            # Thread for progressBar and data graph
             self.thread = Thread()
             self.thread._signal.connect(self.signal_accept)
-            self.thread.accuracy_signal.connect(self.update_plot_data)
+            self.thread.accuracy_signal.connect(self.update_acc)
+            self.thread.val_accuracy_signal.connect(self.update_val_acc)
+            self.thread.loss_signal.connect(self.update_loss)
+            self.thread.val_accuracy_signal.connect(self.update_val_loss)
+
             self.thread.start()
             self.pushButtongo.setEnabled(False)
 
@@ -202,7 +230,22 @@ class TrainingWidget(QWidget):
         if self.progressBar.value() == 100:
             self.pushButtongo.setEnabled(True)
 
-    def update_plot_data(self, x, y):
+    def update_acc(self, x, y):
         self.accuracy_x.append(x)
         self.accuracy_y.append(y)
         self.training_line.setData(self.accuracy_x, self.accuracy_y)
+
+    def update_val_acc(self, x, y):
+        self.val_accuracy_x.append(x)
+        self.val_accuracy_y.append(y)
+        self.validation_line.setData(self.val_accuracy_x, self.val_accuracy_y)
+
+    def update_loss(self, x, y):
+        self.loss_x.append(x)
+        self.loss_y.append(y)
+        self.training_loss_line.setData(self.loss_x, self.loss_y)
+
+    def update_val_loss(self, x, y):
+        self.val_loss_x.append(x)
+        self.val_loss_y.append(y)
+        self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
