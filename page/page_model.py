@@ -230,12 +230,24 @@ class DenseWidget(QWidget):
         self.btn = QPushButton("dense")
         self.denseLayout.addWidget(self.btn)
         self.denseLayout.addStretch()
+
+        self.hdenseuiits = QHBoxLayout()
+        self.denseunitslabel = QLabel("Units : ")
+        self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QLineEdit()
-        self.denseLayout.addWidget(self.denseunits)
+        self.hdenseuiits.addWidget(self.denseunits)
+        self.denseLayout.addItem(self.hdenseuiits)
+
+        self.hdenseactivation = QHBoxLayout()
+        self.denseactivationlabel = QLabel("Activation :")
+        self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
         activationbox = ['rule', 'haha', 'lala']
         self.denseactivation.addItems(activationbox)
-        self.denseLayout.addWidget(self.denseactivation)
+        self.hdenseactivation.addWidget(self.denseactivation)
+        self.denseLayout.addLayout(self.hdenseactivation)
+
+        self.denseLayout.addStretch()
         self.setLayout(self.denseLayout)
 
 
