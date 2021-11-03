@@ -10,16 +10,16 @@ class GraphicsScene(QGraphicsScene):
     nodes = []
     edges = []
     show_attribute_signal = pyqtSignal(int)
+    add_attribute_signal = pyqtSignal(int)
+    remove_attribute_signal = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def sendMsg(self, id):
+    def sendMsg(self, index):
         if len(self.selectedItems()) == 1:
-            print("only 1")
             if isinstance(self.selectedItems()[0], NodeItem or QGraphicsTextItem):
-                print("correct obj")
-                self.show_attribute_signal.emit(id-1)
+                self.show_attribute_signal.emit(index)
 
     def addNode(self, id, pos):
         index = len(self.nodes)
@@ -27,6 +27,7 @@ class GraphicsScene(QGraphicsScene):
         self.nodes.append(node)
         self.nodes[index].setPos(pos)
         self.addItem(self.nodes[index])
+        self.add_attribute_signal.emit(id)
 
     def addEdge(self, start_node, end_node):
         index = len(self.edges)
@@ -48,6 +49,7 @@ class GraphicsScene(QGraphicsScene):
                 self.nodes[edge.start_node.index].rightPort.connected = False
                 self.removeItem(edge)
                 self.edges.remove(edge)
+        self.remove_attribute_signal.emit(node.index)
         self.removeItem(node)
         self.nodes.remove(node)
         self.updateNode()
@@ -236,7 +238,7 @@ class NodeItem(QGraphicsRectItem):
     def mousePressEvent(self, e):
         super().mousePressEvent(e)
         if self.isSelected():
-            self.scene().sendMsg(self.id)
+            self.scene().sendMsg(self.index)
 
     def mouseMoveEvent(self, e):
         super().mouseMoveEvent(e)

@@ -190,6 +190,8 @@ class DenseWidget(QWidget):
 
 
 class ModelWidget(QWidget):
+    attr_widget = []
+
     def __init__(self):
         super().__init__()
 
@@ -201,21 +203,45 @@ class ModelWidget(QWidget):
         self.vw = ViewWidget()
         self.hlayout.addWidget(self.vw)
 
-        self.convWidget = ConvWidget()
-        self.maxpoolWidget = MaxpoolWidget()
-        self.flatWidget = FlatWidget()
-        self.denseWidget = DenseWidget()
         self.stackWidget = QStackedWidget()
         self.stackWidget.setFixedWidth(200)
-        self.stackWidget.addWidget(self.convWidget)
-        self.stackWidget.addWidget(self.maxpoolWidget)
-        self.stackWidget.addWidget(self.flatWidget)
-        self.stackWidget.addWidget(self.denseWidget)
+        self.nothingWidget = QWidget()
+        self.stackWidget.addWidget(self.nothingWidget)
         self.hlayout.addWidget(self.stackWidget)
         self.setLayout(self.hlayout)
         self.vw.gv.graphics_scene.show_attribute_signal.connect(
             self.showAttributeSignal)
+        self.vw.gv.graphics_scene.add_attribute_signal.connect(
+            self.addAttributeSignal)
+        self.vw.gv.graphics_scene.remove_attribute_signal.connect(
+            self.removeAttributeSignal)
         self.stackWidget.setCurrentIndex(0)
 
-    def showAttributeSignal(self, msg):
-        self.stackWidget.setCurrentIndex(msg)
+    def showAttributeSignal(self, i):
+        self.stackWidget.setCurrentIndex(i+1)
+
+    def addAttributeSignal(self, id):
+        if id == 1:
+            newAttrWidget = ConvWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+        elif id == 2:
+            newAttrWidget = MaxpoolWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+        elif id == 3:
+            newAttrWidget = FlatWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+        elif id == 4:
+            newAttrWidget = DenseWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+
+    def removeAttributeSignal(self, i):
+        self.stackWidget.removeWidget(self.attr_widget[i])
+        self.attr_widget.remove(self.attr_widget[i])
