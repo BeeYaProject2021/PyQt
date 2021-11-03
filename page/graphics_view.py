@@ -245,6 +245,12 @@ class NodeItem(QGraphicsRectItem):
         self.rightPort = PortItem(self.index, 1, self)
         self.rightPort.setPos(self.width-20, self.height/2.7)
 
+        self.pixmap = QPixmap("image/image.jpg")
+        self.pixmap = self.pixmap.scaled(20, 20)
+        self.gpixmap = QGraphicsPixmapItem(self.pixmap, self)
+        self.gpixmap.setPos(30,
+                            self.height/2-self.gpixmap.boundingRect().height()/2)
+
     def mousePressEvent(self, e):
         super().mousePressEvent(e)
         if self.isSelected():
