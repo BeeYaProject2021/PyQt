@@ -33,6 +33,8 @@ class GraphicsScene(QGraphicsScene):
         index = len(self.edges)
         start_node.connected = True
         end_node.connected = True
+        start_node.edge_index = index
+        end_node.edge_index = index
         edge = GraphicsPathItem(index, start_node, end_node)
         self.edges.append(edge)
         self.addItem(self.edges[index])
@@ -42,11 +44,13 @@ class GraphicsScene(QGraphicsScene):
         for edge in self.edges:
             if edge.start_node.index == node.index:
                 self.nodes[edge.end_node.index].leftPort.connected = False
+                self.nodes[edge.end_node.index].leftPort.edge_index = -1
                 self.removeItem(edge)
                 self.edges.remove(edge)
         for edge in self.edges:
             if edge.end_node.index == node.index:
                 self.nodes[edge.start_node.index].rightPort.connected = False
+                self.nodes[edge.start_node.index].rightPort.edge_index = -1
                 self.removeItem(edge)
                 self.edges.remove(edge)
         self.remove_attribute_signal.emit(node.index)
@@ -58,6 +62,8 @@ class GraphicsScene(QGraphicsScene):
     def removeEdge(self, edge):
         self.nodes[edge.end_node.index].leftPort.connected = False
         self.nodes[edge.start_node.index].rightPort.connected = False
+        self.nodes[edge.end_node.index].leftPort.edge_index = -1
+        self.nodes[edge.start_node.index].rightPort.edge_index = -1
         self.removeItem(edge)
         self.edges.remove(edge)
         self.updateEdge()
@@ -77,6 +83,13 @@ class GraphicsScene(QGraphicsScene):
 
     def updateEdge(self):
         for edge in self.edges:
+            for node in self.nodes:
+                if hasattr(node, 'rightPort'):
+                    if node.rightPort.edge_index == edge.index:
+                        node.rightPort.edge_index = self.edges.index(edge)
+                if hasattr(node, 'leftPort'):
+                    if node.leftPort.edge_index == edge.index:
+                        node.leftPort.edge_index = self.edges.index(edge)
             edge.index = self.edges.index(edge)
 
 
@@ -285,6 +298,7 @@ class NodeItem(QGraphicsRectItem):
 
 class PortItem(QGraphicsEllipseItem):
     connected = False
+    edge_index = -1
 
     def __init__(self, index, id, parent=None):
         super(PortItem, self).__init__(parent)
@@ -312,10 +326,42 @@ class ViewWidget(QWidget):
         self.toggle_btn = QPushButton("Toggle Drag Mode")
         self.toggle_btn.clicked.connect(self.toggle_drag_mode)
         self.vlayout.addWidget(self.toggle_btn)
-        self.resize(1280, 720)
+        self.edge_btn = QPushButton("Show Edge")
+        self.edge_btn.clicked.connect(self.showEdge)
+        self.vlayout.addWidget(self.edge_btn)
+        self.edgeLabel = QLabel("Edge: \n")
+        self.vlayout.addWidget(self.edgeLabel)
+        self.setLayout(self.vlayout)
 
     def toggle_drag_mode(self):
         if self.gv.dragMode() == QGraphicsView.ScrollHandDrag:
             self.gv.setDragMode(QtWidgets.QGraphicsView.NoDrag)
         else:
             self.gv.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+
+    def showEdge(self):
+        now_node = None
+        gs = self.gv.graphics_scene
+        self.edgeLabel.setText("Edge: \n")
+        for node in gs.nodes:
+            if node.id == 5:
+                now_node = node
+        if now_node == None:
+            print("No Input Layer")
+            return
+
+        for i in range(len(gs.nodes)):
+            if now_node.id != 6 and now_node.rightPort.edge_index != -1:
+                self.edgeLabel.setText(self.edgeLabel.text() +
+                                       "index: " + str(now_node.index) +
+                                       ", id: " + str(now_node.id) +
+                                       ", name: " + now_node.name +
+                                       ", next edge's index: " + str(now_node.rightPort.edge_index)+"\n")
+                now_node = gs.nodes[gs.edges[now_node.rightPort.edge_index].end_node.index]
+            else:
+                self.edgeLabel.setText(self.edgeLabel.text() +
+                                       "index: " + str(now_node.index) +
+                                       ", id: " + str(now_node.id) +
+                                       ", name: " + now_node.name +
+                                       ", next edge's index: The End\n")
+                break

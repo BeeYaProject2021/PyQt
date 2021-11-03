@@ -50,7 +50,6 @@ class Layermodel(QWidget):
         self.shadow4.setBlurRadius(5)
 
         self.vlayout = QVBoxLayout()
-        self.vlayout.addSpacing(20)
 
         self.input = Lablemove('input', self)
         self.input.setObjectName("input")
@@ -70,7 +69,6 @@ class Layermodel(QWidget):
         self.conv2D_hlayout.addWidget(self.img_conv2D)
 
         self.vlayout.addLayout(self.conv2D_hlayout)
-        self.vlayout.addSpacing(10)
 
         # Maxpooling and Image
         self.max_hlayout = QHBoxLayout()
@@ -86,7 +84,6 @@ class Layermodel(QWidget):
         self.max_hlayout.addWidget(self.img_pooling)
 
         self.vlayout.addLayout(self.max_hlayout)
-        self.vlayout.addSpacing(10)
 
         # Flatten and Image
         self.flatten_hlayout = QHBoxLayout()
@@ -102,7 +99,6 @@ class Layermodel(QWidget):
         self.flatten_hlayout.addWidget(self.img_flatten)
 
         self.vlayout.addLayout(self.flatten_hlayout)
-        self.vlayout.addSpacing(10)
 
         # Dense and Image
         self.dense_hlayout = QHBoxLayout()
@@ -118,11 +114,12 @@ class Layermodel(QWidget):
         self.dense_hlayout.addWidget(self.img_dense)
 
         self.vlayout.addLayout(self.dense_hlayout)
-        self.vlayout.addStretch()
 
         self.output = Lablemove('output', self)
         self.output.setObjectName("output")
         self.vlayout.addWidget(self.output)
+
+        self.vlayout.addStretch()
 
         self.garbage_can = QPushButton()
         self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);" +
@@ -293,6 +290,7 @@ class ModelWidget(QWidget):
         self.stackWidget.addWidget(self.nothingWidget)
         self.hlayout.addWidget(self.stackWidget)
         self.setLayout(self.hlayout)
+
         self.vw.gv.graphics_scene.show_attribute_signal.connect(
             self.showAttributeSignal)
         self.vw.gv.graphics_scene.add_attribute_signal.connect(
