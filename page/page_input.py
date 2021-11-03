@@ -126,8 +126,8 @@ class AttributeWidget(QWidget):
         self.imgboxLayout = QHBoxLayout()
 
         self.imghvLayout = QVBoxLayout()
-        self.imghLabel = QLabel("height")
-        self.imghLabel.setFont(QFont("Consolas", 10))
+        self.imghLabel = QLabel("Height")
+        self.imghLabel.setFont(QFont("Consolas", 12))
         self.imghvLayout.addWidget(self.imghLabel)
 
         self.imghBox = QSpinBox()
@@ -138,8 +138,8 @@ class AttributeWidget(QWidget):
         self.imgboxLayout.addLayout(self.imghvLayout)
 
         self.imgwvLayout = QVBoxLayout()
-        self.imgwLabel = QLabel("width")
-        self.imgwLabel.setFont(QFont("Consolas", 10))
+        self.imgwLabel = QLabel("Width")
+        self.imgwLabel.setFont(QFont("Consolas", 12))
         self.imgwvLayout.addWidget(self.imgwLabel)
 
         self.imgwBox = QSpinBox()
@@ -148,8 +148,21 @@ class AttributeWidget(QWidget):
         self.imgwvLayout.addWidget(self.imgwBox)
 
         self.imgboxLayout.addLayout(self.imgwvLayout)
-
+        
         self.vlayout.addLayout(self.imgboxLayout)
+
+        self.rgbhlayout = QHBoxLayout()
+        self.rgbLabel = QLabel("RGB")
+        self.rgbLabel.setFont(QFont("Consolas", 12))
+        self.rgbLabel.setAlignment(Qt.AlignCenter)
+        self.rgbhlayout.addWidget(self.rgbLabel)
+        
+        self.rgbSelect = QComboBox()
+        rgb = ["1", "3"]
+        self.rgbSelect.addItems(rgb)
+        self.rgbhlayout.addWidget(self.rgbSelect)
+
+        self.vlayout.addLayout(self.rgbhlayout)
 
         self.confirmBtn = QPushButton('Confirm')
         self.vlayout.addWidget(self.confirmBtn)
