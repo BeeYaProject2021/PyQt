@@ -56,7 +56,6 @@ class Layermodel(QWidget):
         self.input.setObjectName("input")
         self.vlayout.addWidget(self.input)
 
-
         # Conv2D and Image
         self.conv2D_hlayout = QHBoxLayout()
         self.conv2D = Lablemove('conv2D', self)
@@ -188,7 +187,7 @@ class ConvWidget(QWidget):
         # self.convsubmit = QPushButton("Submit")
         # self.hsubmit.addWidget(self.convsubmit)
         # self.convLayout.addLayout(self.hsubmit)
-        
+
         self.setLayout(self.convLayout)
 
 
@@ -200,7 +199,7 @@ class MaxpoolWidget(QWidget):
         self.btn = QPushButton("maxpooling")
         self.maxpoolLayout.addWidget(self.btn)
         self.maxpoolLayout.addStretch()
-        
+
         self.hmaxpoolpool_size = QHBoxLayout()
         self.maxpoolpool_sizelabel = QLabel("Pool Size : ")
         self.hmaxpoolpool_size.addWidget(self.maxpoolpool_sizelabel)
@@ -231,13 +230,47 @@ class DenseWidget(QWidget):
         self.btn = QPushButton("dense")
         self.denseLayout.addWidget(self.btn)
         self.denseLayout.addStretch()
+
+        self.hdenseuiits = QHBoxLayout()
+        self.denseunitslabel = QLabel("Units : ")
+        self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QLineEdit()
-        self.denseLayout.addWidget(self.denseunits)
+        self.hdenseuiits.addWidget(self.denseunits)
+        self.denseLayout.addItem(self.hdenseuiits)
+
+        self.hdenseactivation = QHBoxLayout()
+        self.denseactivationlabel = QLabel("Activation :")
+        self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
         activationbox = ['rule', 'haha', 'lala']
         self.denseactivation.addItems(activationbox)
-        self.denseLayout.addWidget(self.denseactivation)
+        self.hdenseactivation.addWidget(self.denseactivation)
+        self.denseLayout.addLayout(self.hdenseactivation)
+
+        self.denseLayout.addStretch()
         self.setLayout(self.denseLayout)
+
+
+class InputWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.inputLayout = QVBoxLayout()
+        self.inputLayout.addStretch()
+        self.btn = QPushButton("input")
+        self.inputLayout.addWidget(self.btn)
+        self.inputLayout.addStretch()
+        self.setLayout(self.inputLayout)
+
+
+class OutputWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.outputLayout = QVBoxLayout()
+        self.outputLayout.addStretch()
+        self.btn = QPushButton("output")
+        self.outputLayout.addWidget(self.btn)
+        self.outputLayout.addStretch()
+        self.setLayout(self.outputLayout)
 
 
 class ModelWidget(QWidget):
@@ -289,6 +322,16 @@ class ModelWidget(QWidget):
             self.stackWidget.addWidget(self.attr_widget[i])
         elif id == 4:
             newAttrWidget = DenseWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+        elif id == 5:
+            newAttrWidget = InputWidget()
+            i = len(self.attr_widget)
+            self.attr_widget.append(newAttrWidget)
+            self.stackWidget.addWidget(self.attr_widget[i])
+        elif id == 6:
+            newAttrWidget = OutputWidget()
             i = len(self.attr_widget)
             self.attr_widget.append(newAttrWidget)
             self.stackWidget.addWidget(self.attr_widget[i])
