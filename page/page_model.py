@@ -66,6 +66,19 @@ class ConvWidget(QWidget):
         self.convLayout = QVBoxLayout()
         self.btn = QPushButton("convolution")
         self.convLayout.addWidget(self.btn)
+        self.convfilter =  QLineEdit()
+        self.convLayout.addWidget(self.convfilter)
+        self.convkernel_size = QSpinBox()
+        self.convkernel_size.setRange(0,10)
+        self.convLayout.addWidget(self.convkernel_size)
+        self.convpadding = QComboBox()
+        paddingbox = ['same', 'haha', 'lala', 'nothing']
+        self.convpadding.addItems(paddingbox)
+        self.convLayout.addWidget(self.convpadding)
+        self.convactivation = QComboBox()
+        activationbox = ['rule', 'haha', 'lala']
+        self.convactivation.addItems(activationbox)
+        self.convLayout.addWidget(self.convactivation)
         self.setLayout(self.convLayout)
 
 
@@ -75,6 +88,9 @@ class MaxpoolWidget(QWidget):
         self.maxpoolLayout = QVBoxLayout()
         self.btn = QPushButton("maxpooling")
         self.maxpoolLayout.addWidget(self.btn)
+        self.maxpoolpool_size = QSpinBox()
+        self.maxpoolpool_size.setRange(0,10)
+        self.maxpoolLayout.addWidget(self.maxpoolpool_size)
         self.setLayout(self.maxpoolLayout)
 
 
@@ -93,6 +109,12 @@ class DenseWidget(QWidget):
         self.denseLayout = QVBoxLayout()
         self.btn = QPushButton("dense")
         self.denseLayout.addWidget(self.btn)
+        self.denseunits = QLineEdit()
+        self.denseLayout.addWidget(self.denseunits)
+        self.denseactivation = QComboBox()
+        activationbox = ['rule', 'haha', 'lala']
+        self.denseactivation.addItems(activationbox)
+        self.denseLayout.addWidget(self.denseactivation)
         self.setLayout(self.denseLayout)
 
 
