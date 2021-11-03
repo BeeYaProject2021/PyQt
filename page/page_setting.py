@@ -71,12 +71,16 @@ class SettingWidget(QWidget):
         self.epochBox.setMinimum(1)
         self.vlayout.addWidget(self.epochBox)
 
-        self.checkbutton = QPushButton('你要確定捏', self)
+        self.checkbutton = QPushButton('Click Here To Complete', self)
         self.checkbutton.clicked.connect(self.combine)
         self.vlayout.addWidget(self.checkbutton)
 
         self.combinedata = QLabel()
         self.combinedata.setText("Data:")
+
+        with open("./stylesheet/setting.qss", "r") as f:    
+            self.setStyleSheet(f.read())
+
         self.vlayout.addWidget(self.combinedata)
 
         self.setLayout(self.vlayout)

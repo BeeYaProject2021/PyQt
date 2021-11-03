@@ -90,7 +90,7 @@ class TrainingWidget(QWidget):
 
         # self.step = 0
 
-        self.graphWidget.setBackground('w')
+        self.graphWidget.setBackground('#B8B8DC')
 
         training_pen = pg.mkPen(color=(255, 0, 0))
         validation_pen = pg.mkPen(color=(0, 0, 255))
@@ -112,7 +112,7 @@ class TrainingWidget(QWidget):
 
         # self.step = 0
 
-        self.lossWidget.setBackground('w')
+        self.lossWidget.setBackground('#B8B8DC')
 
         training_pen = pg.mkPen(color=(255, 0, 0))
         validation_pen = pg.mkPen(color=(0, 0, 255))
@@ -178,6 +178,9 @@ class TrainingWidget(QWidget):
         self.pushButtongo = QPushButton("GO", self)
         self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 31))
         # self.pushButtongo.setText(_translate("MainWindow", "go"))
+
+        with open("./stylesheet/train.qss", "r") as f:    
+            self.setStyleSheet(f.read())
 
         self.pushButtongo.clicked.connect(self.start_progress)
 
