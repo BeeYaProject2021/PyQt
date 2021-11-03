@@ -1,0 +1,28 @@
+QLabel {
+    font: bold 20px;
+    font-family: Consolas;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 2px solid #6FB7B7;
+    border-radius: 20px;
+}
+QLabel#conv {
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+QLabel#maxpooling {
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+QLabel#flatten {
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+QLabel#dense {
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}

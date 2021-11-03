@@ -88,9 +88,7 @@ class TrainingWidget(QWidget):
         self.val_accuracy_x = []
         self.val_accuracy_y = []
 
-        # self.step = 0
-
-        self.graphWidget.setBackground('#B8B8DC')
+        self.graphWidget.setBackground('w')
 
         training_pen = pg.mkPen(color=(255, 0, 0))
         validation_pen = pg.mkPen(color=(0, 0, 255))
@@ -110,9 +108,7 @@ class TrainingWidget(QWidget):
         self.val_loss_x = []
         self.val_loss_y = []
 
-        # self.step = 0
-
-        self.lossWidget.setBackground('#B8B8DC')
+        self.lossWidget.setBackground('w')
 
         training_pen = pg.mkPen(color=(255, 0, 0))
         validation_pen = pg.mkPen(color=(0, 0, 255))

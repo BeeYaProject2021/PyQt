@@ -17,7 +17,7 @@ QComboBox:on {
     padding-left: 4px;
 }
 QComboBox::drop-down {
-    width: 15px;
+    width: 20px;
 
     border-left-width: 1px;
     border-left-color: black;
