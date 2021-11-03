@@ -49,7 +49,6 @@ class Layermodel(QWidget):
         self.shadow4.setOffset(0, 0)
         self.shadow4.setBlurRadius(5)
 
-
         self.vlayout = QVBoxLayout()
         self.vlayout.addSpacing(20)
 
@@ -71,7 +70,7 @@ class Layermodel(QWidget):
 
         # Maxpooling and Image
         self.max_hlayout = QHBoxLayout()
-        self.maxpooling = Lablemove('maxpooling', self)
+        self.maxpooling = Lablemove('maxpooling2D', self)
         self.maxpooling.setObjectName("maxpooling")
         self.maxpooling.setGraphicsEffect(self.shadow2)
 
@@ -126,7 +125,7 @@ class Layermodel(QWidget):
 
         self.vlayout.addWidget(self.garbage_can)
 
-        with open("./stylesheet/model.qss", "r") as f:    
+        with open("./stylesheet/model.qss", "r") as f:
             self.setStyleSheet(f.read())
 
         self.setLayout(self.vlayout)
@@ -138,10 +137,10 @@ class ConvWidget(QWidget):
         self.convLayout = QVBoxLayout()
         self.btn = QPushButton("convolution")
         self.convLayout.addWidget(self.btn)
-        self.convfilter =  QLineEdit()
+        self.convfilter = QLineEdit()
         self.convLayout.addWidget(self.convfilter)
         self.convkernel_size = QSpinBox()
-        self.convkernel_size.setRange(0,10)
+        self.convkernel_size.setRange(0, 10)
         self.convLayout.addWidget(self.convkernel_size)
         self.convpadding = QComboBox()
         paddingbox = ['same', 'haha', 'lala', 'nothing']
@@ -161,7 +160,7 @@ class MaxpoolWidget(QWidget):
         self.btn = QPushButton("maxpooling")
         self.maxpoolLayout.addWidget(self.btn)
         self.maxpoolpool_size = QSpinBox()
-        self.maxpoolpool_size.setRange(0,10)
+        self.maxpoolpool_size.setRange(0, 10)
         self.maxpoolLayout.addWidget(self.maxpoolpool_size)
         self.setLayout(self.maxpoolLayout)
 
