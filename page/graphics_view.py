@@ -70,9 +70,10 @@ class GraphicsScene(QGraphicsScene):
                 if edge.end_node.index == node.index:
                     edge.end_node.index = self.nodes.index(node)
             node.index = self.nodes.index(node)
-            node.leftPort.index = node.index
-            node.rightPort.index = node.index
-            node.text.setText("Node"+str(node.index)+", "+str(node.id))
+            if hasattr(node, 'leftPort'):
+                node.leftPort.index = node.index
+            if hasattr(node, 'rightPort'):
+                node.rightPort.index = node.index
 
     def updateEdge(self):
         for edge in self.edges:
@@ -167,6 +168,14 @@ class GraphicsView(QGraphicsView):
             e.accept()
             self.graphics_scene.addNode(
                 4, (self.mapToScene(e.pos())).toPoint())
+        elif e.mimeData().text() == "input":
+            e.accept()
+            self.graphics_scene.addNode(
+                5, (self.mapToScene(e.pos())).toPoint())
+        elif e.mimeData().text() == "output":
+            e.accept()
+            self.graphics_scene.addNode(
+                6, (self.mapToScene(e.pos())).toPoint())
 
 
 class GraphicsPathItem(QGraphicsPathItem):
@@ -223,6 +232,10 @@ class NodeItem(QGraphicsRectItem):
             self.name = "Flatten"
         elif self.id == 4:
             self.name = "Dense"
+        elif self.id == 5:
+            self.name = "Input"
+        elif self.id == 6:
+            self.name = "Output"
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setFlag(
@@ -233,19 +246,20 @@ class NodeItem(QGraphicsRectItem):
         self.setRect(0, 0, self.width, self.height)
         self.setBrush(QColor(0xaa, 0xaa, 0xaa, 0xaa))
 
-        # self.text = QGraphicsSimpleTextItem(
-        #     "Node"+str(self.index)+", "+str(self.id), self)
         self.text = QGraphicsSimpleTextItem(self.name, self)
         self.text.setPos(self.width/2-self.text.boundingRect().width()/2,
                          self.height/2-self.text.boundingRect().height()/2)
         self.text.setBrush(QColor(255, 0, 0))
 
-        self.leftPort = PortItem(self.index, 0, self)
-        self.leftPort.setPos(
-            5, self.height/2-self.leftPort.boundingRect().height()/2)
-        self.rightPort = PortItem(self.index, 1, self)
-        self.rightPort.setPos(self.width-25, self.height /
-                              2-self.rightPort.boundingRect().height()/2)
+        if self.id != 5:
+            self.leftPort = PortItem(self.index, 0, self)
+            self.leftPort.setPos(
+                5, self.height/2-self.leftPort.boundingRect().height()/2)
+
+        if self.id != 6:
+            self.rightPort = PortItem(self.index, 1, self)
+            self.rightPort.setPos(self.width-25, self.height /
+                                  2-self.rightPort.boundingRect().height()/2)
 
         self.pixmap = QPixmap("image/image.jpg")
         self.pixmap = self.pixmap.scaled(20, 20)
