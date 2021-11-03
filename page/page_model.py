@@ -245,3 +245,4 @@ class ModelWidget(QWidget):
     def removeAttributeSignal(self, i):
         self.stackWidget.removeWidget(self.attr_widget[i])
         self.attr_widget.remove(self.attr_widget[i])
+        self.stackWidget.setCurrentIndex(0)

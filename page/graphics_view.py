@@ -214,6 +214,15 @@ class NodeItem(QGraphicsRectItem):
         super().__init__(parent)
         self.index = index
         self.id = id
+        self.name = " "
+        if self.id == 1:
+            self.name = "Conv2D"
+        elif self.id == 2:
+            self.name = "Maxpooling2D"
+        elif self.id == 3:
+            self.name = "Flatten"
+        elif self.id == 4:
+            self.name = "Dense"
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setFlag(
@@ -224,8 +233,9 @@ class NodeItem(QGraphicsRectItem):
         self.setRect(0, 0, self.width, self.height)
         self.setBrush(QColor(0xaa, 0xaa, 0xaa, 0xaa))
 
-        self.text = QGraphicsSimpleTextItem(
-            "Node"+str(self.index)+", "+str(self.id), self)
+        # self.text = QGraphicsSimpleTextItem(
+        #     "Node"+str(self.index)+", "+str(self.id), self)
+        self.text = QGraphicsSimpleTextItem(self.name, self)
         self.text.setPos(self.width/2-self.text.boundingRect().width()/2,
                          self.height/2-self.text.boundingRect().height()/2)
         self.text.setBrush(QColor(255, 0, 0))

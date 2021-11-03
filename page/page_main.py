@@ -9,6 +9,7 @@ from page_training import *
 import os
 import sys
 
+
 class TabBar(QTabBar):
     def tabSizeHint(self, index):
         size = QTabBar.tabSizeHint(self, index)
@@ -98,17 +99,17 @@ class MainWindow(QMainWindow):
         label = "Model"
         self.modelW = ModelWidget()
         i = self.tabs.addTab(self.modelW, label)
-        label = "Blank1.5"
+        label = "Training Setting"
         self.settingW = SettingWidget()
         self.settingW.batch_epoch_signal.connect(self.batch_epoch_signal_acc)
         i = self.tabs.addTab(self.settingW, label)
-        label = "Blank2"
+        label = "Result"
         self.trainingW = TrainingWidget()
         i = self.tabs.addTab(self.trainingW, label)
         self.tabs.setCurrentIndex(1)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
-        with open("./stylesheet/main.qss", "r") as f:    
+        with open("./stylesheet/main.qss", "r") as f:
             self.setStyleSheet(f.read())
         self.setCentralWidget(self.tabs)
         self.resize(1280, 720)
