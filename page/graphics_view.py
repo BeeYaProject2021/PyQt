@@ -241,9 +241,11 @@ class NodeItem(QGraphicsRectItem):
         self.text.setBrush(QColor(255, 0, 0))
 
         self.leftPort = PortItem(self.index, 0, self)
-        self.leftPort.setPos(5, self.height/2.7)
+        self.leftPort.setPos(
+            5, self.height/2-self.leftPort.boundingRect().height()/2)
         self.rightPort = PortItem(self.index, 1, self)
-        self.rightPort.setPos(self.width-20, self.height/2.7)
+        self.rightPort.setPos(self.width-25, self.height /
+                              2-self.rightPort.boundingRect().height()/2)
 
         self.pixmap = QPixmap("image/image.jpg")
         self.pixmap = self.pixmap.scaled(20, 20)
