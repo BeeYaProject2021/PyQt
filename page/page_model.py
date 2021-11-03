@@ -52,6 +52,11 @@ class Layermodel(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addSpacing(20)
 
+        self.input = Lablemove('input', self)
+        self.input.setObjectName("input")
+        self.vlayout.addWidget(self.input)
+
+
         # Conv2D and Image
         self.conv2D_hlayout = QHBoxLayout()
         self.conv2D = Lablemove('conv2D', self)
@@ -115,6 +120,10 @@ class Layermodel(QWidget):
 
         self.vlayout.addLayout(self.dense_hlayout)
         self.vlayout.addStretch()
+
+        self.output = Lablemove('output', self)
+        self.output.setObjectName("output")
+        self.vlayout.addWidget(self.output)
 
         self.garbage_can = QPushButton()
         self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);" +
