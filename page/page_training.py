@@ -169,10 +169,10 @@ class TrainingWidget(QWidget):
         self.toolButton_5.setIcon(icon7)
 
         self.progressBar = QtWidgets.QProgressBar(self)
-        self.progressBar.setGeometry(QtCore.QRect(370, 480, 273, 16))
+        self.progressBar.setGeometry(QtCore.QRect(370, 470, 270, 30))
 
         self.pushButtongo = QPushButton("GO", self)
-        self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 31))
+        self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 30))
         # self.pushButtongo.setText(_translate("MainWindow", "go"))
 
         with open("./stylesheet/train.qss", "r") as f:    

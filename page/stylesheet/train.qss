@@ -4,10 +4,9 @@ QProgressBar {
     text-align: center;
 }
 QProgressBar::chunk {
-    background-color: #81C0C0;
-    width: 20px;
-    height: 20px;
-    margin: 0.5px;
+    background-color: #B15BFF;
+    /* width: 10px;
+    margin: 0.5px; */
 }
 QPushButton {
     font: bold 20px;
