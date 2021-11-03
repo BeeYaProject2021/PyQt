@@ -11,24 +11,6 @@ from PyQt5.QtGui import *
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
-StyleSheet = '''
-QProgressBar {
-    border: 2px solid black;
-    border-radius: 5px;
-    text-align: center;
-}
-QProgressBar::chunk {
-    background-color: #B15BFF;
-    width: 20px;
-}
-QPushButton {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #B15BFF);
-}
-QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #BEBEBE);
-}
-'''
-
 class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
@@ -128,8 +110,8 @@ class AttributeWidget(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
-        self.validsplitLabel = QLabel("percentage for validation: ")
-        self.validsplitLabel.setFont(QFont("Arial", 15))
+        self.validsplitLabel = QLabel("Percentage for validation: ")
+        self.validsplitLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.validsplitLabel)
 
         self.validsplitBox = QDoubleSpinBox()
@@ -137,15 +119,15 @@ class AttributeWidget(QWidget):
         self.validsplitBox.setSingleStep(0.01)
         self.vlayout.addWidget(self.validsplitBox)
 
-        self.imgsizeLabel = QLabel("image setting: ")
-        self.imgsizeLabel.setFont(QFont("Arial", 15))
+        self.imgsizeLabel = QLabel("Image setting: ")
+        self.imgsizeLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.imgsizeLabel)
 
         self.imgboxLayout = QHBoxLayout()
 
         self.imghvLayout = QVBoxLayout()
-        self.imghLabel = QLabel("height: ")
-        self.imghLabel.setFont(QFont("Arial", 10))
+        self.imghLabel = QLabel("height")
+        self.imghLabel.setFont(QFont("Consolas", 10))
         self.imghvLayout.addWidget(self.imghLabel)
 
         self.imghBox = QSpinBox()
@@ -156,8 +138,8 @@ class AttributeWidget(QWidget):
         self.imgboxLayout.addLayout(self.imghvLayout)
 
         self.imgwvLayout = QVBoxLayout()
-        self.imgwLabel = QLabel("width: ")
-        self.imgwLabel.setFont(QFont("Arial", 10))
+        self.imgwLabel = QLabel("width")
+        self.imgwLabel.setFont(QFont("Consolas", 10))
         self.imgwvLayout.addWidget(self.imgwLabel)
 
         self.imgwBox = QSpinBox()
@@ -178,7 +160,8 @@ class AttributeWidget(QWidget):
         self.progressBar.setValue(0)
         self.progressBar.setVisible(False)
 
-        self.setStyleSheet(StyleSheet)
+        with open("./stylesheet/input.qss", "r") as f:    
+            self.setStyleSheet(f.read())
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -200,12 +183,13 @@ class ImgWidget(QWidget):
         self.vlayout.addStretch()
 
         self.imgLabel = QLabel('Select a folder path for input dataset')
-        self.imgLabel.setFont(QFont("Arial", 15))
+        self.imgLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.imgLabel)
 
         self.vlayout.addLayout(self.hlayout)
 
-        self.setStyleSheet(StyleSheet)
+        with open("./stylesheet/input.qss", "r") as f:    
+            self.setStyleSheet(f.read())
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -257,9 +241,9 @@ class InputWidget(QWidget):
 
         else:
             print("BAD NO SUCH Path")
-            self.warning.setText("BAD FOR NO SUCH PATH")
+            self.warning.setText("Path not exists, please try again")
             self.warning.setIcon(QMessageBox.Icon.Warning)
-            self.warning.setWindowTitle("YOU R BAD")
+            self.warning.setWindowTitle("Path Not Found")
             self.warning.show()
 
     def signal_accept(self, msg):
@@ -272,6 +256,8 @@ class InputWidget(QWidget):
             self.warning.setText(
                 "Number of validation must be higher than zero img")
             self.warning.setIcon(QMessageBox.Icon.Warning)
+            self.warning.setWindowTitle("Image Counts Error")
+            self.warning.setDetailedText("You must choose the path containing more images.\nThat is, given images counts is too low.")
             self.warning.show()
             self.aw.confirmBtn.setEnabled(True)
         else:

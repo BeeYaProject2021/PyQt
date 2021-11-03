@@ -1,0 +1,76 @@
+QProgressBar {
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+QProgressBar::chunk {
+    background-color: #B15BFF;
+    width: 20px;
+}
+QPushButton {
+    font: bold 20px;
+    font-family: Consolas;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: black;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #B15BFF);
+}
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #BEBEBE);
+}
+QDoubleSpinBox {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding-right: 20px;
+    padding: 4px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-width: 2px;
+}
+QDoubleSpinBox::up-arrow {
+    image: url("./image/up_arrow.png");
+    width: 7px;
+    height: 7px;
+}
+QDoubleSpinBox::up-button {
+    width: 20px;
+    height: 14px;
+}
+QDoubleSpinBox::down-arrow {
+    image: url("./image/down_arrow.png");
+    width: 7px;
+    height: 7px;
+}
+QDoubleSpinBox::down-button {
+    width: 20px;
+    height: 14px;
+}
+QSpinBox {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding-right: 20px;
+    padding: 4px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-width: 2px;
+}
+QSpinBox::up-arrow {
+    image: url("./image/up_arrow.png");
+    width: 7px;
+    height: 7px;
+}
+QSpinBox::up-button {
+    width: 20px;
+    height: 14px;
+}
+QSpinBox::down-arrow {
+    image: url("./image/down_arrow.png");
+    width: 7px;
+    height: 7px;
+}
+QSpinBox::down-button {
+    width: 20px;
+    height: 14px;
+}
