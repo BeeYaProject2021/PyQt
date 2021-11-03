@@ -144,21 +144,51 @@ class ConvWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.convLayout = QVBoxLayout()
+
         self.btn = QPushButton("convolution")
         self.convLayout.addWidget(self.btn)
+        self.convLayout.addStretch()
+
+        self.hfilter = QHBoxLayout()
+        self.convfilterlabel = QLabel("Filter : ")
+        self.hfilter.addWidget(self.convfilterlabel)
         self.convfilter = QLineEdit()
-        self.convLayout.addWidget(self.convfilter)
+        self.hfilter.addWidget(self.convfilter)
+        self.convLayout.addLayout(self.hfilter)
+
+        self.hkernel_size = QHBoxLayout()
+        self.convkernel_sizelabel = QLabel("Kernel Size : ")
+        self.hkernel_size.addWidget(self.convkernel_sizelabel)
         self.convkernel_size = QSpinBox()
         self.convkernel_size.setRange(0, 10)
-        self.convLayout.addWidget(self.convkernel_size)
+        self.hkernel_size.addWidget(self.convkernel_size)
+        self.convLayout.addLayout(self.hkernel_size)
+
+        self.hpadding = QHBoxLayout()
+        self.convpaddinglabel = QLabel("Padding : ")
+        self.hpadding.addWidget(self.convpaddinglabel)
         self.convpadding = QComboBox()
         paddingbox = ['same', 'haha', 'lala', 'nothing']
         self.convpadding.addItems(paddingbox)
-        self.convLayout.addWidget(self.convpadding)
+        self.hpadding.addWidget(self.convpadding)
+        self.convLayout.addLayout(self.hpadding)
+
+        self.hactivation = QHBoxLayout()
+        self.convactivationlabel = QLabel("Activation : ")
+        self.hactivation.addWidget(self.convactivationlabel)
         self.convactivation = QComboBox()
         activationbox = ['rule', 'haha', 'lala']
         self.convactivation.addItems(activationbox)
-        self.convLayout.addWidget(self.convactivation)
+        self.hactivation.addWidget(self.convactivation)
+        self.convLayout.addLayout(self.hactivation)
+
+        self.convLayout.addStretch()
+        # self.hsubmit = QHBoxLayout()
+        # self.hsubmit.addStretch(5)
+        # self.convsubmit = QPushButton("Submit")
+        # self.hsubmit.addWidget(self.convsubmit)
+        # self.convLayout.addLayout(self.hsubmit)
+        
         self.setLayout(self.convLayout)
 
 
@@ -166,11 +196,21 @@ class MaxpoolWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.maxpoolLayout = QVBoxLayout()
+
         self.btn = QPushButton("maxpooling")
+        self.maxpoolLayout.addWidget(self.btn)
+        self.maxpoolLayout.addStretch()
+        
+        self.hmaxpoolpool_size = QHBoxLayout()
+        self.maxpoolpool_sizelabel = QLabel("Pool Size : ")
+        self.hmaxpoolpool_size.addWidget(self.maxpoolpool_sizelabel)
         self.maxpoolLayout.addWidget(self.btn)
         self.maxpoolpool_size = QSpinBox()
         self.maxpoolpool_size.setRange(0, 10)
-        self.maxpoolLayout.addWidget(self.maxpoolpool_size)
+        self.hmaxpoolpool_size.addWidget(self.maxpoolpool_size)
+        self.maxpoolLayout.addLayout(self.hmaxpoolpool_size)
+
+        self.maxpoolLayout.addStretch()
         self.setLayout(self.maxpoolLayout)
 
 
@@ -180,6 +220,7 @@ class FlatWidget(QWidget):
         self.flatLayout = QVBoxLayout()
         self.btn = QPushButton("flatten")
         self.flatLayout.addWidget(self.btn)
+        self.flatLayout.addStretch()
         self.setLayout(self.flatLayout)
 
 
@@ -189,6 +230,7 @@ class DenseWidget(QWidget):
         self.denseLayout = QVBoxLayout()
         self.btn = QPushButton("dense")
         self.denseLayout.addWidget(self.btn)
+        self.denseLayout.addStretch()
         self.denseunits = QLineEdit()
         self.denseLayout.addWidget(self.denseunits)
         self.denseactivation = QComboBox()
