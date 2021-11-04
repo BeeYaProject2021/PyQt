@@ -158,7 +158,7 @@ class AttributeWidget(QWidget):
         self.rgbhlayout.addWidget(self.rgbLabel)
         
         self.rgbSelect = QComboBox()
-        rgb = ["1", "3"]
+        rgb = ["HjackH", "RGB"]
         self.rgbSelect.addItems(rgb)
         self.rgbhlayout.addWidget(self.rgbSelect)
 
