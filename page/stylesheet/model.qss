@@ -4,14 +4,14 @@ QLabel {
     padding-left: 4px;
     padding-right: 4px;
     border: 2px solid #6FB7B7;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 QLabel#conv {
     border: 2px solid black;
     border-radius: 10px;
     text-align: center;
 }
-QLabel#maxpooling {
+QLabel#pooling {
     border: 2px solid black;
     border-radius: 10px;
     text-align: center;

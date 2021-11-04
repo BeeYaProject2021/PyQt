@@ -209,16 +209,16 @@ class MaxpoolWidget(QWidget):
         poolstyle = ['max', 'avg']
         self.choosepool.addItems(poolstyle)
         self.hchoosepool.addWidget(self.choosepool)
-        self.poolLayout.addLayout(self.hchoosepoolpoolLayout)
+        self.poolLayout.addLayout(self.hchoosepool)
 
         self.hpoolpool_size = QHBoxLayout()
         self.poolpool_sizelabel = QLabel("Pool Size : ")
-        self.hpoolpool_size.addWidget(self.maxpoolpool_sizelabel)
+        self.hpoolpool_size.addWidget(self.poolpool_sizelabel)
         self.poolLayout.addWidget(self.btn)
         self.poolpool_size = QSpinBox()
         self.poolpool_size.setRange(0, 10)
-        self.hpoolpool_size.addWidget(self.maxpoolpool_size)
-        self.poolLayout.addLayout(self.hmaxpoolpool_size)
+        self.hpoolpool_size.addWidget(self.poolpool_size)
+        self.poolLayout.addLayout(self.hpoolpool_size)
 
         self.poolLayout.addStretch()
         self.setLayout(self.poolLayout)

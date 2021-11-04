@@ -169,7 +169,7 @@ class GraphicsView(QGraphicsView):
             e.accept()
             self.graphics_scene.addNode(
                 1, (self.mapToScene(e.pos())).toPoint())
-        elif e.mimeData().text() == "maxpooling2D":
+        elif e.mimeData().text() == "pooling2D":
             e.accept()
             self.graphics_scene.addNode(
                 2, (self.mapToScene(e.pos())).toPoint())
@@ -240,7 +240,7 @@ class NodeItem(QGraphicsRectItem):
         if self.id == 1:
             self.name = "Conv2D"
         elif self.id == 2:
-            self.name = "Maxpooling2D"
+            self.name = "pooling2D"
         elif self.id == 3:
             self.name = "Flatten"
         elif self.id == 4:
