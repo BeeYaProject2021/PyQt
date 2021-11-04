@@ -25,7 +25,7 @@ class Thread(QThread):
     def run(self):
         ClientSocket = socket.socket()
         ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        host = '140.136.151.88'
+        host = '140.136.204.132'
         port = 48763
 
         print('Waiting for backend connection')
@@ -41,32 +41,59 @@ class Thread(QThread):
         batch_cnt = 0
         epoch_cnt = 0
         while True:
-            Response = ClientSocket.recv(67)
+            # Response = ClientSocket.recv(67)
+            Response = ClientSocket.recv(1024)
             strRes = Response.decode('utf-8')
             print(strRes)
+            lines=strRes.split('\r\n')
+            for line in lines:
+                self._signal.emit(batch_cnt)
+                if '@' in line:
+                    data = line.split('@')
+                    print(data[1], data[2], data[3])
+                    batch_cnt += 1
 
-            self._signal.emit(batch_cnt)
-            if '@' in strRes:
-                data = strRes.split('@')
-                print(data[1], data[2], data[3])
-                batch_cnt += 1
+                    # Use signal to inform the thread run function
+                    # Emit the batch_size as x-axis and accuracy, loss as y-axis
+                    self.accuracy_signal.emit(batch_cnt, float(data[2]))
+                    self.loss_signal.emit(batch_cnt, float(data[3]))
 
-                # Use signal to inform the thread run function
-                # Emit the batch_size as x-axis and accuracy, loss as y-axis
-                self.accuracy_signal.emit(batch_cnt, float(data[2]))
-                self.loss_signal.emit(batch_cnt, float(data[3]))
+                if '#' in line:
+                    data = line.split('#')
+                    print(data[1], data[2], data[3], data[4], data[5])
+                    epoch_cnt += 1
 
-            if '#' in strRes:
-                data = strRes.split('#')
-                print(data[1], data[2], data[3], data[4], data[5])
-                epoch_cnt += 1
+                    self.val_accuracy_signal.emit(batch_cnt, float(data[3]))
+                    self.val_loss_signal.emit(batch_cnt, float(data[5]))
 
-                self.val_accuracy_signal.emit(batch_cnt, float(data[3]))
-                self.val_loss_signal.emit(batch_cnt, float(data[5]))
+                if 'over' in line:
+                    break
+            # self._signal.emit(batch_cnt)
+            # if '@' in strRes:
+            #     data = strRes.split('@')
+            #     datalist = []
+            #     for i in data:
+            #         if i != '':
+            #             datalist.append(i)
+            #     print(datalist[0], datalist[1], datalist[2])
+            #     batch_cnt += 1
 
-            if 'over' in strRes:
-                break
+            #     # Use signal to inform the thread run function
+            #     # Emit the batch_size as x-axis and accuracy, loss as y-axis
+            #     self.accuracy_signal.emit(batch_cnt, float(datalist[1]))
+            #     self.loss_signal.emit(batch_cnt, float(datalist[2]))
 
+            # if '#' in strRes:
+            #     data = strRes.split('#')
+            #     print(data[1], data[2], data[3], data[4], data[5])
+            #     epoch_cnt += 1
+
+            #     self.val_accuracy_signal.emit(batch_cnt, float(data[3]))
+            #     self.val_loss_signal.emit(batch_cnt, float(data[5]))
+
+            # if 'over' in strRes:
+            #     break
+            
         ClientSocket.close()
 
 
@@ -226,7 +253,7 @@ class TrainingWidget(QWidget):
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
-        if self.progressBar.value() == 100:
+        if self.progressBar.value() == self.progressBar.maximum():
             self.pushButtongo.setEnabled(True)
 
     def update_acc(self, x, y):

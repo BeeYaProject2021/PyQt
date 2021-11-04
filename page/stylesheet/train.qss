@@ -4,7 +4,7 @@ QProgressBar {
     text-align: center;
 }
 QProgressBar::chunk {
-    background-color: #B15BFF;
+    background-color: #00ff00;
     /* width: 10px;
     margin: 0.5px; */
 }
