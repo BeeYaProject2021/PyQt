@@ -46,6 +46,7 @@ class Thread(QThread):
             strRes = Response.decode('utf-8')
             print(strRes)
             lines=strRes.split('\r\n')
+
             over = False
             for line in lines:
                 self._signal.emit(batch_cnt)
@@ -69,9 +70,11 @@ class Thread(QThread):
 
                 if 'over' in line:
                     over = True
+                    ClientSocket.close()
                     break
+
             if over == True:
-                ClientSocket.close()
+                break
 
 
 class TrainingWidget(QWidget):
