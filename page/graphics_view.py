@@ -109,7 +109,7 @@ class GraphicsView(QGraphicsView):
 
         self.drag_edge = False
 
-        # self.setDragMode(self.RubberBandDrag)
+        self.setDragMode(self.RubberBandDrag)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         # self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)

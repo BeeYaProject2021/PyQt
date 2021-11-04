@@ -148,7 +148,8 @@ class ConvWidget(QWidget):
         self.hfilter = QHBoxLayout()
         self.convfilterlabel = QLabel("Filter : ")
         self.hfilter.addWidget(self.convfilterlabel)
-        self.convfilter = QLineEdit()
+        self.convfilter =  QSpinBox()
+        self.convfilter.setRange(0,100)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
 
@@ -231,7 +232,8 @@ class DenseWidget(QWidget):
         self.hdenseuiits = QHBoxLayout()
         self.denseunitslabel = QLabel("Units : ")
         self.hdenseuiits.addWidget(self.denseunitslabel)
-        self.denseunits = QLineEdit()
+        self.denseunits =  QSpinBox()
+        self.denseunits.setRange(0,100)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
