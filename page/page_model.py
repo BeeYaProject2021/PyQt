@@ -71,19 +71,19 @@ class Layermodel(QWidget):
         self.vlayout.addLayout(self.conv2D_hlayout)
 
         # Maxpooling and Image
-        self.max_hlayout = QHBoxLayout()
-        self.maxpooling = Lablemove('maxpooling2D', self)
-        self.maxpooling.setObjectName("maxpooling")
-        self.maxpooling.setGraphicsEffect(self.shadow2)
+        self.pool_hlayout = QHBoxLayout()
+        self.pooling = Lablemove('pooling2D', self)
+        self.pooling.setObjectName("pooling")
+        self.pooling.setGraphicsEffect(self.shadow2)
 
         self.img_pooling = QLabel()
         self.img_pooling.setPixmap(QPixmap("./image/maxpooling.png"))
         self.img_pooling.setFixedSize(100, 100)
         self.img_pooling.setScaledContents(True)
-        self.max_hlayout.addWidget(self.maxpooling)
-        self.max_hlayout.addWidget(self.img_pooling)
+        self.pool_hlayout.addWidget(self.pooling)
+        self.pool_hlayout.addWidget(self.img_pooling)
 
-        self.vlayout.addLayout(self.max_hlayout)
+        self.vlayout.addLayout(self.pool_hlayout)
 
         # Flatten and Image
         self.flatten_hlayout = QHBoxLayout()
@@ -148,7 +148,9 @@ class ConvWidget(QWidget):
         self.hfilter = QHBoxLayout()
         self.convfilterlabel = QLabel("Filter : ")
         self.hfilter.addWidget(self.convfilterlabel)
-        self.convfilter = QLineEdit()
+        self.convfilter =  QSpinBox()
+        self.convfilter.setRange(0,99)
+        # self.convfilter.setSingleStep(2)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
 
@@ -156,7 +158,7 @@ class ConvWidget(QWidget):
         self.convkernel_sizelabel = QLabel("Kernel Size : ")
         self.hkernel_size.addWidget(self.convkernel_sizelabel)
         self.convkernel_size = QSpinBox()
-        self.convkernel_size.setRange(0, 10)
+        self.convkernel_size.setRange(0, 99)
         self.hkernel_size.addWidget(self.convkernel_size)
         self.convLayout.addLayout(self.hkernel_size)
 
@@ -164,7 +166,7 @@ class ConvWidget(QWidget):
         self.convpaddinglabel = QLabel("Padding : ")
         self.hpadding.addWidget(self.convpaddinglabel)
         self.convpadding = QComboBox()
-        paddingbox = ['same', 'haha', 'lala', 'nothing']
+        paddingbox = ['same', 'valid']
         self.convpadding.addItems(paddingbox)
         self.hpadding.addWidget(self.convpadding)
         self.convLayout.addLayout(self.hpadding)
@@ -173,7 +175,10 @@ class ConvWidget(QWidget):
         self.convactivationlabel = QLabel("Activation : ")
         self.hactivation.addWidget(self.convactivationlabel)
         self.convactivation = QComboBox()
-        activationbox = ['rule', 'haha', 'lala']
+        activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
+                            'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
+                            'linear', 'selu', 'serialize', 'softmax', 'softplus',
+                            'softsign', 'swish']
         self.convactivation.addItems(activationbox)
         self.hactivation.addWidget(self.convactivation)
         self.convLayout.addLayout(self.hactivation)
@@ -191,23 +196,32 @@ class ConvWidget(QWidget):
 class MaxpoolWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.maxpoolLayout = QVBoxLayout()
+        self.poolLayout = QVBoxLayout()
 
         self.btn = QPushButton("maxpooling")
-        self.maxpoolLayout.addWidget(self.btn)
-        self.maxpoolLayout.addStretch()
+        self.poolLayout.addWidget(self.btn)
+        self.poolLayout.addStretch()
 
-        self.hmaxpoolpool_size = QHBoxLayout()
-        self.maxpoolpool_sizelabel = QLabel("Pool Size : ")
-        self.hmaxpoolpool_size.addWidget(self.maxpoolpool_sizelabel)
-        self.maxpoolLayout.addWidget(self.btn)
-        self.maxpoolpool_size = QSpinBox()
-        self.maxpoolpool_size.setRange(0, 10)
-        self.hmaxpoolpool_size.addWidget(self.maxpoolpool_size)
-        self.maxpoolLayout.addLayout(self.hmaxpoolpool_size)
+        self.hchoosepool = QHBoxLayout()
+        self.choosepoollable = QLabel("Choose pooling : ")
+        self.hchoosepool.addWidget(self.choosepoollable)
+        self.choosepool = QComboBox()
+        poolstyle = ['max', 'avg']
+        self.choosepool.addItems(poolstyle)
+        self.hchoosepool.addWidget(self.choosepool)
+        self.poolLayout.addLayout(self.hchoosepoolpoolLayout)
 
-        self.maxpoolLayout.addStretch()
-        self.setLayout(self.maxpoolLayout)
+        self.hpoolpool_size = QHBoxLayout()
+        self.poolpool_sizelabel = QLabel("Pool Size : ")
+        self.hpoolpool_size.addWidget(self.maxpoolpool_sizelabel)
+        self.poolLayout.addWidget(self.btn)
+        self.poolpool_size = QSpinBox()
+        self.poolpool_size.setRange(0, 10)
+        self.hpoolpool_size.addWidget(self.maxpoolpool_size)
+        self.poolLayout.addLayout(self.hmaxpoolpool_size)
+
+        self.poolLayout.addStretch()
+        self.setLayout(self.poolLayout)
 
 
 class FlatWidget(QWidget):
@@ -231,7 +245,8 @@ class DenseWidget(QWidget):
         self.hdenseuiits = QHBoxLayout()
         self.denseunitslabel = QLabel("Units : ")
         self.hdenseuiits.addWidget(self.denseunitslabel)
-        self.denseunits = QLineEdit()
+        self.denseunits =  QSpinBox()
+        self.denseunits.setRange(0,100)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
@@ -239,7 +254,10 @@ class DenseWidget(QWidget):
         self.denseactivationlabel = QLabel("Activation :")
         self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
-        activationbox = ['rule', 'haha', 'lala']
+        activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
+                            'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
+                            'linear', 'selu', 'serialize', 'softmax', 'softplus',
+                            'softsign', 'swish']
         self.denseactivation.addItems(activationbox)
         self.hdenseactivation.addWidget(self.denseactivation)
         self.denseLayout.addLayout(self.hdenseactivation)
