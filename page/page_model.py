@@ -151,7 +151,7 @@ class ConvWidget(QWidget):
         self.convfilterlabel = QLabel("Filter : ")
         self.hfilter.addWidget(self.convfilterlabel)
         self.convfilter = QSpinBox()
-        self.convfilter.setRange(0, 99)
+        self.convfilter.setMinimum(0)
         # self.convfilter.setSingleStep(2)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
@@ -400,18 +400,31 @@ class ModelWidget(QWidget):
                                    ", id: " + str(now_node.id) +
                                    ", name: " + now_node.name +
                                    ", next edge's index: The End\n")
-
                 break
+
         for i in self.layer_index_order:
             if self.attr_widget[i].id == 1:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
+                               ",\"filters\":\"" + str(self.attr_widget[i].convfilter.value()) +
+                               "\",\"kernel_size\":\"" + str(self.attr_widget[i].convkernel_size.value()) +
+                               "\",\"padding\":\"" + self.attr_widget[i].convpadding.currentText() +
+                               "\",\"activation\":\"" + self.attr_widget[i].convactivation.currentText() + "\"}")
             elif self.attr_widget[i].id == 2:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
+                               ",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"}")
             elif self.attr_widget[i].id == 3:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) + "}")
             elif self.attr_widget[i].id == 4:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
+                               ",\"units\":\"" + str(self.attr_widget[i].denseunits.value()) +
+                               "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"}")
             elif self.attr_widget[i].id == 5:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
+                pass
             elif self.attr_widget[i].id == 6:
-                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+                # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
+                pass
+
+        edge_label.setText(edge_label.text() + layer_json)
+        layer_json = "Json: \n"
+        self.layer_index_order.clear()
