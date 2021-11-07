@@ -4,19 +4,20 @@ QProgressBar {
     text-align: center;
 }
 QProgressBar::chunk {
-    background-color: #B15BFF;
+    background-color: #e8cde7;
     width: 20px;
 }
 QPushButton {
     font: bold 20px;
     font-family: Consolas;
     border-width: 2px;
-    border-radius: 2px;
+    border-radius: 8px;
     border-color: black;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #B15BFF);
+    min-width: 80px; 
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b6cefa, stop: 1 #B15BFF);
 }
 QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #BEBEBE);
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #e8cde7);
 }
 QDoubleSpinBox {
     border: 2px solid black;
@@ -83,10 +84,10 @@ QComboBox {
     margin-right: 2px;
 }
 QComboBox:!editable, QComboBox::drop-down:editable {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #B15BFF);
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9D9D9D, stop: 1 #e8cde7);
 }
 QComboBox:!editable:on, QComboBox::drop-down:editable:on {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #BEBEBE);
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #e8cde7);
 }
 QComboBox:on {
     padding-top: 3px;

@@ -15,7 +15,7 @@ QTabWidget::tab-bar {
     font: bold 18px;
 }*/
 QTabBar::tab {
-    background: gray;
+    background:rgb(200, 200, 200);
     /*border: 2px solid #E0E0E0;*/
     border-top: 2px solid #E0E0E0;
     border-right: 2px solid #E0E0E0;
@@ -30,14 +30,18 @@ QTabBar::tab {
     font: bold 18px;
     font-size: 14px;
 }
-
+QTabBar::tab:selected {
+    /* expand/overlap to the left and right by 4px */
+    margin-left: -6px;
+    margin-right: -6px;
+}
 /*#settingW{
     background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #626262,stop:1 #545454);
     font-size: 14px;
 }*/
 QTabBar::tab:selected, QTabBar::tab:hover {
     /*background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fafafa, stop: 0.4 #f4f4f4, stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);*/
-    background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #545454,stop:1 #fafafa);
+    background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #bababa,stop:1 #fafafa);
 }
 QTabBar::tab:selected {
     border-color: #9B9B9B;
