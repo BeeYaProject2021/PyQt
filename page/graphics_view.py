@@ -274,11 +274,11 @@ class NodeItem(QGraphicsRectItem):
             self.rightPort.setPos(self.width-25, self.height /
                                   2-self.rightPort.boundingRect().height()/2)
 
-        self.pixmap = QPixmap("image/image.jpg")
-        self.pixmap = self.pixmap.scaled(20, 20)
-        self.gpixmap = QGraphicsPixmapItem(self.pixmap, self)
-        self.gpixmap.setPos(30,
-                            self.height/2-self.gpixmap.boundingRect().height()/2)
+        # self.pixmap = QPixmap("image/image.jpg")
+        # self.pixmap = self.pixmap.scaled(20, 20)
+        # self.gpixmap = QGraphicsPixmapItem(self.pixmap, self)
+        # self.gpixmap.setPos(30,
+        #                     self.height/2-self.gpixmap.boundingRect().height()/2)
 
     def mousePressEvent(self, e):
         super().mousePressEvent(e)
@@ -311,23 +311,16 @@ class PortItem(QGraphicsEllipseItem):
 
 
 class ViewWidget(QWidget):
-
-    central_widget = None
-    layout_container = None
-
     def __init__(self):
         super(ViewWidget, self).__init__()
-        # self.central_widget = QWidget()
         self.vlayout = QVBoxLayout()
         self.setLayout(self.vlayout)
-        # self.setCentralWidget(self.central_widget)
         self.gv = GraphicsView(self)
         self.vlayout.addWidget(self.gv)
         self.toggle_btn = QPushButton("Toggle Drag Mode")
         self.toggle_btn.clicked.connect(self.toggle_drag_mode)
         self.vlayout.addWidget(self.toggle_btn)
         self.edge_btn = QPushButton("Show Edge")
-        self.edge_btn.clicked.connect(self.showEdge)
         self.vlayout.addWidget(self.edge_btn)
         self.edgeLabel = QLabel("Edge: \n")
         self.vlayout.addWidget(self.edgeLabel)

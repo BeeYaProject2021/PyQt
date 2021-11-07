@@ -137,6 +137,8 @@ class Layermodel(QWidget):
 
 
 class ConvWidget(QWidget):
+    id = 1
+
     def __init__(self):
         super().__init__()
         self.convLayout = QVBoxLayout()
@@ -148,8 +150,8 @@ class ConvWidget(QWidget):
         self.hfilter = QHBoxLayout()
         self.convfilterlabel = QLabel("Filter : ")
         self.hfilter.addWidget(self.convfilterlabel)
-        self.convfilter =  QSpinBox()
-        self.convfilter.setRange(0,99)
+        self.convfilter = QSpinBox()
+        self.convfilter.setRange(0, 99)
         # self.convfilter.setSingleStep(2)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
@@ -176,9 +178,9 @@ class ConvWidget(QWidget):
         self.hactivation.addWidget(self.convactivationlabel)
         self.convactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
-                            'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
-                            'linear', 'selu', 'serialize', 'softmax', 'softplus',
-                            'softsign', 'swish']
+                         'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
+                         'linear', 'selu', 'serialize', 'softmax', 'softplus',
+                         'softsign', 'swish']
         self.convactivation.addItems(activationbox)
         self.hactivation.addWidget(self.convactivation)
         self.convLayout.addLayout(self.hactivation)
@@ -194,6 +196,8 @@ class ConvWidget(QWidget):
 
 
 class MaxpoolWidget(QWidget):
+    id = 2
+
     def __init__(self):
         super().__init__()
         self.poolLayout = QVBoxLayout()
@@ -225,6 +229,8 @@ class MaxpoolWidget(QWidget):
 
 
 class FlatWidget(QWidget):
+    id = 3
+
     def __init__(self):
         super().__init__()
         self.flatLayout = QVBoxLayout()
@@ -235,6 +241,8 @@ class FlatWidget(QWidget):
 
 
 class DenseWidget(QWidget):
+    id = 4
+
     def __init__(self):
         super().__init__()
         self.denseLayout = QVBoxLayout()
@@ -245,8 +253,8 @@ class DenseWidget(QWidget):
         self.hdenseuiits = QHBoxLayout()
         self.denseunitslabel = QLabel("Units : ")
         self.hdenseuiits.addWidget(self.denseunitslabel)
-        self.denseunits =  QSpinBox()
-        self.denseunits.setRange(0,100)
+        self.denseunits = QSpinBox()
+        self.denseunits.setRange(0, 100)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
@@ -255,9 +263,9 @@ class DenseWidget(QWidget):
         self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
-                            'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
-                            'linear', 'selu', 'serialize', 'softmax', 'softplus',
-                            'softsign', 'swish']
+                         'elu', 'exponential', 'gelu', 'get', 'hard_sigmoid',
+                         'linear', 'selu', 'serialize', 'softmax', 'softplus',
+                         'softsign', 'swish']
         self.denseactivation.addItems(activationbox)
         self.hdenseactivation.addWidget(self.denseactivation)
         self.denseLayout.addLayout(self.hdenseactivation)
@@ -267,6 +275,8 @@ class DenseWidget(QWidget):
 
 
 class InputWidget(QWidget):
+    id = 5
+
     def __init__(self):
         super().__init__()
         self.inputLayout = QVBoxLayout()
@@ -278,6 +288,8 @@ class InputWidget(QWidget):
 
 
 class OutputWidget(QWidget):
+    id = 6
+
     def __init__(self):
         super().__init__()
         self.outputLayout = QVBoxLayout()
@@ -290,6 +302,7 @@ class OutputWidget(QWidget):
 
 class ModelWidget(QWidget):
     attr_widget = []
+    layer_index_order = []
 
     def __init__(self):
         super().__init__()
@@ -301,6 +314,7 @@ class ModelWidget(QWidget):
 
         self.vw = ViewWidget()
         self.hlayout.addWidget(self.vw)
+        self.vw.edge_btn.clicked.connect(self.showEdge)
 
         self.stackWidget = QStackedWidget()
         self.stackWidget.setFixedWidth(200)
@@ -356,3 +370,48 @@ class ModelWidget(QWidget):
         self.stackWidget.removeWidget(self.attr_widget[i])
         self.attr_widget.remove(self.attr_widget[i])
         self.stackWidget.setCurrentIndex(0)
+
+    def showEdge(self):
+        layer_json = "Json: \n"
+        now_node = None
+        gs = self.vw.gv.graphics_scene
+        edge_label = self.vw.edgeLabel
+        edge_label.setText("Edge: \n")
+        for node in gs.nodes:
+            if node.id == 5:
+                now_node = node
+        if now_node == None:
+            print("No Input Layer")
+            return
+
+        for i in range(len(gs.nodes)):
+            if now_node.id != 6 and now_node.rightPort.edge_index != -1:
+                self.layer_index_order.append(now_node.index)
+                edge_label.setText(edge_label.text() +
+                                   "index: " + str(now_node.index) +
+                                   ", id: " + str(now_node.id) +
+                                   ", name: " + now_node.name +
+                                   ", next edge's index: " + str(now_node.rightPort.edge_index)+"\n")
+                now_node = gs.nodes[gs.edges[now_node.rightPort.edge_index].end_node.index]
+            else:
+                self.layer_index_order.append(now_node.index)
+                edge_label.setText(edge_label.text() +
+                                   "index: " + str(now_node.index) +
+                                   ", id: " + str(now_node.id) +
+                                   ", name: " + now_node.name +
+                                   ", next edge's index: The End\n")
+
+                break
+        for i in self.layer_index_order:
+            if self.attr_widget[i].id == 1:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+            elif self.attr_widget[i].id == 2:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+            elif self.attr_widget[i].id == 3:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+            elif self.attr_widget[i].id == 4:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+            elif self.attr_widget[i].id == 5:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
+            elif self.attr_widget[i].id == 6:
+                layer_json += "{\"id=\"" + str(self.attr_widget[i].id) + ","
