@@ -203,22 +203,23 @@ class ImgWidget(QWidget):
 
         self.imgLabel = QLabel('Select a folder path for input dataset')
         self.imgLabel.setFont(QFont("Consolas", 15))
+        # self.vlayout.addWidget(self.imgLabel)
         self.vlayout.addWidget(self.imgLabel)
 
-        self.pixmap_lw = QtWidgets.QListWidget(
-            viewMode=QtWidgets.QListView.IconMode,
-            iconSize=ICON_SIZE * QtCore.QSize(1, 1),
-            movement=QtWidgets.QListView.Static,
-            resizeMode=QtWidgets.QListView.Adjust,
-        )
+        # self.pixmap_lw = QtWidgets.QListWidget(
+        #     viewMode=QtWidgets.QListView.IconMode,
+        #     iconSize=ICON_SIZE * QtCore.QSize(1, 1),
+        #     movement=QtWidgets.QListView.Static,
+        #     resizeMode=QtWidgets.QListView.Adjust,
+        # )
 
-        delegate = StyledItemDelegate(self.pixmap_lw)
-        self.pixmap_lw.setItemDelegate(delegate)
+        # delegate = StyledItemDelegate(self.pixmap_lw)
+        # self.pixmap_lw.setItemDelegate(delegate)
 
-        self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
-        self.filenames_iterator = None
+        # self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
+        # self.filenames_iterator = None
 
-        self.vlayout.addWidget(self.pixmap_lw)
+        # self.vlayout.addWidget(self.pixmap_lw)
 
         self.vlayout.addLayout(self.hlayout)
 
@@ -234,8 +235,26 @@ class InputWidget(QWidget):
         self.hlayout = QHBoxLayout()
         self.hlayout.addStretch(1)
 
+        self.himgw = QVBoxLayout()
         self.imgw = ImgWidget()
-        self.hlayout.addWidget(self.imgw)
+        self.himgw.addWidget(self.imgw)
+        # self.hlayout.addWidget(self.imgw)
+
+        self.pixmap_lw = QtWidgets.QListWidget(
+            viewMode=QtWidgets.QListView.IconMode,
+            iconSize=ICON_SIZE * QtCore.QSize(1, 1),
+            movement=QtWidgets.QListView.Static,
+            resizeMode=QtWidgets.QListView.Adjust,
+        )
+
+        delegate = StyledItemDelegate(self.pixmap_lw)
+        self.pixmap_lw.setItemDelegate(delegate)
+
+        self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
+        self.filenames_iterator = None
+
+        self.himgw.addWidget(self.pixmap_lw)
+        self.hlayout.addLayout(self.himgw)
 
         self.hlayout.addStretch(1)
         self.aw = AttributeWidget()
@@ -265,11 +284,11 @@ class InputWidget(QWidget):
         # x = PIL.Image.open(str(roses[0]))
         # x.show()
 
-        directory = QtWidgets.QFileDialog.getExistingDirectory(
-            options=QtWidgets.QFileDialog.DontUseNativeDialog
-        )
-        if directory:
-            self.start_loading(directory)
+        # directory = QtWidgets.QFileDialog.getExistingDirectory(
+        #     options=QtWidgets.QFileDialog.DontUseNativeDialog
+        # )
+        # if directory:
+        #     self.start_loading(directory)
 
 
     def confirm_Btn(self):
