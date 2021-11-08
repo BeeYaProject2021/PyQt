@@ -274,6 +274,9 @@ class InputWidget(QWidget):
         folder_path = QFileDialog.getExistingDirectory(
             self, "Open folder", "./")  # start path
 
+        if folder_path:
+            self.start_loading(folder_path)
+
         self.imgw.filePathEdit.setText(folder_path)
         folder_path = pathlib.Path(folder_path)
         print(folder_path)
@@ -289,6 +292,7 @@ class InputWidget(QWidget):
         # )
         # if directory:
         #     self.start_loading(directory)
+
 
 
     def confirm_Btn(self):
@@ -310,7 +314,7 @@ class InputWidget(QWidget):
     def start_loading(self, directory):
         if self.timer_loading.isActive():
             self.timer_loading.stop()
-        self.path_le.setText(directory)
+        # self.path_le.setText(directory)
         self.filenames_iterator = self.load_images(directory)
         self.pixmap_lw.clear()
         self.timer_loading.start()
