@@ -4,12 +4,14 @@ import PIL
 import PIL.Image
 import numpy as np
 import tensorflow as tf
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
+
+ICON_SIZE = 100
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
@@ -102,6 +104,12 @@ class Thread(QThread):
                                 train_lab=lab, test_img=img2, test_lab=lab2)
             self._signal.emit(100)
 
+class StyledItemDelegate(QtWidgets.QStyledItemDelegate):
+    def initStyleOption(self, option, index):
+        super().initStyleOption(option, index)
+        option.text = option.fontMetrics.elidedText(
+            index.data(), QtCore.Qt.ElideRight, ICON_SIZE
+        )
 
 class AttributeWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -173,8 +181,6 @@ class AttributeWidget(QWidget):
         self.progressBar.setValue(0)
         self.progressBar.setVisible(False)
 
-        with open("./stylesheet/input.qss", "r") as f:    
-            self.setStyleSheet(f.read())
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -199,10 +205,23 @@ class ImgWidget(QWidget):
         self.imgLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.imgLabel)
 
+        self.pixmap_lw = QtWidgets.QListWidget(
+            viewMode=QtWidgets.QListView.IconMode,
+            iconSize=ICON_SIZE * QtCore.QSize(1, 1),
+            movement=QtWidgets.QListView.Static,
+            resizeMode=QtWidgets.QListView.Adjust,
+        )
+
+        delegate = StyledItemDelegate(self.pixmap_lw)
+        self.pixmap_lw.setItemDelegate(delegate)
+
+        self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
+        self.filenames_iterator = None
+
+        self.vlayout.addWidget(self.pixmap_lw)
+
         self.vlayout.addLayout(self.hlayout)
 
-        with open("./stylesheet/input.qss", "r") as f:    
-            self.setStyleSheet(f.read())
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -228,6 +247,9 @@ class InputWidget(QWidget):
 
         self.warning = QMessageBox()
 
+        with open("./stylesheet/input.qss", "r") as f:    
+            self.setStyleSheet(f.read())
+
     def input_Btn(self):
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
@@ -242,6 +264,13 @@ class InputWidget(QWidget):
         # roses = list(folder_path.glob('roses/*'))
         # x = PIL.Image.open(str(roses[0]))
         # x.show()
+
+        directory = QtWidgets.QFileDialog.getExistingDirectory(
+            options=QtWidgets.QFileDialog.DontUseNativeDialog
+        )
+        if directory:
+            self.start_loading(directory)
+
 
     def confirm_Btn(self):
         # Check Path exists
@@ -258,6 +287,37 @@ class InputWidget(QWidget):
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.setWindowTitle("Path Not Found")
             self.warning.show()
+
+    def start_loading(self, directory):
+        if self.timer_loading.isActive():
+            self.timer_loading.stop()
+        self.path_le.setText(directory)
+        self.filenames_iterator = self.load_images(directory)
+        self.pixmap_lw.clear()
+        self.timer_loading.start()
+
+    # @QtCore.pyqtSlot()
+    def load_image(self):
+        try:
+            filename = next(self.filenames_iterator)
+        except StopIteration:
+            self.timer_loading.stop()
+        else:
+            name = os.path.basename(filename)
+            it = QtWidgets.QListWidgetItem(name)
+            it.setIcon(QtGui.QIcon(filename))
+            self.pixmap_lw.addItem(it)
+
+    def load_images(self, directory):
+        it = QtCore.QDirIterator(
+            directory,
+            ["*.jpg", "*.png"],
+            QtCore.QDir.Files,
+            QtCore.QDirIterator.Subdirectories,
+        )
+        while it.hasNext():
+            filename = it.next()
+            yield filename
 
     def signal_accept(self, msg):
         self.aw.progressBar.setValue(int(msg))
