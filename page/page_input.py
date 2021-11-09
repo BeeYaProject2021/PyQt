@@ -274,7 +274,7 @@ class InputWidget(QWidget):
             self.setStyleSheet(f.read())
 
     def PlaySound(self):
-        audio_url = QtCore.QUrl.fromLocalFile("./sound/button.wav")
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/button.mp3")
         audio_content = QtMultimedia.QMediaContent(audio_url)
         self.player = QtMultimedia.QMediaPlayer()
         self.player.setVolume(50.0)
@@ -307,9 +307,9 @@ class InputWidget(QWidget):
         #     self.start_loading(directory)
 
     def confirm_Btn(self):
-        self.PlaySound()
         # Check Path exists
         if os.path.exists(self.imgw.filePathEdit.text()):
+            self.PlaySound()
             self.thread = Thread(self.aw, self.imgw)
             self.thread._signal.connect(self.signal_accept)
             self.thread._signal2.connect(self.signal_warning_get)
