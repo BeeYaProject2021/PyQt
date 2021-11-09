@@ -200,8 +200,8 @@ class GraphicsPathItem(QGraphicsPathItem):
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable, True)
         pen = QPen()
-        pen.setColor(Qt.black)
-        pen.setWidth(2)
+        pen.setColor(QColor("#0614B2"))
+        pen.setWidth(3)
         self.setPen(pen)
 
         self.edge_path = QPainterPath()
@@ -254,15 +254,17 @@ class NodeItem(QGraphicsRectItem):
         self.setFlag(
             QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable, True)
-        self.width = 150
-        self.height = 50
+        self.width = 160
+        self.height = 80
         self.setRect(0, 0, self.width, self.height)
-        self.setBrush(QColor(0xaa, 0xaa, 0xaa, 0xaa))
+        self.setBrush(QColor(6, 178, 178, 140))
 
         self.text = QGraphicsSimpleTextItem(self.name, self)
+        self.text.setFont(QFont("Consolas", 12))
         self.text.setPos(self.width/2-self.text.boundingRect().width()/2,
                          self.height/2-self.text.boundingRect().height()/2)
         self.text.setBrush(QColor(255, 0, 0))
+
 
         if self.id != 5:
             self.leftPort = PortItem(self.index, 0, self)
@@ -306,7 +308,7 @@ class PortItem(QGraphicsEllipseItem):
         self.id = id
         self.portDiam = 20
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
-        self.setBrush(QColor(0x00, 0xaa, 0x00, 0x66))
+        self.setBrush(QColor(255, 128, 128, 180))
         self.setRect(0, 0, self.portDiam, self.portDiam)
 
 
