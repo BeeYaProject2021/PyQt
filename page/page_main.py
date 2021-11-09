@@ -5,6 +5,7 @@ from page_setting import *
 from page_model import *
 from page_input import *
 from page_training import *
+from screenshot import *
 
 import os
 import sys
@@ -76,7 +77,6 @@ class WidgetA(QWidget):
         e.setDropAction(Qt.MoveAction)
         e.accept()
 
-
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -116,6 +116,9 @@ class MainWindow(QMainWindow):
         self.resize(1280, 720)
         self.show()
 
+        self.cutscerrn = CaptureScreen()
+        self.trainingW.toolButton_4.clicked.connect(self.cutscerrn.show)
+
     def img_signal_acc(self, msg):
         self.trainingW.img_total = msg
 
@@ -128,7 +131,7 @@ class MainWindow(QMainWindow):
         self.trainingW.batch_size = batch
         self.trainingW.epoch = epoch
 
-
+# keyboard.wait(hotkey='c')
 app = QApplication(sys.argv)
 
 window = MainWindow()
