@@ -320,10 +320,11 @@ class ViewWidget(QWidget):
         self.toggle_btn = QPushButton("Toggle Drag Mode")
         self.toggle_btn.clicked.connect(self.toggle_drag_mode)
         self.vlayout.addWidget(self.toggle_btn)
-        self.edge_btn = QPushButton("Show Edge")
+        self.edge_btn = QPushButton("Store Setting")
         self.vlayout.addWidget(self.edge_btn)
         self.edgeLabel = QLabel("Edge: \n")
         self.edgeLabel.setObjectName("edge")
+        self.edgeLabel.setVisible(False)
         self.vlayout.addWidget(self.edgeLabel)
         self.setLayout(self.vlayout)
         with open("./stylesheet/model.qss", "r") as f:    

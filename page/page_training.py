@@ -6,7 +6,6 @@ from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
 from pyqtgraph import PlotWidget, plot
 
-
 class Thread(QThread):
     # Setup signal for thread
     _signal = pyqtSignal(int)
@@ -78,6 +77,7 @@ class TrainingWidget(QWidget):
     batch_size = 0
     epoch = 0
     uid = None
+    port = None
 
     def __init__(self):
         super().__init__()
