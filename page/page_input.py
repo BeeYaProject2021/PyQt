@@ -4,7 +4,7 @@ import PIL
 import PIL.Image
 import numpy as np
 import tensorflow as tf
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -12,7 +12,6 @@ import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
-
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
@@ -274,7 +273,16 @@ class InputWidget(QWidget):
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
 
+    def PlaySound(self):
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/button.wav")
+        audio_content = QtMultimedia.QMediaContent(audio_url)
+        self.player = QtMultimedia.QMediaPlayer()
+        self.player.setVolume(50.0)
+        self.player.setMedia(audio_content)
+        self.player.play()
+
     def input_Btn(self):
+        self.PlaySound()
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
             self, "Open folder", "./")  # start path
@@ -299,6 +307,7 @@ class InputWidget(QWidget):
         #     self.start_loading(directory)
 
     def confirm_Btn(self):
+        self.PlaySound()
         # Check Path exists
         if os.path.exists(self.imgw.filePathEdit.text()):
             self.thread = Thread(self.aw, self.imgw)
