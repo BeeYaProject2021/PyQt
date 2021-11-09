@@ -328,7 +328,7 @@ class ViewWidget(QWidget):
 
     def toggle_drag_mode(self):
         if self.gv.dragMode() == QGraphicsView.ScrollHandDrag:
-            self.gv.setDragMode(QtWidgets.QGraphicsView.NoDrag)
+            self.gv.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
         else:
             self.gv.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
