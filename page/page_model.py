@@ -442,6 +442,7 @@ class ModelWidget(QWidget):
             if i != self.layer_index_order[len(self.layer_index_order)-1]:
                 layer_json += ","
 
-        edge_label.setText(edge_label.text() + layer_json)
+        edge_label.setText(edge_label.text())
+        print(layer_json)
         layer_json = "Json: \n"
         self.layer_index_order.clear()
