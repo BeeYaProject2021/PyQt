@@ -256,7 +256,7 @@ class TrainingWidget(QWidget):
     def start_progress(self):
         # Maximum = image/batch_size x epochs
         print(str(self.img_total)+" "+str(self.batch_size)+" "+str(self.epoch))
-
+        self.progressBar.setFormat("0 / 0")
         self.progressBar.setValue(0)
         self.accuracy_x.clear()
         self.accuracy_y.clear()
@@ -275,8 +275,15 @@ class TrainingWidget(QWidget):
 
         if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "":
             print("GOOOOO")
-            self.progressBar.setMaximum(
-                (self.img_total/self.batch_size)*self.epoch)
+            tmp = 0
+            print(self.img_total/self.batch_size)
+            if self.img_total % self.batch_size != 0:
+                tmp = int(self.img_total/self.batch_size) + 1
+            else:
+                tmp = int(self.img_total/self.batch_size)
+
+            self.progressBar.setMaximum(tmp*self.epoch)
+            self.progressBar.setTextVisible(True)
 
             data_json = self.layer_json + self.setting_json
 
@@ -298,6 +305,7 @@ class TrainingWidget(QWidget):
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
+        self.progressBar.setFormat(str(self.progressBar.value()) + " / " + str(self.progressBar.maximum()))
         if self.progressBar.value() == self.progressBar.maximum():
             self.pushButtongo.setEnabled(True)
             self.toolButton_5.setEnabled(True)

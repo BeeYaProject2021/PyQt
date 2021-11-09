@@ -36,7 +36,6 @@ class Thread(QThread):
         if img_cnt*validate < 1:
             self._signal2.emit(-1)
         else:
-            self._signal2.emit(img_cnt*(1-validate))
             self.aw.progressBar.setVisible(True)
             train_ds = tf.keras.preprocessing.image_dataset_from_directory(
                 path,
@@ -45,6 +44,9 @@ class Thread(QThread):
                 seed=123,
                 image_size=(imgH, imgW),
                 batch_size=32)
+
+            img_cnt = len(np.concatenate([i for x, i in train_ds], axis=0))
+            self._signal2.emit(img_cnt)
 
             for i in range(20):
                 time.sleep(0.01)
