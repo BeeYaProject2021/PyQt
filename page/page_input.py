@@ -13,6 +13,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
 
+
 class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
@@ -104,12 +105,14 @@ class Thread(QThread):
                                 train_lab=lab, test_img=img2, test_lab=lab2)
             self._signal.emit(100)
 
+
 class StyledItemDelegate(QtWidgets.QStyledItemDelegate):
     def initStyleOption(self, option, index):
         super().initStyleOption(option, index)
         option.text = option.fontMetrics.elidedText(
             index.data(), QtCore.Qt.ElideRight, ICON_SIZE
         )
+
 
 class AttributeWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -156,17 +159,17 @@ class AttributeWidget(QWidget):
         self.imgwvLayout.addWidget(self.imgwBox)
 
         self.imgboxLayout.addLayout(self.imgwvLayout)
-        
+
         self.vlayout.addLayout(self.imgboxLayout)
 
         self.rgbhlayout = QHBoxLayout()
-        self.rgbLabel = QLabel("RGB")
+        self.rgbLabel = QLabel("color:")
         self.rgbLabel.setFont(QFont("Consolas", 12))
         self.rgbLabel.setAlignment(Qt.AlignCenter)
         self.rgbhlayout.addWidget(self.rgbLabel)
-        
+
         self.rgbSelect = QComboBox()
-        rgb = ["HjackH", "RGB"]
+        rgb = ["Grayscale", "RGB"]
         self.rgbSelect.addItems(rgb)
         self.rgbhlayout.addWidget(self.rgbSelect)
 
@@ -229,6 +232,7 @@ class ImgWidget(QWidget):
 
 class InputWidget(QWidget):
     img_total_signal = pyqtSignal(int)
+    img_size_signal = pyqtSignal(int, int, int)
 
     def __init__(self, *args, **kwargs):
         super(InputWidget, self).__init__(*args, **kwargs)
@@ -250,7 +254,8 @@ class InputWidget(QWidget):
         delegate = StyledItemDelegate(self.pixmap_lw)
         self.pixmap_lw.setItemDelegate(delegate)
 
-        self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
+        self.timer_loading = QtCore.QTimer(
+            interval=50, timeout=self.load_image)
         self.filenames_iterator = None
 
         self.himgw.addWidget(self.pixmap_lw)
@@ -266,7 +271,7 @@ class InputWidget(QWidget):
 
         self.warning = QMessageBox()
 
-        with open("./stylesheet/input.qss", "r") as f:    
+        with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
 
     def input_Btn(self):
@@ -292,8 +297,6 @@ class InputWidget(QWidget):
         # )
         # if directory:
         #     self.start_loading(directory)
-
-
 
     def confirm_Btn(self):
         # Check Path exists
@@ -353,8 +356,16 @@ class InputWidget(QWidget):
                 "Number of validation must be higher than zero img")
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.setWindowTitle("Image Counts Error")
-            self.warning.setDetailedText("You must choose the path containing more images.\nThat is, given images counts is too low.")
+            self.warning.setDetailedText(
+                "You must choose the path containing more images.\nThat is, given images counts is too low.")
             self.warning.show()
             self.aw.confirmBtn.setEnabled(True)
         else:
             self.img_total_signal.emit(msg)
+            color = 0
+            if self.aw.rgbSelect.currentIndex() == 0:
+                color = 1
+            else:
+                color = 3
+            self.img_size_signal.emit(self.aw.imghBox.value(
+            ), self.aw.imgwBox.value(), color)

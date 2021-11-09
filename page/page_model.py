@@ -303,6 +303,7 @@ class OutputWidget(QWidget):
 class ModelWidget(QWidget):
     attr_widget = []
     layer_index_order = []
+    input_shape = []
 
     def __init__(self):
         super().__init__()
@@ -419,11 +420,13 @@ class ModelWidget(QWidget):
                                ",\"units\":\"" + str(self.attr_widget[i].denseunits.value()) +
                                "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"}")
             elif self.attr_widget[i].id == 5:
-                # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
-                pass
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
+                               ",\"input_shape\":\"" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "\"}")
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass
+            if i != self.layer_index_order[len(self.layer_index_order)-1]:
+                layer_json += ","
 
         edge_label.setText(edge_label.text() + layer_json)
         layer_json = "Json: \n"

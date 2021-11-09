@@ -95,6 +95,7 @@ class MainWindow(QMainWindow):
         self.inputW = InputWidget()
         i = self.tabs.addTab(self.inputW, label)
         self.inputW.img_total_signal.connect(self.img_signal_acc)
+        self.inputW.img_size_signal.connect(self.img_size_signal_acc)
 
         label = "Model"
         self.modelW = ModelWidget()
@@ -117,6 +118,11 @@ class MainWindow(QMainWindow):
 
     def img_signal_acc(self, msg):
         self.trainingW.img_total = msg
+
+    def img_size_signal_acc(self, w, h, color):
+        self.modelW.input_shape.append(w)
+        self.modelW.input_shape.append(h)
+        self.modelW.input_shape.append(color)
 
     def batch_epoch_signal_acc(self, batch, epoch):
         self.trainingW.batch_size = batch
