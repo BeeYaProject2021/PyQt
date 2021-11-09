@@ -18,15 +18,23 @@ class Thread(QThread):
     loss_signal = pyqtSignal(int, float)
     val_loss_signal = pyqtSignal(int, float)
 
-    def __init__(self, clientPort):
+    def __init__(self, data_json):
         super(Thread, self).__init__()
-        self.port = clientPort
+        self.data_json = data_json
 
     def run(self):
+        url = 'http://140.136.204.132:8000/upload/'
+        data_json = self.data_json
+
+        x = requests.post(url, data={'model': data_json}, files={
+            'file': open('data.npz', 'rb')})
+        print(x.text)
+        data = re.split(" |\"", x.text)
+
         ClientSocket = socket.socket()
         ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         host = '140.136.204.132'
-        port = self.port
+        port = (int)(data[3])
 
         print('Waiting for backend connection')
 
@@ -269,16 +277,11 @@ class TrainingWidget(QWidget):
             print("GOOOOO")
             self.progressBar.setMaximum(
                 (self.img_total/self.batch_size)*self.epoch)
-            url = 'http://140.136.204.132:8000/upload/'
+
             data_json = self.layer_json + self.setting_json
 
-            x = requests.post(url, data={'model': data_json}, files={
-                'file': open('data.npz', 'rb')})
-            print(x.text)
-            data = re.split(" |\"", x.text)
-            port = (int)(data[3])
             # Thread for progressBar and data graph
-            self.thread = Thread(port)
+            self.thread = Thread(data_json)
             self.thread._signal.connect(self.signal_accept)
             self.thread.accuracy_signal.connect(self.update_acc)
             self.thread.val_accuracy_signal.connect(self.update_val_acc)
