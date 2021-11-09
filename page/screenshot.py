@@ -14,7 +14,7 @@ class CaptureScreen(QWidget):
     painter = QPainter()
 
     def __init__(self):
-        super(CaptureScreen, self).__init__()
+        super(QWidget, self).__init__()
         self.initWindow()   # 初始化窗口
         self.captureFullScreen()    # 获取全屏
 
@@ -97,7 +97,7 @@ class CaptureScreen(QWidget):
         self.captureImage.save('picture.png', quality=95)   # 保存图片到当前文件夹中
 
 if __name__ == "__main__":
-    keyboard.wait(hotkey='s')  # 按s开始截图
+    keyboard.wait(hotkey='c')  # 按c开始截图
     app = QApplication(sys.argv)
     windows = CaptureScreen()
     windows.show()

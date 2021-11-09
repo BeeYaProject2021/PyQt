@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication,
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
 from pyqtgraph import PlotWidget, plot
-from screenshot import *
 
 
 class Thread(QThread):
@@ -77,12 +76,6 @@ class Thread(QThread):
 
             if over == True:
                 break
-
-class screen(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.ui = CaptureScreen()
-        # self.ui.setupUi(self)
 
 
 class TrainingWidget(QWidget):
@@ -235,9 +228,6 @@ class TrainingWidget(QWidget):
         # self.setLayout(self.v_layout)
 
         # self.timer = time.sleep(0.2)
-
-        self.cutscerrn = screen()
-        self.toolButton_4.clicked.connect(self.cutscerrn.show)
 
 
     def start_progress(self):
