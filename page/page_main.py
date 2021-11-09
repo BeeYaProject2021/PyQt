@@ -6,6 +6,7 @@ from page_model import *
 from page_input import *
 from page_training import *
 from screenshot import *
+from information import *
 
 import os
 import sys
@@ -118,6 +119,9 @@ class MainWindow(QMainWindow):
 
         self.cutscerrn = CaptureScreen()
         self.trainingW.toolButton_4.clicked.connect(self.cutscerrn.show)
+
+        self.modelinformation = Information()
+        self.modelW.layerm.binformation.clicked.connect(self.modelinformation.show)
 
     def img_signal_acc(self, msg):
         self.trainingW.img_total = msg

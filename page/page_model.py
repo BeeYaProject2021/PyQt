@@ -121,14 +121,13 @@ class Layermodel(QWidget):
 
         self.vlayout.addStretch()
 
-        self.garbage_can = QPushButton()
-        self.garbage_can.setStyleSheet("background-image:url(./image/garbage.png);" +
+        self.binformation = QPushButton()
+        self.binformation.setStyleSheet("background-image:url(./image/information.png);" +
                                        "background-position:center;" +
                                        "background-repeat:no-repeat;" +
                                        "border:2px solid black;" +
-                                       "height:100px")
-
-        self.vlayout.addWidget(self.garbage_can)
+                                       "height:120px;")
+        self.vlayout.addWidget(self.binformation)
 
         with open("./stylesheet/model.qss", "r") as f:
             self.setStyleSheet(f.read())
