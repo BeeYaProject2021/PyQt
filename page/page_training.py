@@ -9,6 +9,7 @@ from pyqtgraph import PlotWidget, plot
 import webbrowser
 import re
 
+uid = None
 
 class Thread(QThread):
     # Setup signal for thread
@@ -23,6 +24,7 @@ class Thread(QThread):
         self.data_json = data_json
 
     def run(self):
+        global uid
         url = 'http://140.136.204.132:8000/upload/'
         data_json = self.data_json
 
@@ -30,11 +32,13 @@ class Thread(QThread):
             'file': open('data.npz', 'rb')})
         print(x.text)
         data = re.split(" |\"", x.text)
+        print("response data", data[2])
 
         ClientSocket = socket.socket()
         ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         host = '140.136.204.132'
         port = (int)(data[3])
+        uid = data[2]
 
         print('Waiting for backend connection')
 
@@ -86,13 +90,12 @@ class Thread(QThread):
 
 
 class TrainingWidget(QWidget):
+    global uid
     img_total = 0
     batch_size = 0
     epoch = 0
     setting_json = ""
     layer_json = ""
-    uid = None
-    port = None
 
     def __init__(self):
         super().__init__()
@@ -331,9 +334,9 @@ class TrainingWidget(QWidget):
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
 
     def saveModel(self, action):
-        url = 'http://140.136.204.132:8000/download/?train_id=' + self.uid
+        url = 'http://140.136.204.132:8000/download/?train_id=' + uid
         r = requests.get(url, allow_redirects=True)
-        open(self.uid + ".zip", "wb").write(r.content)
+        open(uid + ".zip", "wb").write(r.content)
         # webbrowser(url, new=2)
         self.warning.setText("Your training model downloaded")
         self.warning.setIcon(QMessageBox.Icon.Information)
