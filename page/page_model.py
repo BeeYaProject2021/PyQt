@@ -151,7 +151,7 @@ class ConvWidget(QWidget):
         self.convfilterlabel.setFont(QFont("Consolas", 10))
         self.hfilter.addWidget(self.convfilterlabel)
         self.convfilter = QSpinBox()
-        self.convfilter.setMinimum(1)
+        self.convfilter.setRange(1, 100000)
         # self.convfilter.setSingleStep(2)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
@@ -161,7 +161,7 @@ class ConvWidget(QWidget):
         self.convkernel_sizelabel.setFont(QFont("Consolas", 10))
         self.hkernel_size.addWidget(self.convkernel_sizelabel)
         self.convkernel_size = QSpinBox()
-        self.convkernel_size.setMinimum(1)
+        self.convkernel_size.setRange(1, 100000)
         self.hkernel_size.addWidget(self.convkernel_size)
         self.convLayout.addLayout(self.hkernel_size)
 
@@ -227,7 +227,7 @@ class MaxpoolWidget(QWidget):
         self.hpoolpool_size.addWidget(self.poolpool_sizelabel)
         self.poolLayout.addWidget(self.btn)
         self.poolpool_size = QSpinBox()
-        self.poolpool_size.setMinimum(1)
+        self.poolpool_size.setRange(1, 100000)
         self.hpoolpool_size.addWidget(self.poolpool_size)
         self.poolLayout.addLayout(self.hpoolpool_size)
 
@@ -266,7 +266,7 @@ class DenseWidget(QWidget):
         self.denseunitslabel.setFont(QFont("Consolas", 10))
         self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QSpinBox()
-        self.denseunits.setMinimum(1)
+        self.denseunits.setRange(1, 100000)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
@@ -322,7 +322,7 @@ class OutputWidget(QWidget):
 class ModelWidget(QWidget):
     attr_widget = []
     layer_index_order = []
-    input_shape = []
+    input_shape = [0, 0, 0]
     layer_json_signal = pyqtSignal(str)
 
     def __init__(self):
@@ -393,7 +393,7 @@ class ModelWidget(QWidget):
         self.stackWidget.setCurrentIndex(0)
 
     def showEdge(self):
-        layer_json = ""
+        layer_json = "["
         now_node = None
         gs = self.vw.gv.graphics_scene
         edge_label = self.vw.edgeLabel
@@ -441,7 +441,7 @@ class ModelWidget(QWidget):
                                "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"}")
             elif self.attr_widget[i].id == 5:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
-                               ",\"input_shape\":\"" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "\"}")
+                               ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "}")
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass
@@ -451,5 +451,5 @@ class ModelWidget(QWidget):
         edge_label.setText(edge_label.text())
         print(layer_json)
         self.layer_json_signal.emit(layer_json)
-        layer_json = ""
+        layer_json = "["
         self.layer_index_order.clear()

@@ -13,7 +13,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 
 class SettingWidget(QWidget):
-    batch_epoch_signal = pyqtSignal(int, int)
+    batch_epoch_signal = pyqtSignal(int, int, str)
 
     def __init__(self, *args, **kwargs):
         super(SettingWidget, self).__init__(*args, **kwargs)
@@ -60,7 +60,7 @@ class SettingWidget(QWidget):
         self.vlayout.addWidget(self.bsLabel)
 
         self.batchBox = QSpinBox()
-        self.batchBox.setMinimum(1)
+        self.batchBox.setRange(1, 100000)
         self.vlayout.addWidget(self.batchBox)
 
         self.epochLabel = QLabel()
@@ -68,7 +68,7 @@ class SettingWidget(QWidget):
         self.vlayout.addWidget(self.epochLabel)
 
         self.epochBox = QSpinBox()
-        self.epochBox.setMinimum(1)
+        self.epochBox.setRange(1, 100000)
         self.vlayout.addWidget(self.epochBox)
 
         self.checkbutton = QPushButton('Click Here To Complete', self)
@@ -78,7 +78,7 @@ class SettingWidget(QWidget):
         self.combinedata = QLabel()
         self.combinedata.setText("Data:")
 
-        with open("./stylesheet/setting.qss", "r") as f:    
+        with open("./stylesheet/setting.qss", "r") as f:
             self.setStyleSheet(f.read())
 
         self.vlayout.addWidget(self.combinedata)
@@ -95,12 +95,12 @@ class SettingWidget(QWidget):
         batch = str(self.batchBox.value())
         epoch = str(self.epochBox.value())
         data = "{\"id:\"-1,\"optimizer\":'"+opt+"',\"learning_rate\":'"+lr + \
-            "',\"loss_fn\":'"+loss+"',\"batch_size\":'"+batch+"',\"epochs\":'"+epoch+"'}"
+            "',\"loss_fn\":'"+loss+"',\"batch_size\":'"+batch+"',\"epochs\":'"+epoch+"'}]"
         print(opt)
         print(lr)
         print(loss)
         print(batch)
         print(epoch)
         self.batch_epoch_signal.emit(
-            self.batchBox.value(), self.epochBox.value())
+            self.batchBox.value(), self.epochBox.value(), data)
         self.combinedata.setText("Data:"+data)
