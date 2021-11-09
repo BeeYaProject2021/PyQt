@@ -96,9 +96,9 @@ class CaptureScreen(QWidget):
     def saveImage(self):
         self.captureImage.save('picture.png', quality=95)   # 保存图片到当前文件夹中
 
-if __name__ == "__main__":
-    keyboard.wait(hotkey='c')  # 按c开始截图
-    app = QApplication(sys.argv)
-    windows = CaptureScreen()
-    windows.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     keyboard.wait(hotkey='c')  # 按c开始截图
+#     app = QApplication(sys.argv)
+#     windows = CaptureScreen()
+#     windows.show()
+#     sys.exit(app.exec_())
