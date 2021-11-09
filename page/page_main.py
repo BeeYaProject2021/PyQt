@@ -78,6 +78,7 @@ class WidgetA(QWidget):
         e.setDropAction(Qt.MoveAction)
         e.accept()
 
+
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -101,10 +102,13 @@ class MainWindow(QMainWindow):
         label = "Model"
         self.modelW = ModelWidget()
         i = self.tabs.addTab(self.modelW, label)
+        self.modelW.layer_json_signal.connect(self.layer_json_signal_acc)
+
         label = "Training Setting"
         self.settingW = SettingWidget()
         self.settingW.batch_epoch_signal.connect(self.batch_epoch_signal_acc)
         i = self.tabs.addTab(self.settingW, label)
+
         label = "Result"
         self.trainingW = TrainingWidget()
         i = self.tabs.addTab(self.trainingW, label)
@@ -121,21 +125,26 @@ class MainWindow(QMainWindow):
         self.trainingW.toolButton_4.clicked.connect(self.cutscerrn.show)
 
         self.modelinformation = Information()
-        self.modelW.layerm.binformation.clicked.connect(self.modelinformation.show)
+        self.modelW.layerm.binformation.clicked.connect(
+            self.modelinformation.show)
 
     def img_signal_acc(self, msg):
         self.trainingW.img_total = msg
 
-    def img_size_signal_acc(self, w, h, color):
-        self.modelW.input_shape.append(w)
-        self.modelW.input_shape.append(h)
-        self.modelW.input_shape.append(color)
+    def img_size_signal_acc(self, h, w, color):
+        self.modelW.input_shape[0] = h
+        self.modelW.input_shape[1] = w
+        self.modelW.input_shape[2] = color
 
-    def batch_epoch_signal_acc(self, batch, epoch):
+    def batch_epoch_signal_acc(self, batch, epoch, setting_json):
         self.trainingW.batch_size = batch
         self.trainingW.epoch = epoch
+        self.trainingW.setting_json = setting_json
 
-# keyboard.wait(hotkey='c')
+    def layer_json_signal_acc(self, json_str):
+        self.trainingW.layer_json = json_str
+
+        # keyboard.wait(hotkey='c')
 app = QApplication(sys.argv)
 
 window = MainWindow()
