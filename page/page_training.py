@@ -1,12 +1,7 @@
-# from _typeshed import Self
-from re import S
-import time
-import sys
-import os
-import socket
+import socket, requests
 import pyqtgraph as pg
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QMessageBox, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
 from pyqtgraph import PlotWidget, plot
@@ -82,6 +77,7 @@ class TrainingWidget(QWidget):
     img_total = 0
     batch_size = 0
     epoch = 0
+    uid = None
 
     def __init__(self):
         super().__init__()
@@ -144,6 +140,7 @@ class TrainingWidget(QWidget):
         icon6.addPixmap(QtGui.QPixmap("./image/screenshot.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_4.setIcon(icon6)
+        self.toolButton_4.setToolTip("screenshot")      
         self.buttonlayout.addWidget(self.toolButton_4)
 
         self.toolButton_5 = QtWidgets.QToolButton(self)
@@ -153,6 +150,9 @@ class TrainingWidget(QWidget):
         icon7.addPixmap(QtGui.QPixmap("./image/save.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_5.setIcon(icon7)
+        self.toolButton_5.setToolTip("save the model")
+        self.toolButton_5.clicked.connect(self.saveModel)
+        self.toolButton_5.setEnabled(False)
         self.buttonlayout.addWidget(self.toolButton_5)
 
         self.buttonlayout.addStretch(2)
@@ -229,6 +229,8 @@ class TrainingWidget(QWidget):
         self.vtrainw.addLayout(self.progresslayout)
         self.setLayout(self.vtrainw)
 
+        self.warning = QMessageBox()
+
         # self.v_layout = QVBoxLayout()
         # self.v_layout.addWidget(self.progressBar)
         # self.v_layout.addWidget(self.pushButtongo)
@@ -273,11 +275,17 @@ class TrainingWidget(QWidget):
 
             self.thread.start()
             self.pushButtongo.setEnabled(False)
+        else:
+            self.warning.setText("The data for training is not enough")
+            self.warning.setIcon(QMessageBox.Icon.Question)
+            self.warning.setWindowTitle("Need a double check?")
+            self.warning.show()            
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
         if self.progressBar.value() == self.progressBar.maximum():
             self.pushButtongo.setEnabled(True)
+            self.toolButton_5.setEnabled(True)
 
     def update_acc(self, x, y):
         self.accuracy_x.append(x)
@@ -298,3 +306,13 @@ class TrainingWidget(QWidget):
         self.val_loss_x.append(x)
         self.val_loss_y.append(y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
+
+    def saveModel(self, action):
+        url = 'http://140.136.204.132:8000/download/?train_id=' + self.uid
+        r = requests.get(url, allow_redirects=True)
+        open(self.uid +".zip", "wb").write(r.content)
+        self.warning.setText("Your training model downloaded")
+        self.warning.setIcon(QMessageBox.Icon.Information)
+        self.warning.setWindowTitle("Model Download OK")
+        self.warning.show()
+        print("OK!")
