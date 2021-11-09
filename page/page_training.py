@@ -92,7 +92,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addStretch(2)
 
         self.pushButton_1 = QtWidgets.QPushButton(self)
-        self.pushButton_1.resize(50, 50)
+        self.pushButton_1.setMinimumSize(50, 50)
+        # self.pushButton_1.resize(50, 50)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("./image/rotate-left 4.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -100,7 +101,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addWidget(self.pushButton_1)
 
         self.pushButton_2 = QtWidgets.QPushButton(self)
-        self.pushButton_2.resize(50, 50)
+        self.pushButton_2.setMinimumSize(50, 50)
+        # self.pushButton_2.resize(50, 50)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./image/rotate-right 2.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -108,7 +110,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addWidget(self.pushButton_2)
 
         self.pushButton_3 = QtWidgets.QPushButton(self)
-        self.pushButton_3.resize(50, 50)
+        self.pushButton_3.setMinimumSize(50, 50)
+        # self.pushButton_3.resize(50, 50)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("./image/4_audio_play.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -116,7 +119,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addWidget(self.pushButton_3)
 
         self.pushButton_4 = QtWidgets.QPushButton(self)
-        self.pushButton_4.resize(50, 50)
+        self.pushButton_4.setMinimumSize(50, 50)
+        # self.pushButton_4.resize(50, 50)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("./image/4_audio_stop.ico"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -124,7 +128,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addWidget(self.pushButton_4)
 
         self.pushButton_5 = QtWidgets.QPushButton(self)
-        self.pushButton_5.resize(50, 50)
+        self.pushButton_5.setMinimumSize(50, 50)
+        # self.pushButton_5.resize(50, 50)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("./image/4_audio_pause.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -133,7 +138,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addStretch(2)
 
         self.toolButton_4 = QtWidgets.QToolButton(self)
-        self.toolButton_4.resize(50, 50)
+        self.toolButton_4.setMinimumSize(50, 50)
+        # self.toolButton_4.resize(50, 50)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("./image/screenshot.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -141,7 +147,8 @@ class TrainingWidget(QWidget):
         self.buttonlayout.addWidget(self.toolButton_4)
 
         self.toolButton_5 = QtWidgets.QToolButton(self)
-        self.toolButton_5.resize(50, 50)
+        self.toolButton_5.setMinimumSize(50, 50)
+        # self.toolButton_5.resize(50, 50)
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap("./image/save.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -207,6 +214,7 @@ class TrainingWidget(QWidget):
 
 
         self.pushButtongo = QPushButton("GO", self)
+        self.pushButtongo.setMinimumSize(50, 50)
         self.progresslayout.addWidget(self.pushButtongo)
         # self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 30))
         # self.pushButtongo.setText(_translate("MainWindow", "go"))
