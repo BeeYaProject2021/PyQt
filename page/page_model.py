@@ -123,10 +123,10 @@ class Layermodel(QWidget):
 
         self.binformation = QPushButton()
         self.binformation.setStyleSheet("background-image:url(./image/information.png);" +
-                                       "background-position:center;" +
-                                       "background-repeat:no-repeat;" +
-                                       "border:2px solid black;" +
-                                       "height:120px;")
+                                        "background-position:center;" +
+                                        "background-repeat:no-repeat;" +
+                                        "border:2px solid black;" +
+                                        "height:120px;")
         self.vlayout.addWidget(self.binformation)
 
         with open("./stylesheet/model.qss", "r") as f:
@@ -151,23 +151,23 @@ class ConvWidget(QWidget):
         self.convfilterlabel.setFont(QFont("Consolas", 10))
         self.hfilter.addWidget(self.convfilterlabel)
         self.convfilter = QSpinBox()
-        self.convfilter.setMinimum(0)
+        self.convfilter.setMinimum(1)
         # self.convfilter.setSingleStep(2)
         self.hfilter.addWidget(self.convfilter)
         self.convLayout.addLayout(self.hfilter)
 
         self.hkernel_size = QHBoxLayout()
         self.convkernel_sizelabel = QLabel("Kernel Size : ")
-        self.convkernel_sizelabel.setFont(QFont("Consolas", 10))        
+        self.convkernel_sizelabel.setFont(QFont("Consolas", 10))
         self.hkernel_size.addWidget(self.convkernel_sizelabel)
         self.convkernel_size = QSpinBox()
-        self.convkernel_size.setRange(0, 99)
+        self.convkernel_size.setMinimum(1)
         self.hkernel_size.addWidget(self.convkernel_size)
         self.convLayout.addLayout(self.hkernel_size)
 
         self.hpadding = QHBoxLayout()
         self.convpaddinglabel = QLabel("Padding : ")
-        self.convpaddinglabel.setFont(QFont("Consolas", 10))        
+        self.convpaddinglabel.setFont(QFont("Consolas", 10))
         self.hpadding.addWidget(self.convpaddinglabel)
         self.convpadding = QComboBox()
         paddingbox = ['same', 'valid']
@@ -177,7 +177,7 @@ class ConvWidget(QWidget):
 
         self.hactivation = QHBoxLayout()
         self.convactivationlabel = QLabel("Activation : ")
-        self.convactivationlabel.setFont(QFont("Consolas", 10))        
+        self.convactivationlabel.setFont(QFont("Consolas", 10))
         self.hactivation.addWidget(self.convactivationlabel)
         self.convactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
@@ -227,7 +227,7 @@ class MaxpoolWidget(QWidget):
         self.hpoolpool_size.addWidget(self.poolpool_sizelabel)
         self.poolLayout.addWidget(self.btn)
         self.poolpool_size = QSpinBox()
-        self.poolpool_size.setRange(0, 10)
+        self.poolpool_size.setMinimum(1)
         self.hpoolpool_size.addWidget(self.poolpool_size)
         self.poolLayout.addLayout(self.hpoolpool_size)
 
@@ -235,6 +235,7 @@ class MaxpoolWidget(QWidget):
         self.setLayout(self.poolLayout)
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
+
 
 class FlatWidget(QWidget):
     id = 3
@@ -248,6 +249,7 @@ class FlatWidget(QWidget):
         self.setLayout(self.flatLayout)
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
+
 
 class DenseWidget(QWidget):
     id = 4
@@ -264,13 +266,13 @@ class DenseWidget(QWidget):
         self.denseunitslabel.setFont(QFont("Consolas", 10))
         self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QSpinBox()
-        self.denseunits.setRange(0, 100)
+        self.denseunits.setMinimum(1)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
         self.hdenseactivation = QHBoxLayout()
         self.denseactivationlabel = QLabel("Activation :")
-        self.denseactivationlabel.setFont(QFont("Consolas", 10))        
+        self.denseactivationlabel.setFont(QFont("Consolas", 10))
         self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
@@ -286,6 +288,7 @@ class DenseWidget(QWidget):
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
 
+
 class InputWidget(QWidget):
     id = 5
 
@@ -299,6 +302,7 @@ class InputWidget(QWidget):
         self.setLayout(self.inputLayout)
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
+
 
 class OutputWidget(QWidget):
     id = 6
@@ -314,10 +318,12 @@ class OutputWidget(QWidget):
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
 
+
 class ModelWidget(QWidget):
     attr_widget = []
     layer_index_order = []
     input_shape = []
+    layer_json_signal = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -387,7 +393,7 @@ class ModelWidget(QWidget):
         self.stackWidget.setCurrentIndex(0)
 
     def showEdge(self):
-        layer_json = "Json: \n"
+        layer_json = ""
         now_node = None
         gs = self.vw.gv.graphics_scene
         edge_label = self.vw.edgeLabel
@@ -439,10 +445,11 @@ class ModelWidget(QWidget):
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass
-            if i != self.layer_index_order[len(self.layer_index_order)-1]:
-                layer_json += ","
+
+            layer_json += ","
 
         edge_label.setText(edge_label.text())
         print(layer_json)
-        layer_json = "Json: \n"
+        self.layer_json_signal.emit(layer_json)
+        layer_json = ""
         self.layer_index_order.clear()

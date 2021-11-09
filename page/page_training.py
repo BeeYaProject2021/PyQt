@@ -1,10 +1,14 @@
-import socket, requests
+import socket
+import requests
 import pyqtgraph as pg
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QMessageBox, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
 from pyqtgraph import PlotWidget, plot
+import webbrowser
+import re
+
 
 class Thread(QThread):
     # Setup signal for thread
@@ -14,14 +18,15 @@ class Thread(QThread):
     loss_signal = pyqtSignal(int, float)
     val_loss_signal = pyqtSignal(int, float)
 
-    def __init__(self):
+    def __init__(self, clientPort):
         super(Thread, self).__init__()
+        self.port = clientPort
 
     def run(self):
         ClientSocket = socket.socket()
         ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         host = '140.136.204.132'
-        port = 48763
+        port = self.port
 
         print('Waiting for backend connection')
 
@@ -40,7 +45,7 @@ class Thread(QThread):
             Response = ClientSocket.recv(1024)
             strRes = Response.decode('utf-8')
             print(strRes)
-            lines=strRes.split('\r\n')
+            lines = strRes.split('\r\n')
 
             over = False
             for line in lines:
@@ -76,6 +81,8 @@ class TrainingWidget(QWidget):
     img_total = 0
     batch_size = 0
     epoch = 0
+    setting_json = ""
+    layer_json = ""
     uid = None
     port = None
 
@@ -84,7 +91,7 @@ class TrainingWidget(QWidget):
 
         self.vtrainw = QVBoxLayout()
 
-        self.buttonlayout  = QHBoxLayout()
+        self.buttonlayout = QHBoxLayout()
         self.buttonlayout.addStretch(2)
 
         # self.pushButton_1 = QtWidgets.QPushButton(self)
@@ -140,7 +147,7 @@ class TrainingWidget(QWidget):
         icon6.addPixmap(QtGui.QPixmap("./image/screenshot.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_4.setIcon(icon6)
-        self.toolButton_4.setToolTip("screenshot")      
+        self.toolButton_4.setToolTip("screenshot")
         self.buttonlayout.addWidget(self.toolButton_4)
 
         self.toolButton_5 = QtWidgets.QToolButton(self)
@@ -212,7 +219,6 @@ class TrainingWidget(QWidget):
         self.progresslayout.addWidget(self.progressBar)
         # self.progressBar.setGeometry(QtCore.QRect(370, 470, 270, 30))
 
-
         self.pushButtongo = QPushButton("GO", self)
         self.pushButtongo.setMinimumSize(50, 50)
         self.progresslayout.addWidget(self.pushButtongo)
@@ -221,7 +227,7 @@ class TrainingWidget(QWidget):
 
         self.progresslayout.addStretch()
 
-        with open("./stylesheet/train.qss", "r") as f:    
+        with open("./stylesheet/train.qss", "r") as f:
             self.setStyleSheet(f.read())
 
         self.pushButtongo.clicked.connect(self.start_progress)
@@ -238,7 +244,6 @@ class TrainingWidget(QWidget):
         # self.setLayout(self.v_layout)
 
         # self.timer = time.sleep(0.2)
-
 
     def start_progress(self):
         # Maximum = image/batch_size x epochs
@@ -260,13 +265,20 @@ class TrainingWidget(QWidget):
         self.training_loss_line.setData(self.loss_x, self.loss_y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
 
-        if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0:
+        if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "":
             print("GOOOOO")
             self.progressBar.setMaximum(
                 (self.img_total/self.batch_size)*self.epoch)
+            url = 'http://140.136.204.132:8000/upload/'
+            data_json = self.layer_json + self.setting_json
 
+            x = requests.post(url, data={'model': data_json}, files={
+                'file': open('data.npz', 'rb')})
+            print(x.text)
+            data = re.split(" |\"", x.text)
+            port = (int)(data[3])
             # Thread for progressBar and data graph
-            self.thread = Thread()
+            self.thread = Thread(port)
             self.thread._signal.connect(self.signal_accept)
             self.thread.accuracy_signal.connect(self.update_acc)
             self.thread.val_accuracy_signal.connect(self.update_val_acc)
@@ -279,7 +291,7 @@ class TrainingWidget(QWidget):
             self.warning.setText("The data for training is not enough")
             self.warning.setIcon(QMessageBox.Icon.Question)
             self.warning.setWindowTitle("Need a double check?")
-            self.warning.show()            
+            self.warning.show()
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
@@ -310,7 +322,8 @@ class TrainingWidget(QWidget):
     def saveModel(self, action):
         url = 'http://140.136.204.132:8000/download/?train_id=' + self.uid
         r = requests.get(url, allow_redirects=True)
-        open(self.uid +".zip", "wb").write(r.content)
+        open(self.uid + ".zip", "wb").write(r.content)
+        # webbrowser(url, new=2)
         self.warning.setText("Your training model downloaded")
         self.warning.setIcon(QMessageBox.Icon.Information)
         self.warning.setWindowTitle("Model Download OK")
