@@ -318,7 +318,7 @@ class ModelWidget(QWidget):
         self.vw.edge_btn.clicked.connect(self.showEdge)
 
         self.stackWidget = QStackedWidget()
-        self.stackWidget.setFixedWidth(200)
+        self.stackWidget.setFixedWidth(220)
         self.nothingWidget = QWidget()
         self.stackWidget.addWidget(self.nothingWidget)
         self.hlayout.addWidget(self.stackWidget)

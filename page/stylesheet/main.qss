@@ -23,12 +23,11 @@ QTabBar::tab {
     /*border-bottom-color: #1f1f1f;*/
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    min-width: 32ex;
+    min-width: 40ex;
     min-height: 8ex;
     padding: 2px;
     font-family: Consolas;
-    font: bold 18px;
-    font-size: 14px;
+    font: bold 16px;
 }
 QTabBar::tab:selected {
     /* expand/overlap to the left and right by 4px */
