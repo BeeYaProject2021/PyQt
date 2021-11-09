@@ -323,8 +323,11 @@ class ViewWidget(QWidget):
         self.edge_btn = QPushButton("Show Edge")
         self.vlayout.addWidget(self.edge_btn)
         self.edgeLabel = QLabel("Edge: \n")
+        self.edgeLabel.setObjectName("edge")
         self.vlayout.addWidget(self.edgeLabel)
         self.setLayout(self.vlayout)
+        with open("./stylesheet/model.qss", "r") as f:    
+            self.setStyleSheet(f.read())
 
     def toggle_drag_mode(self):
         if self.gv.dragMode() == QGraphicsView.ScrollHandDrag:

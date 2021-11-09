@@ -149,6 +149,7 @@ class ConvWidget(QWidget):
 
         self.hfilter = QHBoxLayout()
         self.convfilterlabel = QLabel("Filter : ")
+        self.convfilterlabel.setFont(QFont("Consolas", 10))
         self.hfilter.addWidget(self.convfilterlabel)
         self.convfilter = QSpinBox()
         self.convfilter.setMinimum(0)
@@ -158,6 +159,7 @@ class ConvWidget(QWidget):
 
         self.hkernel_size = QHBoxLayout()
         self.convkernel_sizelabel = QLabel("Kernel Size : ")
+        self.convkernel_sizelabel.setFont(QFont("Consolas", 10))        
         self.hkernel_size.addWidget(self.convkernel_sizelabel)
         self.convkernel_size = QSpinBox()
         self.convkernel_size.setRange(0, 99)
@@ -166,6 +168,7 @@ class ConvWidget(QWidget):
 
         self.hpadding = QHBoxLayout()
         self.convpaddinglabel = QLabel("Padding : ")
+        self.convpaddinglabel.setFont(QFont("Consolas", 10))        
         self.hpadding.addWidget(self.convpaddinglabel)
         self.convpadding = QComboBox()
         paddingbox = ['same', 'valid']
@@ -175,6 +178,7 @@ class ConvWidget(QWidget):
 
         self.hactivation = QHBoxLayout()
         self.convactivationlabel = QLabel("Activation : ")
+        self.convactivationlabel.setFont(QFont("Consolas", 10))        
         self.hactivation.addWidget(self.convactivationlabel)
         self.convactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
@@ -193,6 +197,8 @@ class ConvWidget(QWidget):
         # self.convLayout.addLayout(self.hsubmit)
 
         self.setLayout(self.convLayout)
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 
 class MaxpoolWidget(QWidget):
@@ -208,6 +214,7 @@ class MaxpoolWidget(QWidget):
 
         self.hchoosepool = QHBoxLayout()
         self.choosepoollable = QLabel("Choose pooling : ")
+        self.choosepoollable.setFont(QFont("Consolas", 10))
         self.hchoosepool.addWidget(self.choosepoollable)
         self.choosepool = QComboBox()
         poolstyle = ['max', 'avg']
@@ -217,6 +224,7 @@ class MaxpoolWidget(QWidget):
 
         self.hpoolpool_size = QHBoxLayout()
         self.poolpool_sizelabel = QLabel("Pool Size : ")
+        self.poolpool_sizelabel.setFont(QFont("Consolas", 10))
         self.hpoolpool_size.addWidget(self.poolpool_sizelabel)
         self.poolLayout.addWidget(self.btn)
         self.poolpool_size = QSpinBox()
@@ -226,7 +234,8 @@ class MaxpoolWidget(QWidget):
 
         self.poolLayout.addStretch()
         self.setLayout(self.poolLayout)
-
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 class FlatWidget(QWidget):
     id = 3
@@ -238,7 +247,8 @@ class FlatWidget(QWidget):
         self.flatLayout.addWidget(self.btn)
         self.flatLayout.addStretch()
         self.setLayout(self.flatLayout)
-
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 class DenseWidget(QWidget):
     id = 4
@@ -252,6 +262,7 @@ class DenseWidget(QWidget):
 
         self.hdenseuiits = QHBoxLayout()
         self.denseunitslabel = QLabel("Units : ")
+        self.denseunitslabel.setFont(QFont("Consolas", 10))
         self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QSpinBox()
         self.denseunits.setRange(0, 100)
@@ -260,6 +271,7 @@ class DenseWidget(QWidget):
 
         self.hdenseactivation = QHBoxLayout()
         self.denseactivationlabel = QLabel("Activation :")
+        self.denseactivationlabel.setFont(QFont("Consolas", 10))        
         self.hdenseactivation.addWidget(self.denseactivationlabel)
         self.denseactivation = QComboBox()
         activationbox = ['relu', 'sigmoid', 'softmax', 'tanh', 'deserialize',
@@ -272,7 +284,8 @@ class DenseWidget(QWidget):
 
         self.denseLayout.addStretch()
         self.setLayout(self.denseLayout)
-
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 class InputWidget(QWidget):
     id = 5
@@ -285,7 +298,8 @@ class InputWidget(QWidget):
         self.inputLayout.addWidget(self.btn)
         self.inputLayout.addStretch()
         self.setLayout(self.inputLayout)
-
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 class OutputWidget(QWidget):
     id = 6
@@ -298,7 +312,8 @@ class OutputWidget(QWidget):
         self.outputLayout.addWidget(self.btn)
         self.outputLayout.addStretch()
         self.setLayout(self.outputLayout)
-
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
 class ModelWidget(QWidget):
     attr_widget = []
@@ -318,7 +333,7 @@ class ModelWidget(QWidget):
         self.vw.edge_btn.clicked.connect(self.showEdge)
 
         self.stackWidget = QStackedWidget()
-        self.stackWidget.setFixedWidth(220)
+        self.stackWidget.setFixedWidth(300)
         self.nothingWidget = QWidget()
         self.stackWidget.addWidget(self.nothingWidget)
         self.hlayout.addWidget(self.stackWidget)

@@ -6,6 +6,18 @@ QLabel {
     border: 2px solid #6FB7B7;
     border-radius: 5px;
 }
+QPushButton {
+    font: bold 20px;
+    font-family: Consolas;
+    border-width: 2px;
+    border-radius: 8px;
+    border-color: black;
+    min-width: 80px; 
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b6cefa, stop: 1 #B15BFF);
+}
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FF5151, stop: 1 #e8cde7);
+}
 QLabel#conv {
     border: 2px solid black;
     border-radius: 10px;
@@ -25,4 +37,7 @@ QLabel#dense {
     border: 2px solid black;
     border-radius: 10px;
     text-align: center;
+}
+QLabel#edge {
+    font: bold 12px;
 }
