@@ -5,7 +5,7 @@ import os
 import socket
 import pyqtgraph as pg
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
 from pyqtgraph import PlotWidget, plot
@@ -84,10 +84,79 @@ class TrainingWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.resize(1000, 650)
+
+        self.vtrainw = QVBoxLayout()
+
+        self.buttonlayout  = QHBoxLayout()
+        self.buttonlayout.addStretch(2)
+
+        self.pushButton_1 = QtWidgets.QPushButton(self)
+        self.pushButton_1.resize(50, 50)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("./image/rotate-left 4.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_1.setIcon(icon1)
+        self.buttonlayout.addWidget(self.pushButton_1)
+
+        self.pushButton_2 = QtWidgets.QPushButton(self)
+        self.pushButton_2.resize(50, 50)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("./image/rotate-right 2.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_2.setIcon(icon2)
+        self.buttonlayout.addWidget(self.pushButton_2)
+
+        self.pushButton_3 = QtWidgets.QPushButton(self)
+        self.pushButton_3.resize(50, 50)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("./image/4_audio_play.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3.setIcon(icon3)
+        self.buttonlayout.addWidget(self.pushButton_3)
+
+        self.pushButton_4 = QtWidgets.QPushButton(self)
+        self.pushButton_4.resize(50, 50)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("./image/4_audio_stop.ico"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_4.setIcon(icon4)
+        self.buttonlayout.addWidget(self.pushButton_4)
+
+        self.pushButton_5 = QtWidgets.QPushButton(self)
+        self.pushButton_5.resize(50, 50)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("./image/4_audio_pause.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_5.setIcon(icon5)
+        self.buttonlayout.addWidget(self.pushButton_5)
+        self.buttonlayout.addStretch(2)
+
+        self.toolButton_4 = QtWidgets.QToolButton(self)
+        self.toolButton_4.resize(50, 50)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("./image/screenshot.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_4.setIcon(icon6)
+        self.buttonlayout.addWidget(self.toolButton_4)
+
+        self.toolButton_5 = QtWidgets.QToolButton(self)
+        self.toolButton_5.resize(50, 50)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap("./image/save.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_5.setIcon(icon7)
+        self.buttonlayout.addWidget(self.toolButton_5)
+
+        self.buttonlayout.addStretch(2)
+        self.vtrainw.addLayout(self.buttonlayout)
+
+        # self.vtrainw.addStretch()
+        self.graphlayout = QHBoxLayout()
+
         self.graphWidget = pg.PlotWidget(self)
         self.graphWidget.resize(600, 350)
-        self.graphWidget.move(10, 50)
+        self.graphlayout.addWidget(self.graphWidget)
+        # self.graphWidget.move(10, 50)
         self.graphWidget.showGrid(x=True, y=True)
         self.graphWidget.addLegend()
         self.accuracy_x = []
@@ -106,7 +175,8 @@ class TrainingWidget(QWidget):
 
         self.lossWidget = pg.PlotWidget(self)
         self.lossWidget.resize(600, 350)
-        self.lossWidget.move(650, 50)
+        self.graphlayout.addWidget(self.lossWidget)
+        # self.lossWidget.move(650, 50)
         self.lossWidget.showGrid(x=True, y=True)
         self.lossWidget.addLegend()
 
@@ -124,68 +194,32 @@ class TrainingWidget(QWidget):
         self.validation_loss_line = self.lossWidget.plot(
             self.val_loss_x, self.val_loss_y, pen=validation_pen, name='Validation_Loss')
 
+        self.vtrainw.addLayout(self.graphlayout)
 
-        # _translate = QtCore.QCoreApplication.translate
-        self.pushButton_1 = QtWidgets.QPushButton(self)
-        self.pushButton_1.setGeometry(QtCore.QRect(710, 10, 35, 35))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("./image/rotate-left 4.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_1.setIcon(icon1)
-
-        self.pushButton_2 = QtWidgets.QPushButton(self)
-        self.pushButton_2.setGeometry(QtCore.QRect(760, 10, 35, 35))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./image/rotate-right 2.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_2.setIcon(icon2)
-
-        self.pushButton_3 = QtWidgets.QPushButton(self)
-        self.pushButton_3.setGeometry(QtCore.QRect(810, 10, 35, 35))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("./image/4_audio_play.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_3.setIcon(icon3)
-
-        self.pushButton_4 = QtWidgets.QPushButton(self)
-        self.pushButton_4.setGeometry(QtCore.QRect(860, 10, 35, 35))
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("./image/4_audio_stop.ico"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon4)
-
-        self.pushButton_5 = QtWidgets.QPushButton(self)
-        self.pushButton_5.setGeometry(QtCore.QRect(910, 10, 35, 35))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("./image/4_audio_pause.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_5.setIcon(icon5)
-
-        self.toolButton_4 = QtWidgets.QToolButton(self)
-        self.toolButton_4.setGeometry(QtCore.QRect(600, 10, 35, 35))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("./image/screenshot.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton_4.setIcon(icon6)
-
-        self.toolButton_5 = QtWidgets.QToolButton(self)
-        self.toolButton_5.setGeometry(QtCore.QRect(650, 10, 35, 35))
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("./image/save.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton_5.setIcon(icon7)
+        self.vtrainw.addStretch()
+        self.progresslayout = QHBoxLayout()
+        self.progresslayout.addStretch()
 
         self.progressBar = QtWidgets.QProgressBar(self)
-        self.progressBar.setGeometry(QtCore.QRect(370, 470, 270, 30))
+        self.progresslayout.addWidget(self.progressBar)
+        # self.progressBar.setGeometry(QtCore.QRect(370, 470, 270, 30))
+
 
         self.pushButtongo = QPushButton("GO", self)
-        self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 30))
+        self.progresslayout.addWidget(self.pushButtongo)
+        # self.pushButtongo.setGeometry(QtCore.QRect(700, 470, 35, 30))
         # self.pushButtongo.setText(_translate("MainWindow", "go"))
+
+        self.progresslayout.addStretch()
 
         with open("./stylesheet/train.qss", "r") as f:    
             self.setStyleSheet(f.read())
 
         self.pushButtongo.clicked.connect(self.start_progress)
+
+        self.vtrainw.addLayout(self.progresslayout)
+        # self.vtrainw.addStretch()
+        self.setLayout(self.vtrainw)
 
         # self.v_layout = QVBoxLayout()
         # self.v_layout.addWidget(self.progressBar)
