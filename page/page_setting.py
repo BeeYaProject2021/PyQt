@@ -94,8 +94,9 @@ class SettingWidget(QWidget):
         loss = self.lossBox.currentText()
         batch = str(self.batchBox.value())
         epoch = str(self.epochBox.value())
-        data = "{\"id:\"-1,\"optimizer\":'"+opt+"',\"learning_rate\":'"+lr + \
-            "',\"loss_fn\":'"+loss+"',\"batch_size\":'"+batch+"',\"epochs\":'"+epoch+"'}]"
+        data = "{\"id\":-1,\"optimizer\":\""+opt+"\",\"learning_rate\":\""+lr + \
+            "\",\"loss_fn\":\""+loss+"\",\"batch_size\":\"" + \
+            batch+"\",\"epochs\":\""+epoch+"\"}]"
         print(opt)
         print(lr)
         print(loss)
