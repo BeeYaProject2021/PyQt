@@ -429,24 +429,24 @@ class ModelWidget(QWidget):
                                ",\"filters\":\"" + str(self.attr_widget[i].convfilter.value()) +
                                "\",\"kernel_size\":\"" + str(self.attr_widget[i].convkernel_size.value()) +
                                "\",\"padding\":\"" + self.attr_widget[i].convpadding.currentText() +
-                               "\",\"activation\":\"" + self.attr_widget[i].convactivation.currentText() + "\"}")
+                               "\",\"activation\":\"" + self.attr_widget[i].convactivation.currentText() + "\"},")
             elif self.attr_widget[i].id == 2:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
-                               ",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"}")
+                               ",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"},")
             elif self.attr_widget[i].id == 3:
-                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) + "}")
+                layer_json += ("{\"id\":" + str(self.attr_widget[i].id) + "},")
             elif self.attr_widget[i].id == 4:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
                                ",\"units\":\"" + str(self.attr_widget[i].denseunits.value()) +
-                               "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"}")
+                               "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"},")
             elif self.attr_widget[i].id == 5:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
-                               ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "}")
+                               ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "},")
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass
 
-            layer_json += ","
+            # layer_json += ","
 
         edge_label.setText(edge_label.text())
         print(layer_json)
