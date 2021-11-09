@@ -227,7 +227,7 @@ class MaxpoolWidget(QWidget):
         self.hpoolpool_size.addWidget(self.poolpool_sizelabel)
         self.poolLayout.addWidget(self.btn)
         self.poolpool_size = QSpinBox()
-        self.convkernel_size.setMinimum(1)
+        self.poolpool_size.setMinimum(1)
         self.hpoolpool_size.addWidget(self.poolpool_size)
         self.poolLayout.addLayout(self.hpoolpool_size)
 
@@ -266,7 +266,7 @@ class DenseWidget(QWidget):
         self.denseunitslabel.setFont(QFont("Consolas", 10))
         self.hdenseuiits.addWidget(self.denseunitslabel)
         self.denseunits = QSpinBox()
-        self.convkernel_size.setMinimum(1)
+        self.denseunits.setMinimum(1)
         self.hdenseuiits.addWidget(self.denseunits)
         self.denseLayout.addItem(self.hdenseuiits)
 
