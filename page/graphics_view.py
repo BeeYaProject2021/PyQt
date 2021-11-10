@@ -265,7 +265,6 @@ class NodeItem(QGraphicsRectItem):
                          self.height/2-self.text.boundingRect().height()/2)
         self.text.setBrush(QColor(255, 0, 0))
 
-
         if self.id != 5:
             self.leftPort = PortItem(self.index, 0, self)
             self.leftPort.setPos(
@@ -276,11 +275,10 @@ class NodeItem(QGraphicsRectItem):
             self.rightPort.setPos(self.width-25, self.height /
                                   2-self.rightPort.boundingRect().height()/2)
 
-        # self.pixmap = QPixmap("image/image.jpg")
-        # self.pixmap = self.pixmap.scaled(20, 20)
+        # self.pixmap = QPixmap("image/bubble.png")
+        # self.pixmap = self.pixmap.scaled(30, 30)
         # self.gpixmap = QGraphicsPixmapItem(self.pixmap, self)
-        # self.gpixmap.setPos(30,
-        #                     self.height/2-self.gpixmap.boundingRect().height()/2)
+        # self.gpixmap.setPos(30, self.height/2-self.gpixmap.boundingRect().height()/2)
 
     def mousePressEvent(self, e):
         super().mousePressEvent(e)
@@ -310,7 +308,6 @@ class PortItem(QGraphicsEllipseItem):
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
         self.setBrush(QColor(255, 128, 128, 180))
         self.setRect(0, 0, self.portDiam, self.portDiam)
-
 
 class ViewWidget(QWidget):
     def __init__(self):
