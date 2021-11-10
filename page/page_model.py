@@ -1,5 +1,5 @@
 from re import S
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -17,7 +17,16 @@ class Lablemove(QLabel):
         self.setAcceptDrops(True)
         self.setAlignment(Qt.AlignCenter)
 
+    def PlaySound(self):
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/drop.wav")
+        audio_content = QtMultimedia.QMediaContent(audio_url)
+        self.player = QtMultimedia.QMediaPlayer()
+        self.player.setVolume(10.0)
+        self.player.setMedia(audio_content)
+        self.player.play()        
+
     def mouseMoveEvent(self, e):
+        self.PlaySound()
         mimeData = QMimeData()
         mimeData.setText(self.text())
         drag = QDrag(self)
@@ -344,6 +353,8 @@ class ModelWidget(QWidget):
         self.hlayout.addWidget(self.stackWidget)
         self.setLayout(self.hlayout)
 
+        self.warning = QMessageBox()
+
         self.vw.gv.graphics_scene.show_attribute_signal.connect(
             self.showAttributeSignal)
         self.vw.gv.graphics_scene.add_attribute_signal.connect(
@@ -351,6 +362,14 @@ class ModelWidget(QWidget):
         self.vw.gv.graphics_scene.remove_attribute_signal.connect(
             self.removeAttributeSignal)
         self.stackWidget.setCurrentIndex(0)
+
+    def PlaySound(self):
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/ok.wav")
+        audio_content = QtMultimedia.QMediaContent(audio_url)
+        self.player = QtMultimedia.QMediaPlayer()
+        self.player.setVolume(30.0)
+        self.player.setMedia(audio_content)
+        self.player.play() 
 
     def showAttributeSignal(self, i):
         self.stackWidget.setCurrentIndex(i+1)
@@ -402,8 +421,14 @@ class ModelWidget(QWidget):
             if node.id == 5:
                 now_node = node
         if now_node == None:
+            self.warning.setText("Please give your model INPUT layer")
+            self.warning.setIcon(QMessageBox.Icon.Warning)
+            self.warning.setWindowTitle("INPUT layer Not Found")
+            self.warning.show()            
             print("No Input Layer")
             return
+
+        self.PlaySound()
 
         for i in range(len(gs.nodes)):
             if now_node.id != 6 and now_node.rightPort.edge_index != -1:

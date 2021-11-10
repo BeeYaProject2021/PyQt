@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyQt5.QtWidgets import QGraphicsItem
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -332,7 +332,16 @@ class ViewWidget(QWidget):
         with open("./stylesheet/model.qss", "r") as f:    
             self.setStyleSheet(f.read())
 
+    def PlaySound(self):
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/toggle.wav")
+        audio_content = QtMultimedia.QMediaContent(audio_url)
+        self.player = QtMultimedia.QMediaPlayer()
+        self.player.setVolume(30.0)
+        self.player.setMedia(audio_content)
+        self.player.play() 
+
     def toggle_drag_mode(self):
+        self.PlaySound()
         if self.gv.dragMode() == QGraphicsView.ScrollHandDrag:
             self.gv.setDragMode(QtWidgets.QGraphicsView.RubberBandDrag)
         else:

@@ -276,10 +276,10 @@ class InputWidget(QWidget):
             self.setStyleSheet(f.read())
 
     def PlaySound(self):
-        audio_url = QtCore.QUrl.fromLocalFile("./sound/button.mp3")
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/button.wav")
         audio_content = QtMultimedia.QMediaContent(audio_url)
         self.player = QtMultimedia.QMediaPlayer()
-        self.player.setVolume(50.0)
+        self.player.setVolume(25.0)
         self.player.setMedia(audio_content)
         self.player.play()
 

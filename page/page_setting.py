@@ -1,10 +1,7 @@
-import os
-import pathlib
-import PIL
 import PIL.Image
 import numpy as np
 import tensorflow as tf
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -85,10 +82,19 @@ class SettingWidget(QWidget):
 
         self.setLayout(self.vlayout)
 
+    def PlaySound(self):
+        audio_url = QtCore.QUrl.fromLocalFile("./sound/store.wav")
+        audio_content = QtMultimedia.QMediaContent(audio_url)
+        self.player = QtMultimedia.QMediaPlayer()
+        self.player.setVolume(10.0)
+        self.player.setMedia(audio_content)
+        self.player.play() 
+
     def display(self):
         print(self.optBox.currentIndex())
 
     def combine(self):
+        self.PlaySound()
         opt = self.optBox.currentText()
         lr = str(self.learning_rateBox.value())
         loss = self.lossBox.currentText()
