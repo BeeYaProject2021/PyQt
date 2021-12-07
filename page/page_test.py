@@ -17,9 +17,11 @@ class TimgWidget(QWidget):
         self.ChoeseFileBtn = QPushButton('Choese')
         self.hlayout.addWidget(self.ChoeseFileBtn)
 
+        self.setLayout(self.hlayout)
+
 class Tbatch(QWidget):
     def __init__(self, *args, **kwargs):
-        super(TimgWidget, self).__init__(*args, **kwargs)
+        super(Tbatch, self).__init__(*args, **kwargs)
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
@@ -29,6 +31,7 @@ class Tbatch(QWidget):
         self.vlayout.addWidget(self.batchBox)
 
         self.vlayout.addStretch()
+        self.setLayout(self.vlayout)
 
 
 class TestWidget(QWidget):
@@ -42,6 +45,7 @@ class TestWidget(QWidget):
 
         self.TB = Tbatch()
         self.hlayout.addWidget(self.TB)
+        self.setLayout(self.hlayout)
 
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
 

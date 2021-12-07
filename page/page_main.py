@@ -5,6 +5,7 @@ from page_setting import *
 from page_model import *
 from page_input import *
 from page_training import *
+from page_test import *
 from screenshot import *
 from information import *
 
@@ -112,6 +113,10 @@ class MainWindow(QMainWindow):
         label = "Result"
         self.trainingW = TrainingWidget()
         i = self.tabs.addTab(self.trainingW, label)
+
+        label = "Test"
+        self.testW = TestWidget()
+        i = self.tabs.addTab(self.testW, label)
         self.tabs.setCurrentIndex(0)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
