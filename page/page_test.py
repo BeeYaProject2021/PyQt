@@ -50,13 +50,12 @@ class TestWidget(QWidget):
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
 
     def choese_Btn(self):
-        self.PlaySound()
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
             self, "Open folder", "./")  # start path
 
-        if folder_path:
-            self.start_loading(folder_path)
+        # if folder_path:
+        #     self.start_loading(folder_path)
 
-        self.imgw.filePathEdit.setText(folder_path)
+        self.TIM.filePathEdit.setText(folder_path)
         folder_path = pathlib.Path(folder_path)
