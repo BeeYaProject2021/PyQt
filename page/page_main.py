@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
         label = "Result"
         self.trainingW = TrainingWidget()
         i = self.tabs.addTab(self.trainingW, label)
-        self.tabs.setCurrentIndex(1)
+        self.tabs.setCurrentIndex(0)
         # self.tabs.setDocumentMode(True)
         # self.tabs.currentChanged.connect(self.current_tab_changed)
         with open("./stylesheet/main.qss", "r") as f:

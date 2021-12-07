@@ -13,6 +13,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
 
+
 class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
@@ -194,21 +195,76 @@ class ImgWidget(QWidget):
         super(ImgWidget, self).__init__(*args, **kwargs)
 
         self.hlayout = QHBoxLayout()
+        self.hlayout.addStretch()
 
-        self.filePathEdit = QLineEdit()
-        self.filePathEdit.setFixedWidth(200)
+        # self.filePathEdit = QLineEdit()
+        self.filePathEdit = QLabel()
+        self.filePathEdit.setFixedWidth(300)
         self.hlayout.addWidget(self.filePathEdit)
 
         self.selectFileBtn = QPushButton('Select')
         self.hlayout.addWidget(self.selectFileBtn)
 
         self.vlayout = QVBoxLayout()
-        self.vlayout.addStretch()
-
+        # self.vlayout.addStretch()
+        self.hlayout2 = QHBoxLayout()
+        self.hlayout2.addStretch()
         self.imgLabel = QLabel('Select a folder path for input dataset')
         self.imgLabel.setFont(QFont("Consolas", 15))
-        # self.vlayout.addWidget(self.imgLabel)
+        self.hlayout2.addWidget(self.imgLabel)
+        self.hlayout2.addStretch()
+        self.vlayout.addLayout(self.hlayout2)
+
+        self.hlayout.addStretch()
+        self.vlayout.addLayout(self.hlayout)
+
+        # self.vlayout.addStretch()
+        self.setLayout(self.vlayout)
+
+
+class ImgDisplay(QWidget):
+    def __init__(self, path, label):
+        super(ImgDisplay, self).__init__()
+        self.vlayout = QVBoxLayout()
+
+        self.img = QLabel()
+        self.imgPixmap = QPixmap(path)
+        self.imgPixmap = self.imgPixmap.scaled(100, 100)
+        self.img.setPixmap(self.imgPixmap)
+        self.img.setMaximumSize(100, 100)
+        # self.img.setFixedSize(100, 100)
+        self.vlayout.addWidget(self.img)
+
+        self.imgLabel = QLabel()
+        self.imgLabel.setText(label)
+
         self.vlayout.addWidget(self.imgLabel)
+        self.setLayout(self.vlayout)
+
+
+class InputWidget(QWidget):
+    img_total_signal = pyqtSignal(int)
+    img_size_signal = pyqtSignal(int, int, int)
+    imgTuples = []
+
+    def __init__(self, *args, **kwargs):
+        super(InputWidget, self).__init__(*args, **kwargs)
+        self.hlayout = QHBoxLayout()
+        self.hlayout.addStretch()
+
+        self.vimgw = QVBoxLayout()
+        self.vimgw.addStretch()
+        self.imgw = ImgWidget()
+        self.vimgw.addWidget(self.imgw)
+
+        self.imgPage = QComboBox()
+        self.imgPage.setEnabled(False)
+        self.imgPage.addItem("0")
+        self.imgPage.currentIndexChanged.connect(self.PageChange)
+        self.vimgw.addWidget(self.imgPage)
+
+        self.imgGridLayout = QGridLayout()
+        self.vimgw.addLayout(self.imgGridLayout)
 
         # self.pixmap_lw = QtWidgets.QListWidget(
         #     viewMode=QtWidgets.QListView.IconMode,
@@ -220,49 +276,15 @@ class ImgWidget(QWidget):
         # delegate = StyledItemDelegate(self.pixmap_lw)
         # self.pixmap_lw.setItemDelegate(delegate)
 
-        # self.timer_loading = QtCore.QTimer(interval=50, timeout=self.load_image)
+        # self.timer_loading = QtCore.QTimer(
+        #     interval=50, timeout=self.load_image)
         # self.filenames_iterator = None
 
-        # self.vlayout.addWidget(self.pixmap_lw)
+        # self.vimgw.addWidget(self.pixmap_lw)
+        self.vimgw.addStretch()
+        self.hlayout.addLayout(self.vimgw)
 
-        self.vlayout.addLayout(self.hlayout)
-
-        self.vlayout.addStretch()
-        self.setLayout(self.vlayout)
-
-
-class InputWidget(QWidget):
-    img_total_signal = pyqtSignal(int)
-    img_size_signal = pyqtSignal(int, int, int)
-
-    def __init__(self, *args, **kwargs):
-        super(InputWidget, self).__init__(*args, **kwargs)
-        self.hlayout = QHBoxLayout()
-        self.hlayout.addStretch(1)
-
-        self.himgw = QVBoxLayout()
-        self.imgw = ImgWidget()
-        self.himgw.addWidget(self.imgw)
-        # self.hlayout.addWidget(self.imgw)
-
-        self.pixmap_lw = QtWidgets.QListWidget(
-            viewMode=QtWidgets.QListView.IconMode,
-            iconSize=ICON_SIZE * QtCore.QSize(1, 1),
-            movement=QtWidgets.QListView.Static,
-            resizeMode=QtWidgets.QListView.Adjust,
-        )
-
-        delegate = StyledItemDelegate(self.pixmap_lw)
-        self.pixmap_lw.setItemDelegate(delegate)
-
-        self.timer_loading = QtCore.QTimer(
-            interval=50, timeout=self.load_image)
-        self.filenames_iterator = None
-
-        self.himgw.addWidget(self.pixmap_lw)
-        self.hlayout.addLayout(self.himgw)
-
-        self.hlayout.addStretch(1)
+        self.hlayout.addStretch()
         self.aw = AttributeWidget()
         self.hlayout.addWidget(self.aw)
 
@@ -285,28 +307,73 @@ class InputWidget(QWidget):
 
     def input_Btn(self):
         self.PlaySound()
+        self.imgTuples.clear()
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
-            self, "Open folder", "./")  # start path
-
-        if folder_path:
-            self.start_loading(folder_path)
+            self, "Open folder", "C:/")  # start path
 
         self.imgw.filePathEdit.setText(folder_path)
-        folder_path = pathlib.Path(folder_path)
-        print(folder_path)
+        if os.path.exists(self.imgw.filePathEdit.text()):
+            folder_path = pathlib.Path(folder_path)
+            print(folder_path)
 
-        img_cnt = len(list(folder_path.glob('*/*.*')))
-        print(img_cnt)
-        # roses = list(folder_path.glob('roses/*'))
-        # x = PIL.Image.open(str(roses[0]))
-        # x.show()
+            imgclass = []
+            labelPath = list(folder_path.glob('*'))
+            for i in range(len(labelPath)):
+                if labelPath[i].is_dir():
+                    imgclass.append(labelPath[i])
+                    label = labelPath[i].relative_to(folder_path)
+                    print(label)
+                    img = list(labelPath[i].glob('*'))
+                    for j in range(len(img)):
+                        self.imgTuples.append((img[j], label))
+                    print(len(img))
 
-        # directory = QtWidgets.QFileDialog.getExistingDirectory(
-        #     options=QtWidgets.QFileDialog.DontUseNativeDialog
-        # )
-        # if directory:
-        #     self.start_loading(directory)
+            self.imgPage.setEnabled(True)
+            self.imgPage.clear()
+            # print(int((len(self.imgTuples)-1)/20))
+
+            for i in range(int((len(self.imgTuples)-1)/20)+1):
+                self.imgPage.addItem(str(i+1))
+            for i in range(4):
+                for j in range(5):
+                    num = i*5+j
+                    if self.imgGridLayout.itemAtPosition(i, j) is not None:
+                        self.imgGridLayout.removeWidget(
+                            self.imgGridLayout.itemAtPosition(i, j).widget())
+                    self.imgGridLayout.addWidget(
+                        ImgDisplay(str(self.imgTuples[num][0]), str(self.imgTuples[num][1])), i, j)
+
+            print('---')
+            print(len(self.imgTuples))
+            print('---')
+            print(imgclass)
+
+            img_cnt = len(list(folder_path.glob('*/*.*')))
+            print(img_cnt)
+        else:
+            self.imgPage.setEnabled(False)
+            self.imgPage.clear()
+            self.imgPage.addItem("0")
+            for i in range(4):
+                for j in range(5):
+                    if self.imgGridLayout.itemAtPosition(i, j) is not None:
+                        self.imgGridLayout.removeWidget(
+                            self.imgGridLayout.itemAtPosition(i, j).widget())
+
+    def PageChange(self, index):
+        print(index)
+        if self.imgPage.isEnabled():
+            for i in range(4):
+                for j in range(5):
+                    num = i*5+j+index*20
+                    print(num)
+                    if self.imgGridLayout.itemAtPosition(i, j) is not None:
+                        self.imgGridLayout.removeWidget(
+                            self.imgGridLayout.itemAtPosition(i, j).widget())
+                    if num < len(self.imgTuples):
+                        self.imgGridLayout.addWidget(
+                            ImgDisplay(str(self.imgTuples[num][0]), str(self.imgTuples[num][1])), i, j)
 
     def confirm_Btn(self):
         # Check Path exists
