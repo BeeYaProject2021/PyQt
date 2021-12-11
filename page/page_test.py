@@ -8,6 +8,15 @@ class TimgWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(TimgWidget, self).__init__(*args, **kwargs)
 
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addStretch()
+
+        self.ansBox = QComboBox()
+        ansfunctions = ['Have ans', 'NO ans']
+        self.ansBox.addItems(ansfunctions)
+        self.vlayout.addWidget(self.ansBox)
+
+
         self.hlayout = QHBoxLayout()
 
         self.filePathEdit = QLineEdit()
@@ -16,8 +25,10 @@ class TimgWidget(QWidget):
 
         self.ChoeseFileBtn = QPushButton('Choese')
         self.hlayout.addWidget(self.ChoeseFileBtn)
-
-        self.setLayout(self.hlayout)
+        self.hlayout.addStretch()
+        self.vlayout.addLayout(self.hlayout)
+        self.vlayout.addStretch()
+        self.setLayout(self.vlayout)
 
 class Tbatch(QWidget):
     def __init__(self, *args, **kwargs):
@@ -25,7 +36,8 @@ class Tbatch(QWidget):
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
-
+        self.batchlabel = QLabel("batch : ")
+        self.vlayout.addWidget(self.batchlabel)
         self.batchBox = QSpinBox()
         self.batchBox.setRange(1, 100000)
         self.vlayout.addWidget(self.batchBox)
@@ -42,9 +54,11 @@ class TestWidget(QWidget):
         
         self.TIM = TimgWidget()
         self.hlayout.addWidget(self.TIM)
+        self.hlayout.addStretch()
 
         self.TB = Tbatch()
         self.hlayout.addWidget(self.TB)
+        self.hlayout.addStretch()
         self.setLayout(self.hlayout)
 
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
