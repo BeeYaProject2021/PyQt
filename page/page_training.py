@@ -5,11 +5,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QMessageBox, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
 from random import randint
-from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, image, plot
 import webbrowser
 import re
 
 uid = None
+
 
 class Thread(QThread):
     # Setup signal for thread
@@ -18,6 +19,7 @@ class Thread(QThread):
     val_accuracy_signal = pyqtSignal(int, float)
     loss_signal = pyqtSignal(int, float)
     val_loss_signal = pyqtSignal(int, float)
+    img_total_signal = pyqtSignal(int)
 
     def __init__(self, data_json):
         super(Thread, self).__init__()
@@ -28,8 +30,9 @@ class Thread(QThread):
         url = 'http://140.136.204.132:8000/upload/'
         data_json = self.data_json
 
-        x = requests.post(url, data={'model': data_json}, files={
-            'file': open('data.npz', 'rb')})
+        # x = requests.post(url, data={'model': data_json}, files={
+        #     'file': open('data.npz', 'rb')})
+        x = requests.post(url, data={'model': data_json})
         print(x.text)
         data = re.split(" |\"", x.text)
         print("response data", data[2])
@@ -49,6 +52,10 @@ class Thread(QThread):
                 connected = True
             except Exception as e:
                 pass  # Do nothing, just try again
+        Response = ClientSocket.recv(1024)
+        imageTotal = Response.decode('utf-8')
+        print(imageTotal)
+        self.img_total_signal.emit(int(imageTotal))
 
         batch_cnt = 0
         epoch_cnt = 0
@@ -56,7 +63,7 @@ class Thread(QThread):
             # Response = ClientSocket.recv(67)
             Response = ClientSocket.recv(1024)
             strRes = Response.decode('utf-8')
-            print(strRes)
+            # print(strRes)
             lines = strRes.split('\r\n')
 
             over = False
@@ -64,7 +71,7 @@ class Thread(QThread):
                 self._signal.emit(batch_cnt)
                 if '@' in line:
                     data = line.split('@')
-                    print(data[1], data[2], data[3])
+                    # print(data[1], data[2], data[3])
                     batch_cnt += 1
 
                     # Use signal to inform the thread run function
@@ -74,7 +81,7 @@ class Thread(QThread):
 
                 if '#' in line:
                     data = line.split('#')
-                    print(data[1], data[2], data[3], data[4], data[5])
+                    # print(data[1], data[2], data[3], data[4], data[5])
                     epoch_cnt += 1
 
                     self.val_accuracy_signal.emit(batch_cnt, float(data[3]))
@@ -275,23 +282,24 @@ class TrainingWidget(QWidget):
         self.validation_line.setData(self.val_accuracy_x, self.val_accuracy_y)
         self.training_loss_line.setData(self.loss_x, self.loss_y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
-
-        if self.img_total > 0 and self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "":
+# self.img_total > 0 and self.batch_size > 0 and self.epoch > 0 and
+        if self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "":
             print("GOOOOO")
-            tmp = 0
-            print(self.img_total/self.batch_size)
-            if self.img_total % self.batch_size != 0:
-                tmp = int(self.img_total/self.batch_size) + 1
-            else:
-                tmp = int(self.img_total/self.batch_size)
+            # tmp = 0
+            # print(self.img_total/self.batch_size)
+            # if self.img_total % self.batch_size != 0:
+            #     tmp = int(self.img_total/self.batch_size) + 1
+            # else:
+            #     tmp = int(self.img_total/self.batch_size)
 
-            self.progressBar.setMaximum(tmp*self.epoch)
-            self.progressBar.setTextVisible(True)
+            # self.progressBar.setMaximum(tmp*self.epoch)
+            # self.progressBar.setTextVisible(True)
 
             data_json = self.layer_json + self.setting_json
 
             # Thread for progressBar and data graph
             self.thread = Thread(data_json)
+            self.thread.img_total_signal.connect(self.update_img_total)
             self.thread._signal.connect(self.signal_accept)
             self.thread.accuracy_signal.connect(self.update_acc)
             self.thread.val_accuracy_signal.connect(self.update_val_acc)
@@ -308,10 +316,22 @@ class TrainingWidget(QWidget):
 
     def signal_accept(self, msg):
         self.progressBar.setValue(int(msg))
-        self.progressBar.setFormat(str(self.progressBar.value()) + " / " + str(self.progressBar.maximum()))
+        self.progressBar.setFormat(
+            str(self.progressBar.value()) + " / " + str(self.progressBar.maximum()))
         if self.progressBar.value() == self.progressBar.maximum():
             self.pushButtongo.setEnabled(True)
             self.toolButton_5.setEnabled(True)
+
+    def update_img_total(self, msg):
+        tmp = 0
+        print(msg/self.batch_size)
+        if msg % self.batch_size != 0:
+            tmp = int(msg/self.batch_size) + 1
+        else:
+            tmp = int(msg/self.batch_size)
+
+        self.progressBar.setMaximum(tmp*self.epoch)
+        self.progressBar.setTextVisible(True)
 
     def update_acc(self, x, y):
         self.accuracy_x.append(x)

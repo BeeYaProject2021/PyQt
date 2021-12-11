@@ -23,7 +23,7 @@ class Lablemove(QLabel):
         self.player = QtMultimedia.QMediaPlayer()
         self.player.setVolume(10.0)
         self.player.setMedia(audio_content)
-        self.player.play()        
+        self.player.play()
 
     def mouseMoveEvent(self, e):
         self.PlaySound()
@@ -225,7 +225,7 @@ class MaxpoolWidget(QWidget):
         self.choosepoollable.setFont(QFont("Consolas", 10))
         self.hchoosepool.addWidget(self.choosepoollable)
         self.choosepool = QComboBox()
-        poolstyle = ['max', 'avg']
+        poolstyle = ['Max', 'Average']
         self.choosepool.addItems(poolstyle)
         self.hchoosepool.addWidget(self.choosepool)
         self.poolLayout.addLayout(self.hchoosepool)
@@ -304,10 +304,16 @@ class InputWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.inputLayout = QVBoxLayout()
-        self.inputLayout.addStretch()
         self.btn = QPushButton("input")
         self.inputLayout.addWidget(self.btn)
         self.inputLayout.addStretch()
+
+        self.inputDataset = QComboBox()
+        datasets = ['custom', 'mnist']
+        self.inputDataset.addItems(datasets)
+        self.inputLayout.addWidget(self.inputDataset)
+        self.inputLayout.addStretch()
+
         self.setLayout(self.inputLayout)
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
@@ -369,7 +375,7 @@ class ModelWidget(QWidget):
         self.player = QtMultimedia.QMediaPlayer()
         self.player.setVolume(30.0)
         self.player.setMedia(audio_content)
-        self.player.play() 
+        self.player.play()
 
     def showAttributeSignal(self, i):
         self.stackWidget.setCurrentIndex(i+1)
@@ -424,7 +430,7 @@ class ModelWidget(QWidget):
             self.warning.setText("Please give your model INPUT layer")
             self.warning.setIcon(QMessageBox.Icon.Warning)
             self.warning.setWindowTitle("INPUT layer Not Found")
-            self.warning.show()            
+            self.warning.show()
             print("No Input Layer")
             return
 
@@ -457,7 +463,8 @@ class ModelWidget(QWidget):
                                "\",\"activation\":\"" + self.attr_widget[i].convactivation.currentText() + "\"},")
             elif self.attr_widget[i].id == 2:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
-                               ",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"},")
+                               ",\"pool_type\":\"" + str(self.attr_widget[i].choosepool.currentText()) +
+                               "\",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"},")
             elif self.attr_widget[i].id == 3:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) + "},")
             elif self.attr_widget[i].id == 4:
@@ -466,7 +473,8 @@ class ModelWidget(QWidget):
                                "\",\"activation\":\"" + self.attr_widget[i].denseactivation.currentText() + "\"},")
             elif self.attr_widget[i].id == 5:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
-                               ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "},")
+                               #   ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "},"
+                               ",\"dataset\":" + str(self.attr_widget[i].inputDataset.currentIndex()) + "},")
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass

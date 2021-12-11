@@ -309,6 +309,7 @@ class PortItem(QGraphicsEllipseItem):
         self.setBrush(QColor(255, 128, 128, 180))
         self.setRect(0, 0, self.portDiam, self.portDiam)
 
+
 class ViewWidget(QWidget):
     def __init__(self):
         super(ViewWidget, self).__init__()
@@ -326,7 +327,7 @@ class ViewWidget(QWidget):
         self.edgeLabel.setVisible(False)
         self.vlayout.addWidget(self.edgeLabel)
         self.setLayout(self.vlayout)
-        with open("./stylesheet/model.qss", "r") as f:    
+        with open("./stylesheet/model.qss", "r") as f:
             self.setStyleSheet(f.read())
 
     def PlaySound(self):
@@ -335,7 +336,7 @@ class ViewWidget(QWidget):
         self.player = QtMultimedia.QMediaPlayer()
         self.player.setVolume(30.0)
         self.player.setMedia(audio_content)
-        self.player.play() 
+        self.player.play()
 
     def toggle_drag_mode(self):
         self.PlaySound()
