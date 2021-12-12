@@ -197,6 +197,15 @@ class ConvWidget(QWidget):
         self.hactivation.addWidget(self.convactivation)
         self.convLayout.addLayout(self.hactivation)
 
+        self.hstrides = QHBoxLayout()
+        self.hstridesl = QLabel("Strides : ")
+        self.hstridesl.setFont(QFont("Consolas", 10))
+        self.hstrides.addWidget(self.hstridesl)
+        self.strides = QSpinBox()
+        self.strides.setRange(1, 100000)
+        self.hstrides.addWidget(self.strides)
+        self.convLayout.addLayout(self.hstrides)
+
         self.convLayout.addStretch()
         # self.hsubmit = QHBoxLayout()
         # self.hsubmit.addStretch(5)
@@ -230,6 +239,15 @@ class MaxpoolWidget(QWidget):
         self.hchoosepool.addWidget(self.choosepool)
         self.poolLayout.addLayout(self.hchoosepool)
 
+        self.hstrides = QHBoxLayout()
+        self.hstridesl = QLabel("Strides : ")
+        self.hstridesl.setFont(QFont("Consolas", 10))
+        self.hstrides.addWidget(self.hstridesl)
+        self.strides = QSpinBox()
+        self.strides.setRange(1, 100000)
+        self.hstrides.addWidget(self.strides)
+        self.poolLayout.addLayout(self.hstrides)
+        
         self.hpoolpool_size = QHBoxLayout()
         self.poolpool_sizelabel = QLabel("Pool Size : ")
         self.poolpool_sizelabel.setFont(QFont("Consolas", 10))
