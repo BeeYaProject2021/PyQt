@@ -98,7 +98,7 @@ class Ttest(QWidget):
 
         self.goBtn = QPushButton("Test!", self)
         self.vlayout.addWidget(self.goBtn)
-        
+
         self.vlayout.addStretch()
         self.lossLabel = QLabel("Test Loss: ")
         self.vlayout.addWidget(self.lossLabel)
@@ -124,6 +124,9 @@ class TestWidget(QWidget):
         self.hlayout.addWidget(self.TT)
 
         self.setLayout(self.hlayout)
+
+        with open("./stylesheet/input.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
         self.TT.goBtn.clicked.connect(self.runTest)
