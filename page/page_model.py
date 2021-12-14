@@ -238,15 +238,6 @@ class MaxpoolWidget(QWidget):
         self.choosepool.addItems(poolstyle)
         self.hchoosepool.addWidget(self.choosepool)
         self.poolLayout.addLayout(self.hchoosepool)
-
-        self.hstrides = QHBoxLayout()
-        self.hstridesl = QLabel("Strides : ")
-        self.hstridesl.setFont(QFont("Consolas", 10))
-        self.hstrides.addWidget(self.hstridesl)
-        self.strides = QSpinBox()
-        self.strides.setRange(1, 100000)
-        self.hstrides.addWidget(self.strides)
-        self.poolLayout.addLayout(self.hstrides)
         
         self.hpoolpool_size = QHBoxLayout()
         self.poolpool_sizelabel = QLabel("Pool Size : ")
@@ -257,6 +248,15 @@ class MaxpoolWidget(QWidget):
         self.poolpool_size.setRange(1, 100000)
         self.hpoolpool_size.addWidget(self.poolpool_size)
         self.poolLayout.addLayout(self.hpoolpool_size)
+
+        self.hstrides = QHBoxLayout()
+        self.hstridesl = QLabel("Strides : ")
+        self.hstridesl.setFont(QFont("Consolas", 10))
+        self.hstrides.addWidget(self.hstridesl)
+        self.strides = QSpinBox()
+        self.strides.setRange(1, 100000)
+        self.hstrides.addWidget(self.strides)
+        self.poolLayout.addLayout(self.hstrides)
 
         self.poolLayout.addStretch()
         self.setLayout(self.poolLayout)
