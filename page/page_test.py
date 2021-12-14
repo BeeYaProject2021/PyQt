@@ -60,16 +60,15 @@ class TimgWidget(QWidget):
         # self.ansBox.addItems(ansfunctions)
         # self.vlayout.addWidget(self.ansBox)
 
-
+        self.filePathEdit = QLabel()
+        # self.filePathEdit.setFixedWidth(200)
+        self.vlayout.addWidget(self.filePathEdit)
+        
         self.hlayout = QHBoxLayout()
-
-        self.filePathEdit = QLineEdit()
-        self.filePathEdit.setFixedWidth(200)
-        self.hlayout.addWidget(self.filePathEdit)
-
         self.ChoeseFileBtn = QPushButton('Choese')
+        self.ChoeseFileBtn.setFixedWidth(150)
         self.hlayout.addWidget(self.ChoeseFileBtn)
-        self.hlayout.addStretch()
+        
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
@@ -84,8 +83,28 @@ class Tbatch(QWidget):
         self.vlayout.addWidget(self.batchlabel)
         self.batchBox = QSpinBox()
         self.batchBox.setRange(1, 100000)
+        self.batchBox.setFixedWidth(150)
         self.vlayout.addWidget(self.batchBox)
         
+        self.vlayout.addStretch()
+        self.setLayout(self.vlayout)
+
+class Ttest(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(Ttest, self).__init__(*args, **kwargs)
+
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addStretch()
+
+        self.goBtn = QPushButton("Test!", self)
+        self.vlayout.addWidget(self.goBtn)
+        
+        self.vlayout.addStretch()
+        self.lossLabel = QLabel("Test Loss: ")
+        self.vlayout.addWidget(self.lossLabel)
+        self.accLabel = QLabel("Test Acc: ")
+        self.vlayout.addWidget(self.accLabel)
+
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
 
@@ -97,30 +116,24 @@ class TestWidget(QWidget):
         
         self.TIM = TimgWidget()
         self.hlayout.addWidget(self.TIM)
-        self.hlayout.addStretch()
 
         self.TB = Tbatch()
         self.hlayout.addWidget(self.TB)
-        self.hlayout.addStretch()
+
+        self.TT = Ttest()
+        self.hlayout.addWidget(self.TT)
+
         self.setLayout(self.hlayout)
 
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
+        self.TT.goBtn.clicked.connect(self.runTest)
 
-        self.goBtn = QPushButton("Test!", self)
-        self.goBtn.clicked.connect(self.runTest)
-        self.goBtn.setEnabled(False)
-        self.hlayout.addWidget(self.goBtn)
-
-        self.lossLabel = QLabel("Test Loss: ")
-        self.hlayout.addWidget(self.lossLabel)
-        self.accLabel = QLabel("Test Acc: ")
-        self.hlayout.addWidget(self.accLabel)
 
     def choese_Btn(self):
         if page_training.uid != None:
-            self.goBtn.setEnabled(True)
+            self.TT.goBtn.setEnabled(True)
         else:
-            self.goBtn.setEnabled(False)
+            self.TT.goBtn.setEnabled(False)
         print("open folder")
         folder_path = QFileDialog.getOpenFileName(
             self, "Select .npz file", ".", "*.npz")  # start path
@@ -133,5 +146,5 @@ class TestWidget(QWidget):
         self.thread.start()
 
     def updateLabel(self, loss, acc):
-        self.lossLabel.setText("Test Loss: " + str(loss))
-        self.accLabel.setText("Test Acc: " + str(acc * 100) + " %")
+        self.TT.lossLabel.setText("Test Loss: " + str(loss))
+        self.TT.accLabel.setText("Test Acc: " + str(acc * 100) + " %")
