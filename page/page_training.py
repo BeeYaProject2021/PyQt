@@ -44,8 +44,8 @@ class Thread(QThread):
         data = re.split(" |\"", x.text)
         print("response data", data[2])
 
-        ClientSocket = socket.socket()
-        ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_OOBINLINE, 1)
         host = '140.136.204.132'
         port = (int)(data[3])
         uid = data[2]
@@ -72,13 +72,14 @@ class Thread(QThread):
             strRes = Response.decode('utf-8')
             # print(strRes)
             lines = strRes.split('\r\n')
+            print(strRes)
 
             over = False
             for line in lines:
                 self._signal.emit(batch_cnt)
                 if '@' in line:
                     data = line.split('@')
-                    # print(data[1], data[2], data[3])
+                    # print(line)
                     batch_cnt += 1
 
                     # Use signal to inform the thread run function
