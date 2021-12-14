@@ -502,11 +502,13 @@ class ModelWidget(QWidget):
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
                                ",\"filters\":\"" + str(self.attr_widget[i].convfilter.value()) +
                                "\",\"kernel_size\":\"" + str(self.attr_widget[i].convkernel_size.value()) +
+                               "\",\"strides\":\"" + str(self.attr_widget[i].strides.value()) +
                                "\",\"padding\":\"" + self.attr_widget[i].convpadding.currentText() +
                                "\",\"activation\":\"" + self.attr_widget[i].convactivation.currentText() + "\"},")
             elif self.attr_widget[i].id == 2:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
                                ",\"pool_type\":\"" + str(self.attr_widget[i].choosepool.currentText()) +
+                               "\",\"strides\":\"" + str(self.attr_widget[i].strides.value()) +
                                "\",\"pool_size\":\"" + str(self.attr_widget[i].poolpool_size.value()) + "\"},")
             elif self.attr_widget[i].id == 3:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) + "},")
