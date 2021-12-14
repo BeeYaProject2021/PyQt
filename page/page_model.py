@@ -247,7 +247,7 @@ class MaxpoolWidget(QWidget):
         self.strides.setRange(1, 100000)
         self.hstrides.addWidget(self.strides)
         self.poolLayout.addLayout(self.hstrides)
-        
+
         self.hpoolpool_size = QHBoxLayout()
         self.poolpool_sizelabel = QLabel("Pool Size : ")
         self.poolpool_sizelabel.setFont(QFont("Consolas", 10))
@@ -329,12 +329,34 @@ class InputWidget(QWidget):
         self.inputDataset = QComboBox()
         datasets = ['custom', 'mnist']
         self.inputDataset.addItems(datasets)
+        self.inputDataset.currentIndexChanged.connect(self.inputDataset_change)
         self.inputLayout.addWidget(self.inputDataset)
+
+        self.filePathEdit = QLabel()
+        self.inputLayout.addWidget(self.filePathEdit)
+
+        self.selectFileBtn = QPushButton('Select')
+        self.selectFileBtn.clicked.connect(self.selectFile)
+        self.inputLayout.addWidget(self.selectFileBtn)
         self.inputLayout.addStretch()
 
         self.setLayout(self.inputLayout)
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
+
+    def inputDataset_change(self, index):
+        if index > 0:
+            self.filePathEdit.setVisible(False)
+            self.selectFileBtn.setVisible(False)
+        else:
+            self.filePathEdit.setVisible(True)
+            self.selectFileBtn.setVisible(True)
+
+    def selectFile(self):
+        file_path = QFileDialog.getOpenFileName(
+            self, "Select .npz file", ".", "*.npz")  # start path
+        print(file_path[0])
+        self.filePathEdit.setText(file_path[0])
 
 
 class OutputWidget(QWidget):
@@ -356,7 +378,7 @@ class ModelWidget(QWidget):
     attr_widget = []
     layer_index_order = []
     input_shape = [0, 0, 0]
-    layer_json_signal = pyqtSignal(str)
+    layer_json_signal = pyqtSignal(str, int, str)
 
     def __init__(self):
         super().__init__()
@@ -472,6 +494,9 @@ class ModelWidget(QWidget):
                                    ", next edge's index: The End\n")
                 break
 
+        dataset = -1
+        datasetPath = ""
+
         for i in self.layer_index_order:
             if self.attr_widget[i].id == 1:
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
@@ -493,6 +518,8 @@ class ModelWidget(QWidget):
                 layer_json += ("{\"id\":" + str(self.attr_widget[i].id) +
                                #   ",\"input_shape\":" + "[\"" + str(self.input_shape[0]) + "\",\"" + str(self.input_shape[1]) + "\",\"" + str(self.input_shape[2]) + "\"]" + "},"
                                ",\"dataset\":" + str(self.attr_widget[i].inputDataset.currentIndex()) + "},")
+                dataset = self.attr_widget[i].inputDataset.currentIndex()
+                datasetPath = self.attr_widget[i].filePathEdit.text()
             elif self.attr_widget[i].id == 6:
                 # layer_json += "{\"id\":" + str(self.attr_widget[i].id) + ","
                 pass
@@ -501,6 +528,8 @@ class ModelWidget(QWidget):
 
         edge_label.setText(edge_label.text())
         print(layer_json)
-        self.layer_json_signal.emit(layer_json)
+
+        self.layer_json_signal.emit(layer_json, dataset, datasetPath)
+
         layer_json = "["
         self.layer_index_order.clear()

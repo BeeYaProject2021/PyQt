@@ -197,7 +197,6 @@ class ImgWidget(QWidget):
         self.hlayout = QHBoxLayout()
         self.hlayout.addStretch()
 
-        # self.filePathEdit = QLineEdit()
         self.filePathEdit = QLabel()
         self.filePathEdit.setFixedWidth(300)
         self.hlayout.addWidget(self.filePathEdit)

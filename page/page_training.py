@@ -21,18 +21,24 @@ class Thread(QThread):
     val_loss_signal = pyqtSignal(int, float)
     img_total_signal = pyqtSignal(int)
 
-    def __init__(self, data_json):
+    def __init__(self, data_json, dataset, datasetPath):
         super(Thread, self).__init__()
         self.data_json = data_json
+        self.dataset = dataset
+        self.datasetPath = datasetPath
 
     def run(self):
         global uid
         url = 'http://140.136.204.132:8000/upload/'
         data_json = self.data_json
 
-        # x = requests.post(url, data={'model': data_json}, files={
-        #     'file': open('data.npz', 'rb')})
-        x = requests.post(url, data={'model': data_json})
+        x = ""
+
+        if self.dataset > 0:
+            x = requests.post(url, data={'model': data_json})
+        else:
+            x = requests.post(url, data={'model': data_json}, files={
+                'file': open(self.datasetPath, 'rb')})
         print(x.text)
         data = re.split(" |\"", x.text)
         print("response data", data[2])
@@ -103,6 +109,8 @@ class TrainingWidget(QWidget):
     epoch = 0
     setting_json = ""
     layer_json = ""
+    dataset = -1
+    datasetPath = ""
 
     def __init__(self):
         super().__init__()
@@ -282,23 +290,14 @@ class TrainingWidget(QWidget):
         self.validation_line.setData(self.val_accuracy_x, self.val_accuracy_y)
         self.training_loss_line.setData(self.loss_x, self.loss_y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
-# self.img_total > 0 and self.batch_size > 0 and self.epoch > 0 and
-        if self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "":
-            print("GOOOOO")
-            # tmp = 0
-            # print(self.img_total/self.batch_size)
-            # if self.img_total % self.batch_size != 0:
-            #     tmp = int(self.img_total/self.batch_size) + 1
-            # else:
-            #     tmp = int(self.img_total/self.batch_size)
 
-            # self.progressBar.setMaximum(tmp*self.epoch)
-            # self.progressBar.setTextVisible(True)
+        if self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "" and self.datasetPath != "":
+            print("GOOOOO")
 
             data_json = self.layer_json + self.setting_json
 
             # Thread for progressBar and data graph
-            self.thread = Thread(data_json)
+            self.thread = Thread(data_json, self.dataset, self.datasetPath)
             self.thread.img_total_signal.connect(self.update_img_total)
             self.thread._signal.connect(self.signal_accept)
             self.thread.accuracy_signal.connect(self.update_acc)

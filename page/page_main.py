@@ -21,65 +21,6 @@ class TabBar(QTabBar):
         return QSize(w, size.height())
 
 
-class Button(QPushButton):
-
-    epos = QPoint()
-
-    def __init__(self, title, parent):
-        super().__init__(title, parent)
-
-    def mouseMoveEvent(self, e):
-
-        if e.buttons() != Qt.RightButton:
-            return
-
-        mimeData = QMimeData()
-        mimeData.setText("HI")
-
-        drag = QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
-        self.epos = e.pos()
-        dropAction = drag.exec_(Qt.MoveAction)
-
-    def mousePressEvent(self, e):
-
-        super().mousePressEvent(e)
-
-        if e.button() == Qt.LeftButton:
-            print('press')
-
-
-class WidgetA(QWidget):
-
-    def __init__(self, parent):
-        super(WidgetA, self).__init__(parent)
-
-        self.initUI()
-
-    def initUI(self):
-
-        self.setAcceptDrops(True)
-
-        self.button = Button('Button', self)
-        self.button.move(100, 65)
-
-        self.button2 = Button('Button2', self)
-        self.button2.move(100, 165)
-
-    def dragEnterEvent(self, e):
-        e.accept()
-
-    def dragMoveEvent(self, e):
-        e.source().move(e.pos() - e.source().epos)
-        e.accept()
-
-    def dropEvent(self, e):
-        e.source().move(e.pos() - e.source().epos)
-        e.setDropAction(Qt.MoveAction)
-        e.accept()
-
-
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -146,8 +87,11 @@ class MainWindow(QMainWindow):
         self.trainingW.epoch = epoch
         self.trainingW.setting_json = setting_json
 
-    def layer_json_signal_acc(self, json_str):
+    def layer_json_signal_acc(self, json_str, dataset, datasetPath):
         self.trainingW.layer_json = json_str
+        self.trainingW.dataset = dataset
+        self.trainingW.datasetPath = datasetPath
+
 
         # keyboard.wait(hotkey='c')
 app = QApplication(sys.argv)
