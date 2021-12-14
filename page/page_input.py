@@ -18,11 +18,12 @@ class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
 
-    def __init__(self, aw, imgw, color):
+    def __init__(self, aw, imgw, color, saveFilePath):
         super(Thread, self).__init__()
         self.aw = aw
         self.imgw = imgw
         self.color = color
+        self.saveFilePath = saveFilePath
 
     def run(self):
         path = pathlib.Path(self.imgw.filePathEdit.text())
@@ -107,8 +108,10 @@ class Thread(QThread):
                 time.sleep(0.01)
                 self._signal.emit(i)
 
-            np.savez_compressed('data.npz', train_img=img,
+            np.savez_compressed(str(self.saveFilePath), train_img=img,
                                 train_lab=lab, test_img=img2, test_lab=lab2)
+            # np.savez_compressed('data.npz', train_img=img,
+            #                     train_lab=lab, test_img=img2, test_lab=lab2)
             self._signal.emit(100)
 
 
@@ -389,7 +392,11 @@ class InputWidget(QWidget):
             else:
                 self.color = 3
             self.PlaySound()
-            self.thread = Thread(self.aw, self.imgw, self.color)
+            saveFilePath = QFileDialog.getSaveFileName(
+                self, "Save .npz file", "./untitle.npz", "*.npz")
+            print(saveFilePath[0])
+            self.thread = Thread(self.aw, self.imgw,
+                                 self.color, saveFilePath[0])
             self.thread._signal.connect(self.signal_accept)
             self.thread._signal2.connect(self.signal_warning_get)
             self.thread.start()
