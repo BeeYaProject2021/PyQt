@@ -45,7 +45,7 @@ class Thread(QThread):
         data = strRes.split('#')
         loss, acc = data[1], data[2]
         print(loss, acc)
-        self.response_signal.emit(loss, acc)
+        self.response_signal.emit(float(loss), float(acc))
 
 
 class TimgWidget(QWidget):

@@ -1,40 +1,9 @@
-import sys
-import cgitb
+# 引入 requests 模組
+import requests
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow
+# # 要上傳的檔案
+my_files = {'file': open('my_file.txt', 'rb')}
+params = ( ( 'model',1 ),( 'model',2 ),( 'model',3 ) )
 
-from scene import GraphicScene
-from view import GraphicView
-
-cgitb.enable(format("text"))
-
-
-class MainWindow(QMainWindow):
-
-    def __init__(self):
-        super().__init__()
-
-        self.scene = GraphicScene(self)
-        self.view = GraphicView(self.scene, self)
-
-        self.setMinimumHeight(500)
-        self.setMinimumWidth(500)
-        self.setCentralWidget(self.view)
-        self.setWindowTitle("Graphics Demo")
-
-
-def demo_run():
-    app = QApplication(sys.argv)
-    demo = MainWindow()
-    # compatible with Mac Retina screen.
-    app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-    app.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    # show up
-    demo.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    demo_run()
+# 將檔案加入 POST 請求中
+r = requests.post('http://140.136.151.88:8000/upload/', files = my_files, data=params)
