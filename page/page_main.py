@@ -92,7 +92,6 @@ class MainWindow(QMainWindow):
         self.trainingW.dataset = dataset
         self.trainingW.datasetPath = datasetPath
 
-
         # keyboard.wait(hotkey='c')
 app = QApplication(sys.argv)
 
