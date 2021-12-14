@@ -80,6 +80,7 @@ class Tbatch(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
         self.batchlabel = QLabel("batch : ")
+        self.batchlabel.setFont(QFont("Consolas", 20))
         self.vlayout.addWidget(self.batchlabel)
         self.batchBox = QSpinBox()
         self.batchBox.setRange(1, 100000)
@@ -96,13 +97,16 @@ class Ttest(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
-        self.goBtn = QPushButton("Test!", self)
+        self.goBtn = QPushButton("Test!")
+        # self.goBtn.setFont(QFont("Consolas", 20))
         self.vlayout.addWidget(self.goBtn)
 
         self.vlayout.addStretch()
         self.lossLabel = QLabel("Test Loss: ")
+        self.lossLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.lossLabel)
         self.accLabel = QLabel("Test Acc: ")
+        self.accLabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.accLabel)
 
         self.vlayout.addStretch()
