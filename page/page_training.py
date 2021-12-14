@@ -291,7 +291,7 @@ class TrainingWidget(QWidget):
         self.training_loss_line.setData(self.loss_x, self.loss_y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
 
-        if self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "" and self.datasetPath != "":
+        if self.batch_size > 0 and self.epoch > 0 and self.setting_json != "" and self.layer_json != "" and (self.datasetPath != "" or self.dataset > 0):
             print("GOOOOO")
 
             data_json = self.layer_json + self.setting_json
