@@ -20,6 +20,7 @@ class Thread(QThread):
     loss_signal = pyqtSignal(int, float)
     val_loss_signal = pyqtSignal(int, float)
     img_total_signal = pyqtSignal(int)
+    go_proceed_signal = pyqtSignal(str)
 
     def __init__(self, data_json, dataset, datasetPath):
         super(Thread, self).__init__()
@@ -97,6 +98,11 @@ class Thread(QThread):
                     over = True
                     ClientSocket.close()
                     break
+                if 'error' in line:
+                    over = True
+                    self.go_proceed_signal.emit(str(line))
+                    ClientSocket.close()
+                    break                    
 
             if over == True:
                 break
@@ -119,52 +125,6 @@ class TrainingWidget(QWidget):
 
         self.buttonlayout = QHBoxLayout()
         self.buttonlayout.addStretch(2)
-
-        # self.pushButton_1 = QtWidgets.QPushButton(self)
-        # self.pushButton_1.setMinimumSize(50, 50)
-        # # self.pushButton_1.resize(50, 50)
-        # icon1 = QtGui.QIcon()
-        # icon1.addPixmap(QtGui.QPixmap("./image/rotate-left 4.png"),
-        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_1.setIcon(icon1)
-        # self.buttonlayout.addWidget(self.pushButton_1)
-
-        # self.pushButton_2 = QtWidgets.QPushButton(self)
-        # self.pushButton_2.setMinimumSize(50, 50)
-        # # self.pushButton_2.resize(50, 50)
-        # icon2 = QtGui.QIcon()
-        # icon2.addPixmap(QtGui.QPixmap("./image/rotate-right 2.png"),
-        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_2.setIcon(icon2)
-        # self.buttonlayout.addWidget(self.pushButton_2)
-
-        # self.pushButton_3 = QtWidgets.QPushButton(self)
-        # self.pushButton_3.setMinimumSize(50, 50)
-        # # self.pushButton_3.resize(50, 50)
-        # icon3 = QtGui.QIcon()
-        # icon3.addPixmap(QtGui.QPixmap("./image/4_audio_play.png"),
-        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_3.setIcon(icon3)
-        # self.buttonlayout.addWidget(self.pushButton_3)
-
-        # self.pushButton_4 = QtWidgets.QPushButton(self)
-        # self.pushButton_4.setMinimumSize(50, 50)
-        # # self.pushButton_4.resize(50, 50)
-        # icon4 = QtGui.QIcon()
-        # icon4.addPixmap(QtGui.QPixmap("./image/4_audio_stop.ico"),
-        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_4.setIcon(icon4)
-        # self.buttonlayout.addWidget(self.pushButton_4)
-
-        # self.pushButton_5 = QtWidgets.QPushButton(self)
-        # self.pushButton_5.setMinimumSize(50, 50)
-        # # self.pushButton_5.resize(50, 50)
-        # icon5 = QtGui.QIcon()
-        # icon5.addPixmap(QtGui.QPixmap("./image/4_audio_pause.png"),
-        #                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_5.setIcon(icon5)
-        # self.buttonlayout.addWidget(self.pushButton_5)
-        # self.buttonlayout.addStretch(2)
 
         self.toolButton_4 = QtWidgets.QToolButton(self)
         self.toolButton_4.setMinimumSize(50, 50)
@@ -304,6 +264,7 @@ class TrainingWidget(QWidget):
             self.thread.val_accuracy_signal.connect(self.update_val_acc)
             self.thread.loss_signal.connect(self.update_loss)
             self.thread.val_accuracy_signal.connect(self.update_val_loss)
+            self.thread.go_proceed_signal.connect(self.go_proceed)
 
             self.thread.start()
             self.pushButtongo.setEnabled(False)
@@ -351,6 +312,13 @@ class TrainingWidget(QWidget):
         self.val_loss_x.append(x)
         self.val_loss_y.append(y)
         self.validation_loss_line.setData(self.val_loss_x, self.val_loss_y)
+
+    def go_proceed(self, msg):
+        self.pushButtongo.setEnabled(True)
+        self.warning.setText(msg)
+        self.warning.setIcon(QMessageBox.Icon.Warning)
+        self.warning.setWindowTitle("RunTime Error")
+        self.warning.show()
 
     def saveModel(self, action):
         url = 'http://140.136.204.132:8000/download/?train_id=' + uid

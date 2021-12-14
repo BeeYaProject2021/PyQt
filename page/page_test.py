@@ -7,6 +7,7 @@ import pathlib, requests, re, socket, page_training
 class Thread(QThread):
 
     response_signal = pyqtSignal(float, float)
+    error_signal = pyqtSignal(str)
 
     def __init__(self, uid, batch, folder_path):
         super(Thread, self).__init__()
@@ -43,9 +44,13 @@ class Thread(QThread):
         Response = ClientSocket.recv(1024)
         strRes = Response.decode('utf-8')
         data = strRes.split('#')
-        loss, acc = data[1], data[2]
-        print(loss, acc)
-        self.response_signal.emit(float(loss), float(acc))
+
+        if 'error' in strRes:
+            self.error_signal.emit(data)
+        else:
+            loss, acc = data[1], data[2]
+            print(loss, acc)
+            self.response_signal.emit(float(loss), float(acc))
 
 
 class TimgWidget(QWidget):
@@ -65,9 +70,9 @@ class TimgWidget(QWidget):
         self.vlayout.addWidget(self.filePathEdit)
         
         self.hlayout = QHBoxLayout()
-        self.ChoeseFileBtn = QPushButton('Choese')
-        self.ChoeseFileBtn.setFixedWidth(150)
-        self.hlayout.addWidget(self.ChoeseFileBtn)
+        self.ChooseFileBtn = QPushButton('Choose')
+        self.ChooseFileBtn.setFixedWidth(150)
+        self.hlayout.addWidget(self.ChooseFileBtn)
         
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addStretch()
@@ -132,11 +137,14 @@ class TestWidget(QWidget):
         with open("./stylesheet/input.qss", "r") as f:
             self.setStyleSheet(f.read())
 
-        self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
+        self.TIM.ChooseFileBtn.clicked.connect(self.Choose_Btn)
         self.TT.goBtn.clicked.connect(self.runTest)
+        self.TT.goBtn.setEnabled(False)
+
+        self.warning = QMessageBox()
 
 
-    def choese_Btn(self):
+    def Choose_Btn(self):
         if page_training.uid != None:
             self.TT.goBtn.setEnabled(True)
         else:
@@ -150,8 +158,15 @@ class TestWidget(QWidget):
     def runTest(self):
         self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
         self.thread.response_signal.connect(self.updateLabel)
+        self.thread.error_signal.connect(self.error_show)
         self.thread.start()
 
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
         self.TT.accLabel.setText("Test Acc: " + str(acc * 100) + " %")
+    
+    def error_show(self, msg):
+        self.warning.setText(msg)
+        self.warning.setIcon(QMessageBox.Icon.Warning)
+        self.warning.setWindowTitle("RunTime Error")
+        self.warning.show()        
