@@ -46,7 +46,7 @@ class Thread(QThread):
         data = strRes.split('#')
 
         if 'error' in strRes:
-            self.error_signal.emit(data)
+            self.error_signal.emit(strRes)
         else:
             loss, acc = data[1], data[2]
             print(loss, acc)
