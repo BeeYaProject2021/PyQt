@@ -18,10 +18,11 @@ class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
 
-    def __init__(self, aw, imgw):
+    def __init__(self, aw, imgw, color):
         super(Thread, self).__init__()
         self.aw = aw
         self.imgw = imgw
+        self.color = color
 
     def run(self):
         path = pathlib.Path(self.imgw.filePathEdit.text())
@@ -38,12 +39,14 @@ class Thread(QThread):
             self._signal2.emit(-1)
         else:
             self.aw.progressBar.setVisible(True)
+
             train_ds = tf.keras.preprocessing.image_dataset_from_directory(
                 path,
                 validation_split=validate,
                 subset="training",
                 seed=123,
                 image_size=(imgH, imgW),
+                color_mode='grayscale' if self.color == 1 else 'rgb',
                 batch_size=32)
 
             img_cnt = len(np.concatenate([i for x, i in train_ds], axis=0))
@@ -76,6 +79,7 @@ class Thread(QThread):
                 subset="validation",
                 seed=123,
                 image_size=(imgH, imgW),
+                color_mode='grayscale' if self.color == 1 else 'rgb',
                 batch_size=32)
 
             for i in range(40, 60):
@@ -165,7 +169,7 @@ class AttributeWidget(QWidget):
         self.vlayout.addLayout(self.imgboxLayout)
 
         self.rgbhlayout = QHBoxLayout()
-        self.rgbLabel = QLabel("color:")
+        self.rgbLabel = QLabel("color mode:")
         self.rgbLabel.setFont(QFont("Consolas", 12))
         self.rgbLabel.setAlignment(Qt.AlignCenter)
         self.rgbhlayout.addWidget(self.rgbLabel)
@@ -377,8 +381,13 @@ class InputWidget(QWidget):
     def confirm_Btn(self):
         # Check Path exists
         if os.path.exists(self.imgw.filePathEdit.text()):
+            self.color = 0
+            if self.aw.rgbSelect.currentIndex() == 0:
+                self.color = 1
+            else:
+                self.color = 3
             self.PlaySound()
-            self.thread = Thread(self.aw, self.imgw)
+            self.thread = Thread(self.aw, self.imgw, self.color)
             self.thread._signal.connect(self.signal_accept)
             self.thread._signal2.connect(self.signal_warning_get)
             self.thread.start()
@@ -439,10 +448,5 @@ class InputWidget(QWidget):
             self.aw.confirmBtn.setEnabled(True)
         else:
             self.img_total_signal.emit(msg)
-            color = 0
-            if self.aw.rgbSelect.currentIndex() == 0:
-                color = 1
-            else:
-                color = 3
             self.img_size_signal.emit(self.aw.imghBox.value(
-            ), self.aw.imgwBox.value(), color)
+            ), self.aw.imgwBox.value(), self.color)
