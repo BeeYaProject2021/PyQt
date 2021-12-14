@@ -2,7 +2,32 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import pathlib
+import pathlib, requests, re, socket
+
+uid = None
+
+class Thread(QThread):
+    def __init__(self, batch):
+        super(Thread, self).__init__()
+        self.batch = batch
+
+    def run(self):
+        global uid
+        batch = self.batch
+
+        url = 'http://140.136.204.132:8000/test/'
+        x = requests.post(url, data={'uid': uid, 'batch': batch}, 
+        files={'file': open(self.datasetPath, 'rb')})    
+        print(x.text)
+        data = re.split(" |\"", x.text)
+        print("response data", data)
+
+        ClientSocket = socket.socket()
+        ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        host = '140.136.204.132'
+        # port = (int)(data[3])
+
+
 
 class TimgWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -11,10 +36,10 @@ class TimgWidget(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
-        self.ansBox = QComboBox()
-        ansfunctions = ['Have ans', 'NO ans']
-        self.ansBox.addItems(ansfunctions)
-        self.vlayout.addWidget(self.ansBox)
+        # self.ansBox = QComboBox()
+        # ansfunctions = ['Have ans', 'NO ans']
+        # self.ansBox.addItems(ansfunctions)
+        # self.vlayout.addWidget(self.ansBox)
 
 
         self.hlayout = QHBoxLayout()
@@ -63,6 +88,10 @@ class TestWidget(QWidget):
 
         self.TIM.ChoeseFileBtn.clicked.connect(self.choese_Btn)
 
+        self.goBtn = QPushButton("Test!", self)
+        self.goBtn.clicked.connect(self.runTest)
+        self.hlayout.addWidget(self.goBtn)
+
     def choese_Btn(self):
         print("open folder")
         folder_path = QFileDialog.getExistingDirectory(
@@ -73,3 +102,8 @@ class TestWidget(QWidget):
 
         self.TIM.filePathEdit.setText(folder_path)
         folder_path = pathlib.Path(folder_path)
+
+    def runTest(self):
+        self.thread = Thread(self.TB.batchBox.value)
+
+        self.thread.start()
