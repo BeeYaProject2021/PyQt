@@ -1,4 +1,5 @@
 import os
+import random
 import pathlib
 import PIL
 import PIL.Image
@@ -336,7 +337,7 @@ class InputWidget(QWidget):
                     for j in range(len(img)):
                         self.imgTuples.append((img[j], label))
                     print(len(img))
-
+            random.shuffle(self.imgTuples)
             self.imgPage.setEnabled(True)
             self.imgPage.clear()
             # print(int((len(self.imgTuples)-1)/20))
@@ -370,12 +371,12 @@ class InputWidget(QWidget):
                             self.imgGridLayout.itemAtPosition(i, j).widget())
 
     def PageChange(self, index):
-        print(index)
+        # print(index)
         if self.imgPage.isEnabled():
             for i in range(4):
                 for j in range(5):
                     num = i*5+j+index*20
-                    print(num)
+                    # print(num)
                     if self.imgGridLayout.itemAtPosition(i, j) is not None:
                         self.imgGridLayout.removeWidget(
                             self.imgGridLayout.itemAtPosition(i, j).widget())
