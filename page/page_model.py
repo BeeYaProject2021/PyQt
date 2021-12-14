@@ -327,7 +327,7 @@ class InputWidget(QWidget):
         self.inputLayout.addStretch()
 
         self.inputDataset = QComboBox()
-        datasets = ['custom', 'mnist']
+        datasets = ['custom', 'mnist', 'fashion_mnist', 'cifar10', 'cifar100']
         self.inputDataset.addItems(datasets)
         self.inputDataset.currentIndexChanged.connect(self.inputDataset_change)
         self.inputLayout.addWidget(self.inputDataset)
