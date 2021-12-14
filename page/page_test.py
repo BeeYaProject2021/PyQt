@@ -61,7 +61,7 @@ class TimgWidget(QWidget):
         # self.vlayout.addWidget(self.ansBox)
 
         self.filePathEdit = QLabel()
-        # self.filePathEdit.setFixedWidth(200)
+        self.filePathEdit.setObjectName("Path")
         self.vlayout.addWidget(self.filePathEdit)
         
         self.hlayout = QHBoxLayout()
@@ -80,7 +80,7 @@ class Tbatch(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
         self.batchlabel = QLabel("batch : ")
-        self.batchlabel.setFont(QFont("Consolas", 20))
+        self.batchlabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.batchlabel)
         self.batchBox = QSpinBox()
         self.batchBox.setRange(1, 100000)

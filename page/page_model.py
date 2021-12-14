@@ -333,6 +333,7 @@ class InputWidget(QWidget):
         self.inputLayout.addWidget(self.inputDataset)
 
         self.filePathEdit = QLabel()
+        self.filePathEdit.setObjectName("Path")
         self.inputLayout.addWidget(self.filePathEdit)
 
         self.selectFileBtn = QPushButton('Select')

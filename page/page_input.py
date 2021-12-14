@@ -144,7 +144,7 @@ class AttributeWidget(QWidget):
 
         self.imghvLayout = QVBoxLayout()
         self.imghLabel = QLabel("Height")
-        self.imghLabel.setFont(QFont("Consolas", 12))
+        self.imghLabel.setFont(QFont("Consolas", 15))
         self.imghvLayout.addWidget(self.imghLabel)
 
         self.imghBox = QSpinBox()
@@ -156,7 +156,7 @@ class AttributeWidget(QWidget):
 
         self.imgwvLayout = QVBoxLayout()
         self.imgwLabel = QLabel("Width")
-        self.imgwLabel.setFont(QFont("Consolas", 12))
+        self.imgwLabel.setFont(QFont("Consolas", 15))
         self.imgwvLayout.addWidget(self.imgwLabel)
 
         self.imgwBox = QSpinBox()
@@ -169,8 +169,8 @@ class AttributeWidget(QWidget):
         self.vlayout.addLayout(self.imgboxLayout)
 
         self.rgbhlayout = QHBoxLayout()
-        self.rgbLabel = QLabel("color mode:")
-        self.rgbLabel.setFont(QFont("Consolas", 12))
+        self.rgbLabel = QLabel("Color mode:")
+        self.rgbLabel.setFont(QFont("Consolas", 15))
         self.rgbLabel.setAlignment(Qt.AlignCenter)
         self.rgbhlayout.addWidget(self.rgbLabel)
 
@@ -202,7 +202,8 @@ class ImgWidget(QWidget):
         self.hlayout.addStretch()
 
         self.filePathEdit = QLabel()
-        self.filePathEdit.setFixedWidth(300)
+        self.filePathEdit.setFixedWidth(440)
+        self.filePathEdit.setObjectName("Path")
         self.hlayout.addWidget(self.filePathEdit)
 
         self.selectFileBtn = QPushButton('Select')
@@ -239,6 +240,7 @@ class ImgDisplay(QWidget):
         self.vlayout.addWidget(self.img)
 
         self.imgLabel = QLabel()
+        self.imgLabel.setFont(QFont("Consolas", 8))
         self.imgLabel.setText(label)
 
         self.vlayout.addWidget(self.imgLabel)
