@@ -14,7 +14,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
 
-
 class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
@@ -50,6 +49,9 @@ class Thread(QThread):
                 image_size=(imgH, imgW),
                 color_mode='grayscale' if self.color == 1 else 'rgb',
                 batch_size=32)
+
+            class_names = train_ds.class_names
+            print(class_names)
 
             img_cnt = len(np.concatenate([i for x, i in train_ds], axis=0))
             self._signal2.emit(img_cnt)
@@ -111,6 +113,11 @@ class Thread(QThread):
 
             np.savez_compressed(str(self.saveFilePath), train_img=img,
                                 train_lab=lab, test_img=img2, test_lab=lab2)
+            print(str(self.saveFilePath))
+            store_class = str(self.saveFilePath) + ".txt"
+            with open(store_class, "w") as f:
+                for i in class_names:
+                    f.writelines(i + "\n")
             # np.savez_compressed('data.npz', train_img=img,
             #                     train_lab=lab, test_img=img2, test_lab=lab2)
             self._signal.emit(100)
@@ -275,21 +282,6 @@ class InputWidget(QWidget):
         self.imgGridLayout = QGridLayout()
         self.vimgw.addLayout(self.imgGridLayout)
 
-        # self.pixmap_lw = QtWidgets.QListWidget(
-        #     viewMode=QtWidgets.QListView.IconMode,
-        #     iconSize=ICON_SIZE * QtCore.QSize(1, 1),
-        #     movement=QtWidgets.QListView.Static,
-        #     resizeMode=QtWidgets.QListView.Adjust,
-        # )
-
-        # delegate = StyledItemDelegate(self.pixmap_lw)
-        # self.pixmap_lw.setItemDelegate(delegate)
-
-        # self.timer_loading = QtCore.QTimer(
-        #     interval=50, timeout=self.load_image)
-        # self.filenames_iterator = None
-
-        # self.vimgw.addWidget(self.pixmap_lw)
         self.vimgw.addStretch()
         self.hlayout.addLayout(self.vimgw)
 

@@ -119,6 +119,9 @@ class Ttest(QWidget):
 
 
 class TestWidget(QWidget):
+
+    class_names = []
+
     def __init__(self, *args, **kwargs):
         super(TestWidget, self).__init__(*args, **kwargs)
         self.hlayout = QHBoxLayout()
@@ -154,7 +157,13 @@ class TestWidget(QWidget):
             self, "Select .npz file", ".", "*.npz")  # start path
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
-
+        self.class_names.clear()
+        with open(folder_path[0] + ".txt", "r") as f:
+            for line in f.readlines():
+                line = line.strip("\n")
+                self.class_names.append(line)
+        print(self.class_names)
+        
     def runTest(self):
         self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
         self.thread.response_signal.connect(self.updateLabel)
