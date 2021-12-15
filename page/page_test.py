@@ -3,6 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import pathlib, requests, re, socket, page_training
+import numpy as np
 
 class Thread(QThread):
 
@@ -27,8 +28,8 @@ class Thread(QThread):
         data = re.split(" |\"", x.text)
         print("response data", data)
 
-        ClientSocket = socket.socket()
-        ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_OOBINLINE, 1)
         host = '140.136.204.132'
         port = (int)(data[2])
 
@@ -51,7 +52,21 @@ class Thread(QThread):
             loss, acc = data[1], data[2]
             print(loss, acc)
             self.response_signal.emit(float(loss), float(acc))
+        
+            while True:
+                Response = ClientSocket.recv(1024)
+                strRes = Response.decode('utf-8')
+                lines = strRes.split('\r\n')
 
+                over = False
+                for i in lines:
+                    print(i)
+                    if 'over' in i:
+                        over = True
+                        ClientSocket.close()
+                        break
+                if over == True:
+                    break
 
 class TimgWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -120,6 +135,8 @@ class Ttest(QWidget):
 
 class TestWidget(QWidget):
 
+    guess = []
+    label = []
     class_names = []
 
     def __init__(self, *args, **kwargs):
@@ -157,6 +174,15 @@ class TestWidget(QWidget):
             self, "Select .npz file", ".", "*.npz")  # start path
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
+
+        # Store label
+        npz = np.load(folder_path[0])
+        testY = npz['test_lab']
+        self.label.clear()
+        for i in testY:
+            self.label.append(i)
+
+        # Read class name
         self.class_names.clear()
         with open(folder_path[0] + ".txt", "r") as f:
             for line in f.readlines():
