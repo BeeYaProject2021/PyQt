@@ -13,6 +13,9 @@ import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
+imgH = 0
+imgW = 0
+imgC = 0
 
 class Thread(QThread):
     _signal = pyqtSignal(int)
@@ -26,6 +29,9 @@ class Thread(QThread):
         self.saveFilePath = saveFilePath
 
     def run(self):
+        global imgH
+        global imgW
+        global imgC
         path = pathlib.Path(self.imgw.filePathEdit.text())
         print(path)
 
@@ -33,6 +39,7 @@ class Thread(QThread):
         validate = self.aw.validsplitBox.value()
         imgH = self.aw.imghBox.value()
         imgW = self.aw.imgwBox.value()
+        imgC = self.color
         print(validate)
         print(imgH, imgW)
 

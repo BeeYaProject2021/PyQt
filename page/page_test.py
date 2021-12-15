@@ -2,13 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import pathlib, requests, re, socket, page_training
+import pathlib, requests, re, socket, page_training, page_input
 import numpy as np
 
 class Thread(QThread):
 
     response_signal = pyqtSignal(float, float)
     error_signal = pyqtSignal(str)
+    guess_signal = pyqtSignal(int)
 
     def __init__(self, uid, batch, folder_path):
         super(Thread, self).__init__()
@@ -53,6 +54,7 @@ class Thread(QThread):
             print(loss, acc)
             self.response_signal.emit(float(loss), float(acc))
         
+            g_cnt = 0
             while True:
                 Response = ClientSocket.recv(1024)
                 strRes = Response.decode('utf-8')
@@ -60,13 +62,23 @@ class Thread(QThread):
 
                 over = False
                 for i in lines:
-                    print(i)
+                    # print(i)
                     if 'over' in i:
                         over = True
                         ClientSocket.close()
                         break
+                    if i == '':
+                        continue
+                    self.guess_signal.emit(int(i))
+                    g_cnt += 1
+
                 if over == True:
                     break
+            print("guess count: ", g_cnt)
+
+class Thread2(QThread):
+    def __init__(self):
+        super(Thread2, self).__init__()
 
 class TimgWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -194,11 +206,15 @@ class TestWidget(QWidget):
         self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
         self.thread.response_signal.connect(self.updateLabel)
         self.thread.error_signal.connect(self.error_show)
+        self.thread.guess_signal.connect(self.update_guess)
         self.thread.start()
 
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
         self.TT.accLabel.setText("Test Acc: " + str(acc * 100) + " %")
+    
+    def update_guess(self, g):
+        self.guess.append(g)
     
     def error_show(self, msg):
         self.warning.setText(msg)
