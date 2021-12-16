@@ -1,8 +1,6 @@
 import os
 import random
 import pathlib
-import PIL
-import PIL.Image
 import numpy as np
 import tensorflow as tf
 from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia

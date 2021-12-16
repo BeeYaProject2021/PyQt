@@ -4,9 +4,7 @@ import pyqtgraph as pg
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QFileDialog, QApplication, QMessageBox, QWidget, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import QThread, QTimer, Qt, pyqtSignal
-from random import randint
 from pyqtgraph import PlotWidget, image, plot
-import webbrowser
 import re
 
 uid = None
@@ -103,7 +101,7 @@ class Thread(QThread):
                     over = True
                     self.go_proceed_signal.emit(str(line))
                     ClientSocket.close()
-                    break                    
+                    break
 
             if over == True:
                 break

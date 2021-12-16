@@ -8,8 +8,6 @@ from page_training import *
 from page_test import *
 from screenshot import *
 from information import *
-
-import os
 import sys
 
 

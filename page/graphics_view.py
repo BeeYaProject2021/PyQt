@@ -1,4 +1,3 @@
-import sys
 from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyQt5.QtWidgets import QGraphicsItem
 from PyQt5.QtWidgets import *

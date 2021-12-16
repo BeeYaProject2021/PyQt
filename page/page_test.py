@@ -1,8 +1,6 @@
-from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import pathlib
 import requests
 import re
 import os
@@ -11,7 +9,6 @@ import page_training
 import page_input
 import page_model
 import numpy as np
-import matplotlib.pyplot as plt
 from PIL.ImageQt import ImageQt
 import tensorflow as tf
 
@@ -336,8 +333,10 @@ class TestWidget(QWidget):
             imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
             imgqt = ImageQt(imgplt)
             self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
-            self.TB.npzguess.setText("Predict: " + self.class_names[ self.guess[index] ])
-            self.TB.npzcorrect.setText("True: " + self.class_names[ self.label[index] ])
+            self.TB.npzguess.setText(
+                "Predict: " + self.class_names[self.guess[index]])
+            self.TB.npzcorrect.setText(
+                "True: " + self.class_names[self.label[index]])
 
     def img_Btn(self):
         if page_training.uid != None:
@@ -359,7 +358,7 @@ class TestWidget(QWidget):
 
         self.TB.imglabel.setPixmap(QPixmap(folder_path[0]))
         self.TB.guesslabel.setText("Predict: ")
-        self.TB.guesspro.setText("Probability: ")        
+        self.TB.guesspro.setText("Probability: ")
 
     def toggle_file(self):
         self.now_file ^= 1

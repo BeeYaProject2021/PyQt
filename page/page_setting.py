@@ -2,7 +2,6 @@ from PyQt5 import QtWidgets, QtCore, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
 
