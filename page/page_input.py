@@ -400,8 +400,10 @@ class InputWidget(QWidget):
             self.PlaySound()
             saveFilePath = QFileDialog.getSaveFileName(
                 self, "Save .npz file", "./untitle.npz", "*.npz")
-            print(saveFilePath[0])
-            if not saveFilePath:
+            print("HI")
+            print(saveFilePath)
+            print("HI")
+            if saveFilePath[0] != "":
                 self.thread = Thread(self.aw, self.imgw,
                                      self.color, saveFilePath[0])
                 self.thread._signal.connect(self.signal_accept)
