@@ -188,6 +188,11 @@ class Tbatch(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
+        self.imgPage = QComboBox()
+        self.imgPage.setEnabled(False)
+        self.imgPage.addItem("0")
+        self.vlayout.addWidget(self.imgPage)
+
         self.imgshow = QLabel("Your Image: ")
         self.imgshow.setFont(QFont("Consolas", 15))
         # self.imgshow.setVisible(False)
@@ -206,7 +211,7 @@ class Tbatch(QWidget):
 
         self.npzcorrect = QLabel("Ture: ")
         self.npzcorrect.setFont(QFont("Consolas", 15))
-        self.vlayout.addWidget(self.npzcorrect)      
+        self.vlayout.addWidget(self.npzcorrect)
 
         self.guesslabel = QLabel("Predict: ")
         self.guesslabel.setFont(QFont("Consolas", 15))
@@ -276,6 +281,7 @@ class TestWidget(QWidget):
         self.TT.goBtn.clicked.connect(self.runTest)
         self.TT.goBtn.setEnabled(False)
         self.TB.imglabel.setFixedSize(250, 250)
+        self.TB.imgPage.currentIndexChanged.connect(self.imgChange)
 
         self.warning = QMessageBox()
 
@@ -291,10 +297,14 @@ class TestWidget(QWidget):
         self.TIM.filePathEdit.setText(folder_path[0])
 
         T = np.load(folder_path[0])
-        img = T['test_img']
-        imgplt = tf.keras.preprocessing.image.array_to_img(img[0])
+        self.img = T['test_img']
+        imgplt = tf.keras.preprocessing.image.array_to_img(self.img[0])
         imgqt = ImageQt(imgplt)
         self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
+        self.TB.imgPage.setEnabled(True)
+        self.TB.imgPage.clear()
+        for i in range(len(self.img)):
+            self.TB.imgPage.addItem(str(i+1))
 
         # Store label
         npz = np.load(folder_path[0])
@@ -310,6 +320,11 @@ class TestWidget(QWidget):
                 line = line.strip("\n")
                 self.class_names.append(line)
         print(self.class_names)
+
+    def imgChange(self, index):
+        imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
+        imgqt = ImageQt(imgplt)
+        self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
 
     def img_Btn(self):
         if page_training.uid != None:
@@ -339,8 +354,8 @@ class TestWidget(QWidget):
         self.TIM.batchBox.setVisible(self.TIM.batchBox.isVisible() ^ 1)
         self.TT.lossLabel.setVisible(self.TT.lossLabel.isVisible() ^ 1)
         self.TT.accLabel.setVisible(self.TT.accLabel.isVisible() ^ 1)
-        self.TB.npzguess.setVisible(self.TB.npzguess.isVisible()^1)
-        self.TB.npzcorrect.setVisible(self.TB.npzcorrect.isVisible()^1)
+        self.TB.npzguess.setVisible(self.TB.npzguess.isVisible() ^ 1)
+        self.TB.npzcorrect.setVisible(self.TB.npzcorrect.isVisible() ^ 1)
 
         self.TT.lossLabel.setText("Test Loss: ")
         self.TT.accLabel.setText("Test Acc: ")

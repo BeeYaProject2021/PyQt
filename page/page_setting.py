@@ -1,6 +1,3 @@
-import PIL.Image
-import numpy as np
-import tensorflow as tf
 from PyQt5 import QtWidgets, QtCore, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -88,7 +85,7 @@ class SettingWidget(QWidget):
         self.player = QtMultimedia.QMediaPlayer()
         self.player.setVolume(10.0)
         self.player.setMedia(audio_content)
-        self.player.play() 
+        self.player.play()
 
     def display(self):
         print(self.optBox.currentIndex())
