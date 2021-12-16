@@ -145,6 +145,7 @@ class TimgWidget(QWidget):
 
         self.filePathEdit = QLabel()
         self.filePathEdit.setObjectName("Path")
+        self.filePathEdit.setFixedWidth(500)
         self.vlayout.addWidget(self.filePathEdit)
              
         self.hlayout = QHBoxLayout()
