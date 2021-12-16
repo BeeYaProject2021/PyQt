@@ -87,19 +87,24 @@ class TimgWidget(QWidget):
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
 
-        # self.ansBox = QComboBox()
-        # ansfunctions = ['Have ans', 'NO ans']
-        # self.ansBox.addItems(ansfunctions)
-        # self.vlayout.addWidget(self.ansBox)
+        self.fileToggle = QPushButton("Toggle File")
+        # self.fileToggle.setFixedWidth(150)
+
+        self.vlayout.addWidget(self.fileToggle)
 
         self.filePathEdit = QLabel()
         self.filePathEdit.setObjectName("Path")
         self.vlayout.addWidget(self.filePathEdit)
-        
+             
         self.hlayout = QHBoxLayout()
-        self.ChooseFileBtn = QPushButton('Choose')
+        self.ChooseFileBtn = QPushButton('NPZ')
         self.ChooseFileBtn.setFixedWidth(150)
+        self.ChooseImgBtn = QPushButton('IMG')
+        self.ChooseImgBtn.setFixedWidth(150)
+        self.ChooseImgBtn.setVisible(False)
+
         self.hlayout.addWidget(self.ChooseFileBtn)
+        self.hlayout.addWidget(self.ChooseImgBtn)
         
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addStretch()
@@ -150,6 +155,7 @@ class TestWidget(QWidget):
     guess = []
     label = []
     class_names = []
+    now_file = True
 
     def __init__(self, *args, **kwargs):
         super(TestWidget, self).__init__(*args, **kwargs)
@@ -170,6 +176,8 @@ class TestWidget(QWidget):
             self.setStyleSheet(f.read())
 
         self.TIM.ChooseFileBtn.clicked.connect(self.Choose_Btn)
+        self.TIM.ChooseImgBtn.clicked.connect(self.img_Btn)
+        self.TIM.fileToggle.clicked.connect(self.toggle_file)
         self.TT.goBtn.clicked.connect(self.runTest)
         self.TT.goBtn.setEnabled(False)
 
@@ -201,13 +209,34 @@ class TestWidget(QWidget):
                 line = line.strip("\n")
                 self.class_names.append(line)
         print(self.class_names)
+
+    def img_Btn(self):
+        if page_training.uid != None:
+            self.TT.goBtn.setEnabled(True)
+        else:
+            self.TT.goBtn.setEnabled(False)
+        print("open folder")
+        folder_path = QFileDialog.getOpenFileName(
+            self, "Select img file", "C:/", "Images (*.jpg *.png *.jpeg)")
+        print(folder_path[0])
+        self.TIM.filePathEdit.setText(folder_path[0])
+
+
+
+    def toggle_file(self):
+        self.now_file ^= 1
+        self.TIM.ChooseFileBtn.setVisible(self.TIM.ChooseFileBtn.isVisible()^1)
+        self.TB.batchlabel.setVisible(self.TB.batchlabel.isVisible()^1)
+        self.TB.batchBox.setVisible(self.TB.batchBox.isVisible()^1)
+        self.TIM.ChooseImgBtn.setVisible(self.TIM.ChooseImgBtn.isVisible()^1)
         
     def runTest(self):
-        self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
-        self.thread.response_signal.connect(self.updateLabel)
-        self.thread.error_signal.connect(self.error_show)
-        self.thread.guess_signal.connect(self.update_guess)
-        self.thread.start()
+        if self.now_file == True:
+            self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
+            self.thread.response_signal.connect(self.updateLabel)
+            self.thread.error_signal.connect(self.error_show)
+            self.thread.guess_signal.connect(self.update_guess)
+            self.thread.start()
 
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
