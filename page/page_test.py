@@ -333,7 +333,7 @@ class TestWidget(QWidget):
             imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
             imgqt = ImageQt(imgplt)
             self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
-            self.TB.npzguess.setText("Predict" + self.class_names[ self.guess[index] ])
+            self.TB.npzguess.setText("Predict: " + self.class_names[ self.guess[index] ])
             self.TB.npzcorrect.setText("True: " + self.class_names[ self.label[index] ])
 
     def img_Btn(self):
@@ -384,7 +384,7 @@ class TestWidget(QWidget):
     def runTest(self):
         if self.now_file == True:
             self.thread = Thread(
-                page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
+                page_training.uid, self.TIM.batchBox.value(), self.TIM.filePathEdit.text())
             self.thread.response_signal.connect(self.updateLabel)
             self.thread.error_signal.connect(self.error_show)
             self.thread.guess_signal.connect(self.update_guess)
