@@ -2,9 +2,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import pathlib, requests, re, socket, page_training, page_input, page_model
+import pathlib
+import requests
+import re
+import socket
+import page_training
+import page_input
+import page_model
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL.ImageQt import ImageQt
+import tensorflow as tf
+
 
 class Thread(QThread):
 
@@ -24,8 +33,8 @@ class Thread(QThread):
         path = self.path
 
         url = 'http://140.136.204.132:8000/test/'
-        x = requests.post(url, data={'uid': uid, 'batch': batch}, 
-        files={'file': open(path, 'rb')})
+        x = requests.post(url, data={'uid': uid, 'batch': batch},
+                          files={'file': open(path, 'rb')})
         # print(x.text)
         data = re.split(" |\"", x.text)
         print("response data", data)
@@ -54,7 +63,7 @@ class Thread(QThread):
             loss, acc = data[1], data[2]
             print(loss, acc)
             self.response_signal.emit(float(loss), float(acc))
-        
+
             g_cnt = 0
             while True:
                 Response = ClientSocket.recv(1024)
@@ -77,6 +86,7 @@ class Thread(QThread):
                     break
             print("guess count: ", g_cnt)
 
+
 class Thread2(QThread):
 
     error_signal2 = pyqtSignal(str)
@@ -98,8 +108,8 @@ class Thread2(QThread):
         path = self.path
 
         url = 'http://140.136.204.132:8000/test/'
-        x = requests.post(url, data={'uid': uid, 'img_h': h, 'img_w': w, 'img_c': c}, 
-        files={'file': open(path, 'rb')})
+        x = requests.post(url, data={'uid': uid, 'img_h': h, 'img_w': w, 'img_c': c},
+                          files={'file': open(path, 'rb')})
 
         data = re.split(" |\"", x.text)
         print("response data", data)
@@ -147,7 +157,7 @@ class TimgWidget(QWidget):
         self.filePathEdit.setObjectName("Path")
         self.filePathEdit.setFixedWidth(500)
         self.vlayout.addWidget(self.filePathEdit)
-             
+
         self.hlayout = QHBoxLayout()
         self.ChooseFileBtn = QPushButton('NPZ')
         self.ChooseFileBtn.setFixedWidth(150)
@@ -165,10 +175,11 @@ class TimgWidget(QWidget):
         self.batchBox.setRange(1, 100000)
         self.batchBox.setFixedWidth(150)
         self.hlayout.addWidget(self.batchBox)
-        
+
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
+
 
 class Tbatch(QWidget):
     def __init__(self, *args, **kwargs):
@@ -198,9 +209,10 @@ class Tbatch(QWidget):
         self.guesspro.setFont(QFont("Consolas", 15))
         self.guesspro.setVisible(False)
         self.vlayout.addWidget(self.guesspro)
-        
+
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
+
 
 class Ttest(QWidget):
     def __init__(self, *args, **kwargs):
@@ -235,7 +247,7 @@ class TestWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(TestWidget, self).__init__(*args, **kwargs)
         self.hlayout = QHBoxLayout()
-        
+
         self.TIM = TimgWidget()
         self.hlayout.addWidget(self.TIM)
 
@@ -255,9 +267,9 @@ class TestWidget(QWidget):
         self.TIM.fileToggle.clicked.connect(self.toggle_file)
         self.TT.goBtn.clicked.connect(self.runTest)
         self.TT.goBtn.setEnabled(False)
+        self.TB.imglabel.setFixedSize(250, 250)
 
         self.warning = QMessageBox()
-
 
     def Choose_Btn(self):
         if page_training.uid != None:
@@ -272,8 +284,9 @@ class TestWidget(QWidget):
 
         T = np.load(folder_path[0])
         img = T['test_img']
-        plt.imshow(img[10])
-        plt.show()
+        imgplt = tf.keras.preprocessing.image.array_to_img(img[0])
+        imgqt = ImageQt(imgplt)
+        self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
 
         # Store label
         npz = np.load(folder_path[0])
@@ -308,33 +321,33 @@ class TestWidget(QWidget):
                 self.class_names.append(line)
         print(self.class_names)
 
-        self.TB.imglabel.setFixedSize(250, 250)
         self.TB.imglabel.setPixmap(QPixmap(folder_path[0]))
-
 
     def toggle_file(self):
         self.now_file ^= 1
-        self.TIM.ChooseFileBtn.setVisible(self.TIM.ChooseFileBtn.isVisible()^1)
-        self.TIM.batchlabel.setVisible(self.TIM.batchlabel.isVisible()^1)
-        self.TIM.batchBox.setVisible(self.TIM.batchBox.isVisible()^1)
-        self.TT.lossLabel.setVisible(self.TT.lossLabel.isVisible()^1)
-        self.TT.accLabel.setVisible(self.TT.accLabel.isVisible()^1)
+        self.TIM.ChooseFileBtn.setVisible(
+            self.TIM.ChooseFileBtn.isVisible() ^ 1)
+        self.TIM.batchlabel.setVisible(self.TIM.batchlabel.isVisible() ^ 1)
+        self.TIM.batchBox.setVisible(self.TIM.batchBox.isVisible() ^ 1)
+        self.TT.lossLabel.setVisible(self.TT.lossLabel.isVisible() ^ 1)
+        self.TT.accLabel.setVisible(self.TT.accLabel.isVisible() ^ 1)
 
         self.TT.lossLabel.setText("Test Loss: ")
         self.TT.accLabel.setText("Test Acc: ")
 
         # self.TB.imgshow.setVisible(self.TB.imgshow.isVisible()^1)
-        self.TIM.ChooseImgBtn.setVisible(self.TIM.ChooseImgBtn.isVisible()^1)
+        self.TIM.ChooseImgBtn.setVisible(self.TIM.ChooseImgBtn.isVisible() ^ 1)
         # self.TB.imglabel.setVisible(self.TB.imglabel.isVisible()^1)
-        self.TB.guesslabel.setVisible(self.TB.guesslabel.isVisible()^1)
-        self.TB.guesspro.setVisible(self.TB.guesspro.isVisible()^1)
+        self.TB.guesslabel.setVisible(self.TB.guesslabel.isVisible() ^ 1)
+        self.TB.guesspro.setVisible(self.TB.guesspro.isVisible() ^ 1)
 
         self.TB.guesslabel.setText("Predict: ")
         self.TB.guesspro.setText("Probability: ")
-        
+
     def runTest(self):
         if self.now_file == True:
-            self.thread = Thread(page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
+            self.thread = Thread(
+                page_training.uid, self.TB.batchBox.value(), self.TIM.filePathEdit.text())
             self.thread.response_signal.connect(self.updateLabel)
             self.thread.error_signal.connect(self.error_show)
             self.thread.guess_signal.connect(self.update_guess)
@@ -342,11 +355,14 @@ class TestWidget(QWidget):
         else:
             dataset = page_model.default_data
             if dataset == 0:
-                self.thread = Thread2(page_training.uid, page_input.imgH, page_input.imgW, page_input.imgC, self.TIM.filePathEdit.text())
+                self.thread = Thread2(page_training.uid, page_input.imgH,
+                                      page_input.imgW, page_input.imgC, self.TIM.filePathEdit.text())
             elif dataset == 1 or dataset == 2:
-                self.thread = Thread2(page_training.uid, 28, 28, 0, self.TIM.filePathEdit.text())
+                self.thread = Thread2(
+                    page_training.uid, 28, 28, 0, self.TIM.filePathEdit.text())
             else:
-                self.thread = Thread2(page_training.uid, 32, 32, 1, self.TIM.filePathEdit.text())
+                self.thread = Thread2(
+                    page_training.uid, 32, 32, 1, self.TIM.filePathEdit.text())
             self.thread.error_signal2.connect(self.error_show)
             self.thread.response_signal2.connect(self.prediction)
             self.thread.start()
@@ -354,7 +370,7 @@ class TestWidget(QWidget):
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
         self.TT.accLabel.setText(f'Test Acc: {(acc * 100):.2f} %')
-    
+
     def update_guess(self, g):
         self.guess.append(g)
 
@@ -366,4 +382,4 @@ class TestWidget(QWidget):
         self.warning.setText(msg)
         self.warning.setIcon(QMessageBox.Icon.Warning)
         self.warning.setWindowTitle("RunTime Error")
-        self.warning.show()        
+        self.warning.show()
