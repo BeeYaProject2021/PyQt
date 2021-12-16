@@ -352,7 +352,7 @@ class TestWidget(QWidget):
 
     def prediction(self, guess, pro):
         self.TB.guesslabel.setText("Predict: " + self.class_names[guess])
-        self.TB.guesspro.setText("Possibility: " + str(pro * 100) + " %")
+        self.TB.guesspro.setText(f'Probability: {(pro * 100):.2f} %')
 
     def error_show(self, msg):
         self.warning.setText(msg)
