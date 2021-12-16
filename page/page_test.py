@@ -297,6 +297,9 @@ class TestWidget(QWidget):
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
 
+        self.TB.npzguess.setText("Predict: ")
+        self.TB.npzcorrect.setText("True: ")
+
         if os.path.exists(self.TIM.filePathEdit.text()):
             T = np.load(folder_path[0])
             self.img = T['test_img']
@@ -355,6 +358,8 @@ class TestWidget(QWidget):
         print(self.class_names)
 
         self.TB.imglabel.setPixmap(QPixmap(folder_path[0]))
+        self.TB.guesslabel.setText("Predict: ")
+        self.TB.guesspro.setText("Probability: ")        
 
     def toggle_file(self):
         self.now_file ^= 1
@@ -366,6 +371,11 @@ class TestWidget(QWidget):
         self.TT.accLabel.setVisible(self.TT.accLabel.isVisible() ^ 1)
         self.TB.npzguess.setVisible(self.TB.npzguess.isVisible() ^ 1)
         self.TB.npzcorrect.setVisible(self.TB.npzcorrect.isVisible() ^ 1)
+
+        self.TB.imgPage.setEnabled(self.TB.imgPage.isVisible() ^ 1)
+        self.TB.imgPage.clear()
+        self.TB.imgPage.addItem("0")
+        self.TB.imglabel.clear()
 
         self.TT.lossLabel.setText("Test Loss: ")
         self.TT.accLabel.setText("Test Acc: ")
