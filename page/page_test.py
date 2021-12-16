@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 import pathlib
 import requests
 import re
+import os
 import socket
 import page_training
 import page_input
@@ -296,30 +297,36 @@ class TestWidget(QWidget):
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
 
-        T = np.load(folder_path[0])
-        self.img = T['test_img']
-        imgplt = tf.keras.preprocessing.image.array_to_img(self.img[0])
-        imgqt = ImageQt(imgplt)
-        self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
-        self.TB.imgPage.setEnabled(True)
-        self.TB.imgPage.clear()
-        for i in range(len(self.img)):
-            self.TB.imgPage.addItem(str(i+1))
+        if os.path.exists(self.TIM.filePathEdit.text()):
+            T = np.load(folder_path[0])
+            self.img = T['test_img']
+            imgplt = tf.keras.preprocessing.image.array_to_img(self.img[0])
+            imgqt = ImageQt(imgplt)
+            self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
+            self.TB.imgPage.setEnabled(True)
+            self.TB.imgPage.clear()
+            for i in range(len(self.img)):
+                self.TB.imgPage.addItem(str(i+1))
 
-        # Store label
-        npz = np.load(folder_path[0])
-        testY = npz['test_lab']
-        self.label.clear()
-        for i in testY:
-            self.label.append(i)
+            # Store label
+            npz = np.load(folder_path[0])
+            testY = npz['test_lab']
+            self.label.clear()
+            for i in testY:
+                self.label.append(i)
 
-        # Read class name
-        self.class_names.clear()
-        with open(folder_path[0] + ".txt", "r") as f:
-            for line in f.readlines():
-                line = line.strip("\n")
-                self.class_names.append(line)
-        print(self.class_names)
+            # Read class name
+            self.class_names.clear()
+            with open(folder_path[0] + ".txt", "r") as f:
+                for line in f.readlines():
+                    line = line.strip("\n")
+                    self.class_names.append(line)
+            print(self.class_names)
+        else:
+            self.TB.imgPage.setEnabled(False)
+            self.TB.imgPage.clear()
+            self.TB.imgPage.addItem("0")
+            self.TB.imglabel.clear()
 
     def imgChange(self, index):
         imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
