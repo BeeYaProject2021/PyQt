@@ -296,6 +296,7 @@ class TestWidget(QWidget):
 
         self.TB.npzguess.setText("Predict: ")
         self.TB.npzcorrect.setText("True: ")
+        self.guess.clear()
 
         if os.path.exists(self.TIM.filePathEdit.text()):
             T = np.load(folder_path[0])
