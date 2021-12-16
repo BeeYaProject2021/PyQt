@@ -25,6 +25,9 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
+        self.setWindowTitle("")
+        # self.setWindowIcon()
+
         self.tabs = QTabWidget()
         self.tb = TabBar()
         # label = "Blank"
