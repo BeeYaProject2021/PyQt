@@ -189,6 +189,14 @@ class Tbatch(QWidget):
         # self.imglabel.setVisible(False)
         self.vlayout.addWidget(self.imglabel)
 
+        self.npzguess = QLabel("Predict: ")
+        self.npzguess.setFont(QFont("Consolas", 15))
+        self.vlayout.addWidget(self.npzguess)
+
+        self.npzcorrect = QLabel("Ture: ")
+        self.npzcorrect.setFont(QFont("Consolas", 15))
+        self.vlayout.addWidget(self.npzcorrect)      
+
         self.guesslabel = QLabel("Predict: ")
         self.guesslabel.setFont(QFont("Consolas", 15))
         self.guesslabel.setVisible(False)
