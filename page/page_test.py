@@ -353,6 +353,8 @@ class TestWidget(QWidget):
 
         self.TB.guesslabel.setText("Predict: ")
         self.TB.guesspro.setText("Probability: ")
+        self.TB.npzguess.setText("Predict: ")
+        self.TB.npzcorrect.setText("True: ")
 
     def runTest(self):
         if self.now_file == True:
@@ -380,6 +382,8 @@ class TestWidget(QWidget):
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
         self.TT.accLabel.setText(f'Test Acc: {(acc * 100):.2f} %')
+        self.TB.npzguess.setText("Predict" + self.class_names[ self.guess[0] ])
+        self.TB.npzcorrect.setText("True: " + self.class_names[ self.label[0] ])
 
     def update_guess(self, g):
         self.guess.append(g)
