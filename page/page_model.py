@@ -5,9 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from graphics_view import *
 
-import os
-import sys
-
+default_data = 0
 
 class Lablemove(QLabel):
     epos = QPoint()
@@ -327,7 +325,7 @@ class InputWidget(QWidget):
         self.inputLayout.addStretch()
 
         self.inputDataset = QComboBox()
-        datasets = ['custom', 'mnist', 'fashion_mnist', 'cifar10', 'cifar100']
+        datasets = ['custom', 'mnist', 'fashion_mnist', 'cifar10']
         self.inputDataset.addItems(datasets)
         self.inputDataset.currentIndexChanged.connect(self.inputDataset_change)
         self.inputLayout.addWidget(self.inputDataset)
@@ -346,6 +344,10 @@ class InputWidget(QWidget):
             self.setStyleSheet(f.read())
 
     def inputDataset_change(self, index):
+        global default_data
+
+        default_data = index
+
         if index > 0:
             self.filePathEdit.setVisible(False)
             self.selectFileBtn.setVisible(False)

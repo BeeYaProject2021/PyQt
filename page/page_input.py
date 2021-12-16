@@ -13,8 +13,8 @@ import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
 ICON_SIZE = 100
-imgH = 0
-imgW = 0
+imgH = 100
+imgW = 100
 imgC = 0
 
 class Thread(QThread):
@@ -122,6 +122,11 @@ class Thread(QThread):
                                 train_lab=lab, test_img=img2, test_lab=lab2)
             print(str(self.saveFilePath))
             store_class = str(self.saveFilePath) + ".txt"
+            with open(store_class, "w") as f:
+                for i in class_names:
+                    f.writelines(i + "\n")
+
+            store_class = "default/0.txt"
             with open(store_class, "w") as f:
                 for i in class_names:
                     f.writelines(i + "\n")

@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtMultimedia
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import pathlib, requests, re, socket, page_training, page_input
+import pathlib, requests, re, socket, page_training, page_input, page_model
 import numpy as np
 
 class Thread(QThread):
@@ -116,13 +116,25 @@ class Tbatch(QWidget):
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
-        self.batchlabel = QLabel("batch : ")
+        self.batchlabel = QLabel("Batch size : ")
         self.batchlabel.setFont(QFont("Consolas", 15))
         self.vlayout.addWidget(self.batchlabel)
         self.batchBox = QSpinBox()
         self.batchBox.setRange(1, 100000)
         self.batchBox.setFixedWidth(150)
         self.vlayout.addWidget(self.batchBox)
+
+        self.imgshow = QLabel("Your Image : ")
+        self.imgshow.setFont(QFont("Consolas", 15))
+        self.imgshow.setVisible(False)
+        self.vlayout.addWidget(self.imgshow)
+
+        self.imglabel = QLabel()
+        self.imglabel.setObjectName("Path")
+        # self.imglabel.setFixedSize(100, 100)
+        self.imglabel.setScaledContents(True)
+        self.imglabel.setVisible(False)
+        self.vlayout.addWidget(self.imglabel)
         
         self.vlayout.addStretch()
         self.setLayout(self.vlayout)
@@ -221,6 +233,15 @@ class TestWidget(QWidget):
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
 
+        self.class_names.clear()
+        with open("default/" + str(page_model.default_data) + ".txt", "r") as f:
+            for line in f.readlines():
+                line = line.strip("\n")
+                self.class_names.append(line)
+        print(self.class_names)
+
+        self.TB.imglabel.setFixedSize(250, 250)
+        self.TB.imglabel.setPixmap(QPixmap(folder_path[0]))
 
 
     def toggle_file(self):
@@ -228,7 +249,10 @@ class TestWidget(QWidget):
         self.TIM.ChooseFileBtn.setVisible(self.TIM.ChooseFileBtn.isVisible()^1)
         self.TB.batchlabel.setVisible(self.TB.batchlabel.isVisible()^1)
         self.TB.batchBox.setVisible(self.TB.batchBox.isVisible()^1)
+
+        self.TB.imgshow.setVisible(self.TB.imgshow.isVisible()^1)
         self.TIM.ChooseImgBtn.setVisible(self.TIM.ChooseImgBtn.isVisible()^1)
+        self.TB.imglabel.setVisible(self.TB.imglabel.isVisible()^1)
         
     def runTest(self):
         if self.now_file == True:
