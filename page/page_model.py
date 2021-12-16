@@ -4,8 +4,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from graphics_view import *
+import os
 
 default_data = 0
+
 
 class Lablemove(QLabel):
     epos = QPoint()
@@ -412,6 +414,8 @@ class ModelWidget(QWidget):
             self.removeAttributeSignal)
         self.stackWidget.setCurrentIndex(0)
 
+        self.warning = QMessageBox()
+
     def PlaySound(self):
         audio_url = QtCore.QUrl.fromLocalFile("./sound/ok.wav")
         audio_content = QtMultimedia.QMediaContent(audio_url)
@@ -533,8 +537,14 @@ class ModelWidget(QWidget):
 
         edge_label.setText(edge_label.text())
         print(layer_json)
-
-        self.layer_json_signal.emit(layer_json, dataset, datasetPath)
+        if os.path.exists(datasetPath) or dataset > 0:
+            self.layer_json_signal.emit(layer_json, dataset, datasetPath)
+        else:
+            self.warning.setText("No custom npz file path!")
+            self.warning.setIcon(QMessageBox.Icon.Warning)
+            self.warning.setWindowTitle("Error")
+            self.warning.show()
+            print("No custom npz file path!")
 
         layer_json = "["
         self.layer_index_order.clear()
