@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import pathlib, requests, re, socket, page_training, page_input, page_model
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Thread(QThread):
 
@@ -155,6 +156,14 @@ class TimgWidget(QWidget):
 
         self.hlayout.addWidget(self.ChooseFileBtn)
         self.hlayout.addWidget(self.ChooseImgBtn)
+
+        self.batchlabel = QLabel("Batch size: ")
+        self.batchlabel.setFont(QFont("Consolas", 15))
+        self.hlayout.addWidget(self.batchlabel)
+        self.batchBox = QSpinBox()
+        self.batchBox.setRange(1, 100000)
+        self.batchBox.setFixedWidth(150)
+        self.hlayout.addWidget(self.batchBox)
         
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addStretch()
@@ -166,13 +175,6 @@ class Tbatch(QWidget):
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addStretch()
-        self.batchlabel = QLabel("Batch size: ")
-        self.batchlabel.setFont(QFont("Consolas", 15))
-        self.vlayout.addWidget(self.batchlabel)
-        self.batchBox = QSpinBox()
-        self.batchBox.setRange(1, 100000)
-        self.batchBox.setFixedWidth(150)
-        self.vlayout.addWidget(self.batchBox)
 
         self.imgshow = QLabel("Your Image: ")
         self.imgshow.setFont(QFont("Consolas", 15))
@@ -267,6 +269,11 @@ class TestWidget(QWidget):
         print(folder_path[0])
         self.TIM.filePathEdit.setText(folder_path[0])
 
+        T = np.load(folder_path[0])
+        img = T['test_img']
+        plt.imshow(img[10])
+        plt.show()
+
         # Store label
         npz = np.load(folder_path[0])
         testY = npz['test_lab']
@@ -307,8 +314,8 @@ class TestWidget(QWidget):
     def toggle_file(self):
         self.now_file ^= 1
         self.TIM.ChooseFileBtn.setVisible(self.TIM.ChooseFileBtn.isVisible()^1)
-        self.TB.batchlabel.setVisible(self.TB.batchlabel.isVisible()^1)
-        self.TB.batchBox.setVisible(self.TB.batchBox.isVisible()^1)
+        self.TIM.batchlabel.setVisible(self.TIM.batchlabel.isVisible()^1)
+        self.TIM.batchBox.setVisible(self.TIM.batchBox.isVisible()^1)
         self.TT.lossLabel.setVisible(self.TT.lossLabel.isVisible()^1)
         self.TT.accLabel.setVisible(self.TT.accLabel.isVisible()^1)
 
