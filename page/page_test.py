@@ -339,6 +339,8 @@ class TestWidget(QWidget):
         self.TIM.batchBox.setVisible(self.TIM.batchBox.isVisible() ^ 1)
         self.TT.lossLabel.setVisible(self.TT.lossLabel.isVisible() ^ 1)
         self.TT.accLabel.setVisible(self.TT.accLabel.isVisible() ^ 1)
+        self.TB.npzguess.setVisible(self.TB.npzguess.isVisible()^1)
+        self.TB.npzcorrect.setVisible(self.TB.npzcorrect.isVisible()^1)
 
         self.TT.lossLabel.setText("Test Loss: ")
         self.TT.accLabel.setText("Test Acc: ")
