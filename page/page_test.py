@@ -178,14 +178,14 @@ class Tbatch(QWidget):
 
         self.imgshow = QLabel("Your Image: ")
         self.imgshow.setFont(QFont("Consolas", 15))
-        self.imgshow.setVisible(False)
+        # self.imgshow.setVisible(False)
         self.vlayout.addWidget(self.imgshow)
 
         self.imglabel = QLabel()
         self.imglabel.setObjectName("Path")
         # self.imglabel.setFixedSize(100, 100)
         self.imglabel.setScaledContents(True)
-        self.imglabel.setVisible(False)
+        # self.imglabel.setVisible(False)
         self.vlayout.addWidget(self.imglabel)
 
         self.guesslabel = QLabel("Predict: ")
@@ -322,9 +322,9 @@ class TestWidget(QWidget):
         self.TT.lossLabel.setText("Test Loss: ")
         self.TT.accLabel.setText("Test Acc: ")
 
-        self.TB.imgshow.setVisible(self.TB.imgshow.isVisible()^1)
+        # self.TB.imgshow.setVisible(self.TB.imgshow.isVisible()^1)
         self.TIM.ChooseImgBtn.setVisible(self.TIM.ChooseImgBtn.isVisible()^1)
-        self.TB.imglabel.setVisible(self.TB.imglabel.isVisible()^1)
+        # self.TB.imglabel.setVisible(self.TB.imglabel.isVisible()^1)
         self.TB.guesslabel.setVisible(self.TB.guesslabel.isVisible()^1)
         self.TB.guesspro.setVisible(self.TB.guesspro.isVisible()^1)
 
