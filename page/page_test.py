@@ -329,9 +329,10 @@ class TestWidget(QWidget):
             self.TB.imglabel.clear()
 
     def imgChange(self, index):
-        imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
-        imgqt = ImageQt(imgplt)
-        self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
+        if self.TB.imgPage.isEnabled():
+            imgplt = tf.keras.preprocessing.image.array_to_img(self.img[index])
+            imgqt = ImageQt(imgplt)
+            self.TB.imglabel.setPixmap(QPixmap.fromImage(imgqt))
 
     def img_Btn(self):
         if page_training.uid != None:
@@ -404,8 +405,8 @@ class TestWidget(QWidget):
     def updateLabel(self, loss, acc):
         self.TT.lossLabel.setText("Test Loss: " + str(loss))
         self.TT.accLabel.setText(f'Test Acc: {(acc * 100):.2f} %')
-        self.TB.npzguess.setText("Predict" + self.class_names[ self.guess[0] ])
-        self.TB.npzcorrect.setText("True: " + self.class_names[ self.label[0] ])
+        self.TB.npzguess.setText("Predict" + self.class_names[self.guess[0]])
+        self.TB.npzcorrect.setText("True: " + self.class_names[self.label[0]])
 
     def update_guess(self, g):
         self.guess.append(g)
