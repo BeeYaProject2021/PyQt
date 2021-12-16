@@ -17,6 +17,7 @@ imgH = 100
 imgW = 100
 imgC = 0
 
+
 class Thread(QThread):
     _signal = pyqtSignal(int)
     _signal2 = pyqtSignal(int)
@@ -400,12 +401,13 @@ class InputWidget(QWidget):
             saveFilePath = QFileDialog.getSaveFileName(
                 self, "Save .npz file", "./untitle.npz", "*.npz")
             print(saveFilePath[0])
-            self.thread = Thread(self.aw, self.imgw,
-                                 self.color, saveFilePath[0])
-            self.thread._signal.connect(self.signal_accept)
-            self.thread._signal2.connect(self.signal_warning_get)
-            self.thread.start()
-            self.aw.confirmBtn.setEnabled(False)
+            if not saveFilePath:
+                self.thread = Thread(self.aw, self.imgw,
+                                     self.color, saveFilePath[0])
+                self.thread._signal.connect(self.signal_accept)
+                self.thread._signal2.connect(self.signal_warning_get)
+                self.thread.start()
+                self.aw.confirmBtn.setEnabled(False)
 
         else:
             print("BAD NO SUCH Path")
