@@ -19,6 +19,7 @@ class Thread(QThread):
     val_loss_signal = pyqtSignal(int, float)
     img_total_signal = pyqtSignal(int)
     go_proceed_signal = pyqtSignal(str)
+    error_signal = pyqtSignal(str)
 
     def __init__(self, data_json, dataset, datasetPath):
         super(Thread, self).__init__()
@@ -82,8 +83,12 @@ class Thread(QThread):
 
                     # Use signal to inform the thread run function
                     # Emit the batch_size as x-axis and accuracy, loss as y-axis
-                    self.accuracy_signal.emit(batch_cnt, float(data[2]))
-                    self.loss_signal.emit(batch_cnt, float(data[3]))
+                    try:
+                        self.accuracy_signal.emit(batch_cnt, float(data[2]))
+                        self.loss_signal.emit(batch_cnt, float(data[3]))
+                    except Exception as e:
+                        self.error_signal.emit("packet loss")
+                        ClientSocket.close()
 
                 if '#' in line:
                     data = line.split('#')
@@ -264,6 +269,7 @@ class TrainingWidget(QWidget):
             self.thread.loss_signal.connect(self.update_loss)
             self.thread.val_accuracy_signal.connect(self.update_val_loss)
             self.thread.go_proceed_signal.connect(self.go_proceed)
+            self.thread.error_signal.connect(self.error_show)
 
             self.thread.start()
             self.pushButtongo.setEnabled(False)
@@ -329,3 +335,9 @@ class TrainingWidget(QWidget):
         self.warning.setWindowTitle("Model Download OK")
         self.warning.show()
         print("OK!")
+
+    def error_show(self, msg):
+        self.warning.setText(msg)
+        self.warning.setIcon(QMessageBox.Icon.Warning)
+        self.warning.setWindowTitle("RunTime Error")
+        self.warning.show()
